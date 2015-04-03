@@ -2,6 +2,28 @@
 
 //神经网络单层函数
 
+Layer::Layer(int Nin,int Nout,char tfunc){
+	int rtn;
+	rtn=this->LoadLayer(Nin,Nout,tfunc);
+
+	if(rtn<0){
+		printf("Malloc Weight Space Failed.\n");
+		exit(1);
+	}
+
+}
+
+Layer::~Layer(){
+
+	if(!isfree32(WeightMatrix)){ 
+		free(WeightMatrix);
+	}
+
+	if(!isfree32(BiasVector)){
+		free(BiasVector);
+	}
+
+}
 
 int Layer::LoadLayer(int Nin,int Nout,char tfunc){
 	int WMsize=Nin*Nout;
@@ -82,22 +104,6 @@ void Layer::PrintInfo(){
 
 }
 
-int Layer::Work(double *Input,double *Output){
-	int i;
-	for(i=0;i<this->Num_Output;i++){
-		Output[i]=this->autotf
-			(
-			BiasVector[i]+
-			this->dot(
-			Input,
-			(this->WeightMatrix+i*this->Num_Input),
-			this->Num_Input
-			)
-			);
-	}
-	return(0);		
-}
-
 int Layer::SetParameters(double *InWeightMatrix,double *InBiasVector){
 	int i=0;
 	const int WMsize=Num_Input*Num_Output;
@@ -110,37 +116,12 @@ int Layer::SetParameters(double *InWeightMatrix,double *InBiasVector){
 	return(0);
 }
 
+int Layer::isfree32(void *D_Pointer){
+	//Free:Yes Using:NO
+	return(D_Pointer==NULL || D_Pointer==(void *)0xcdcdcdcd || D_Pointer==(void *)0xcccccccc);
+}
 //神经网络总体函数
 
-
-void ANNet::Work(double *Input,double *Output){
-	double *Temp1=NULL;
-	double *Temp2=NULL;
-	int i=0;
-	Temp1=(double *)malloc(sizeof(double)*(MaxLayer+1));
-	Temp2=(double *)malloc(sizeof(double)*(MaxLayer+1));
-	if(isfree32(Temp1)||isfree32(Temp2)){
-		printf("Malloc failed!\n");
-		exit(1);
-	}
-	Layers[0].Work(Input,Temp1);
-	for(i=1;i<(Num_Layer-1);i++){
-		if(i%2==1){
-			Layers[i].Work(Temp1,Temp2);
-		}else{
-			Layers[i].Work(Temp2,Temp1);
-		}
-	}
-	if(Num_Layer%2==1){
-		//use Temp2
-		Layers[Num_Layer-1].Work(Temp2,Output);
-	}else{
-		//use Temp1
-		Layers[Num_Layer-1].Work(Temp1,Output);
-	}
-	free(Temp1);
-	free(Temp2);
-}
 
 void ANNet::PrintInfo(){
 	int i=0;
@@ -152,4 +133,43 @@ void ANNet::PrintInfo(){
 
 int ANNet::SetLayerParameters(double *InWeightMatrix,double *InBiasVector,int LayerID){
 	return(Layers[LayerID].SetParameters(InWeightMatrix,InBiasVector));
+}
+
+ANNet::ANNet(int NumOfLayers,int *NodeInLayer,char *TransFunc){
+	MaxLayer=0;
+	Num_Layer=NumOfLayers;
+	Layers=(Layer *)malloc(sizeof(Layer)*NumOfLayers);
+
+	if(Layers==NULL){
+		printf("Malloc failed #1.");
+		getch();
+		exit(1);
+	}
+
+	MaxLayer=NodeInLayer[0];
+
+	for (int i=0;i<NumOfLayers;i++){
+
+		if (NodeInLayer[i+1]>MaxLayer){
+			MaxLayer=NodeInLayer[i+1];
+		}
+
+		Layers[i].LoadLayer(NodeInLayer[i],NodeInLayer[i+1],TransFunc[i]);
+		Layers[i].intial(i+NodeInLayer[i]*TransFunc[i]);
+	}
+}
+
+ANNet::~ANNet(){
+	int i=0;
+	for(i=0;i<Num_Layer;i++){
+		Layers[i].~Layer();
+	}
+	if(!isfree32(Layers)){
+		free(Layers);
+	}
+}
+
+int ANNet::isfree32(void *D_Pointer){
+	//Free：Yes Using：NO
+	return(D_Pointer==NULL || D_Pointer==(void *)0xcdcdcdcd || D_Pointer==(void *)0xcccccccc);
 }

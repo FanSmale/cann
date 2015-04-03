@@ -4,34 +4,14 @@
 class Layer{
 public:
 	/*s-sigmoid t-tansig l-linear g-gaussian r-ReLU*/
-	Layer(int Nin,int Nout,char tfunc){
-		int rtn;
-		rtn=this->LoadLayer(Nin,Nout,tfunc);
+	Layer(int Nin,int Nout,char tfunc);
 
-		if(rtn<0){
-			printf("Malloc Weight Space Failed.\n");
-			exit(1);
-		}
-
-	}
-
-	~Layer(){
-
-		if(!isfree32(WeightMatrix)){ 
-			free(WeightMatrix);
-		}
-
-		if(!isfree32(BiasVector)){
-			free(BiasVector);
-		}
-
-	}
+	~Layer();
 
 	int LoadLayer(int Nin,int Nout,char tfunc);
 
 	void PrintInfo();
 
-	int Work(double *Input,double *Output);
 
 	int intial(unsigned int seed);
 
@@ -41,6 +21,22 @@ public:
 
 	int SetParameters(double *InWeightMatrix,double *InBiasVector);
 
+	int Work(double *Input,double *Output){
+		int i;
+		for(i=0;i<this->Num_Output;i++){
+			Output[i]=this->autotf
+				(
+				BiasVector[i]+
+				this->dot(
+				Input,
+				(this->WeightMatrix+i*this->Num_Input),
+				this->Num_Input
+				)
+				);
+		}
+		return(0);	
+	}
+
 private:
 	
 	int Num_Input;
@@ -49,10 +45,7 @@ private:
 	double *WeightMatrix;
 	double *BiasVector;
 	
-	int isfree32(void *D_Pointer){
-		//Free:Yes Using:NO
-		return(D_Pointer==NULL || D_Pointer==(void *)0xcdcdcdcd || D_Pointer==(void *)0xcccccccc);
-	}
+	int isfree32(void *D_Pointer);
 	
 	double autotf(double input){
 		switch (this->tf){
@@ -117,58 +110,54 @@ private:
 class ANNet{
 
 public:
+	ANNet(int NumOfLayers,int *NodeInLayer,char *TransFunc);
 
-	ANNet(int NumOfLayers,int *NodeInLayer,char *TransFunc){
-		MaxLayer=0;
-		Num_Layer=NumOfLayers;
-		Layers=(Layer *)malloc(sizeof(Layer)*NumOfLayers);
-
-		if(Layers==NULL){
-			printf("Malloc failed #1.");
-			getch();
+	~ANNet();
+	
+	void Work(double *Input,double *Output){
+		double *Temp1=NULL;
+		double *Temp2=NULL;
+		int i=0;
+		Temp1=(double *)malloc(sizeof(double)*(MaxLayer+1));
+		Temp2=(double *)malloc(sizeof(double)*(MaxLayer+1));
+		if(isfree32(Temp1)||isfree32(Temp2)){
+			printf("Malloc failed!\n");
 			exit(1);
 		}
-
-		MaxLayer=NodeInLayer[0];
-
-		for (int i=0;i<NumOfLayers;i++){
-
-			if (NodeInLayer[i+1]>MaxLayer){
-				MaxLayer=NodeInLayer[i+1];
+		Layers[0].Work(Input,Temp1);
+		for(i=1;i<(Num_Layer-1);i++){
+			if(i%2==1){
+				Layers[i].Work(Temp1,Temp2);
+			}else{
+				Layers[i].Work(Temp2,Temp1);
 			}
-
-			Layers[i].LoadLayer(NodeInLayer[i],NodeInLayer[i+1],TransFunc[i]);
-			Layers[i].intial(i+NodeInLayer[i]*TransFunc[i]);
 		}
+		if(Num_Layer%2==1){
+			//use Temp2
+			Layers[Num_Layer-1].Work(Temp2,Output);
+		}else{
+			//use Temp1
+			Layers[Num_Layer-1].Work(Temp1,Output);
+		}
+		free(Temp1);
+		free(Temp2);
 	}
-
-	~ANNet(){
-		int i=0;
-		for(i=0;i<Num_Layer;i++){
-			Layers[i].~Layer();
-		}
-		if(!isfree32(Layers)){
-			free(Layers);
-		}
-	}
-	
-	void Work(double *Input,double *Output);
 
 	void PrintInfo();
 
 	int SetLayerParameters(double *InWeightMatrix,double *InBiasVector,int LayerID);
+
 private:
 	
 	Layer *Layers;
 	int Num_Layer;
 	int MaxLayer;
+
 	//int *Nodes_Per_Layer;
+
 	ANNet operator =(ANNet in);
 
-	int isfree32(void *D_Pointer){
-		//Free£ºYes Using£ºNO
-		return(D_Pointer==NULL || D_Pointer==(void *)0xcdcdcdcd || D_Pointer==(void *)0xcccccccc);
-	}
+	int isfree32(void *D_Pointer);
 
 };
 

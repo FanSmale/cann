@@ -48,6 +48,7 @@ int ANNet_UNIT_TEST(){
 	getch();
 	return(0);
 }
+
 int _tmain(int argc, _TCHAR* argv[]){
 	Layer_UNIT_TEST();
 	ANNet_UNIT_TEST();

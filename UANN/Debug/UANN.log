@@ -1,17 +1,22 @@
-﻿生成启动时间为 2015/4/3 13:13:52。
+﻿生成启动时间为 2015/4/3 13:39:47。
      1>项目“C:\Users\TsingJyujing\Documents\GitHub\ANN-Lite\UANN\UANN.vcxproj”在节点 2 上(build 个目标)。
      1>InitializeBuildStatus:
          正在对“Debug\UANN.unsuccessfulbuild”执行 Touch 任务。
        ClCompile:
-         所有输出均为最新。
-         D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\UANN.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt UANN.cpp
+         D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Debug\UANN.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\UANN.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt UANN.cpp libUANN.cpp
+         libUANN.cpp
+     1>c:\users\tsingjyujing\documents\github\ann-lite\uann\libuann.cpp(145): warning C4996: 'getch': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _getch. See online help for details.
+                 d:\program files (x86)\microsoft visual studio 10.0\vc\include\conio.h(128) : 参见“getch”的声明
          UANN.cpp
      1>c:\users\tsingjyujing\documents\github\ann-lite\uann\uann.cpp(23): warning C4996: 'getch': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _getch. See online help for details.
                  d:\program files (x86)\microsoft visual studio 10.0\vc\include\conio.h(128) : 参见“getch”的声明
-     1>c:\users\tsingjyujing\documents\github\ann-lite\uann\uann.cpp(43): warning C4996: 'getch': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _getch. See online help for details.
+     1>c:\users\tsingjyujing\documents\github\ann-lite\uann\uann.cpp(48): warning C4996: 'getch': The POSIX name for this item is deprecated. Instead, use the ISO C++ conformant name: _getch. See online help for details.
                  d:\program files (x86)\microsoft visual studio 10.0\vc\include\conio.h(128) : 参见“getch”的声明
+         正在生成代码...
        ManifestResourceCompile:
-         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\UANN.exe.embed.manifest.res" Debug\UANN_manifest.rc 
+         所有输出均为最新。
        Link:
          D:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\TsingJyujing\Documents\GitHub\ANN-Lite\Debug\UANN.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\UANN.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\TsingJyujing\Documents\GitHub\ANN-Lite\Debug\UANN.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\TsingJyujing\Documents\GitHub\ANN-Lite\Debug\UANN.lib" /MACHINE:X86 Debug\UANN.exe.embed.manifest.res
          Debug\libUANN.obj
@@ -30,4 +35,4 @@
 
 生成成功。
 
-已用时间 00:00:01.93
+已用时间 00:00:01.07
