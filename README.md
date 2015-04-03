@@ -10,20 +10,21 @@ Then, include them in your program, and fix #include "stdafx.h" in libUANN.cpp t
 
 To ensure these headfiles are included:
 
-#include <stdio.h>
+stdio.h
 
-#include <tchar.h>
+tchar.h
 
-#include <malloc.h>
+malloc.h
 
-#include <math.h>
+math.h
 
-#include <stdlib.h>
+stdlib.h
 
-#include <conio.h>
+conio.h
 
 Finally, see /UANN/UANN.cpp there're 2 unit tests there.
 
 Any question will be reply if you mail to TsingJyujing@163.com
 
 Have a good time.
+
