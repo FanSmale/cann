@@ -2,6 +2,7 @@
 
 //神经网络单层函数
 
+
 int Layer::LoadLayer(int Nin,int Nout,char tfunc){
 	int WMsize=Nin*Nout;
 
@@ -97,14 +98,20 @@ int Layer::Work(double *Input,double *Output){
 	return(0);		
 }
 
-int Layer::invWork(double *invInput,double *invOutput){
-	int i;
-	for(i=0;i<this->Num_Input;i++){
-		 
+int Layer::SetParameters(double *InWeightMatrix,double *InBiasVector){
+	int i=0;
+	const int WMsize=Num_Input*Num_Output;
+	for (i=0; i<WMsize; i++){
+		WeightMatrix[i]=InWeightMatrix[i];
+	}
+	for (i=0; i<Num_Output; i++){
+		BiasVector[i]=InBiasVector[i];
 	}
 	return(0);
 }
+
 //神经网络总体函数
+
 
 void ANNet::Work(double *Input,double *Output){
 	double *Temp1=NULL;
@@ -141,4 +148,8 @@ void ANNet::PrintInfo(){
 		printf("\nLayer%d:\n",i);
 		Layers[i].PrintInfo();
 	}
+}
+
+int ANNet::SetLayerParameters(double *InWeightMatrix,double *InBiasVector,int LayerID){
+	return(Layers[LayerID].SetParameters(InWeightMatrix,InBiasVector));
 }

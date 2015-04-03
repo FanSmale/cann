@@ -33,15 +33,13 @@ public:
 
 	int Work(double *Input,double *Output);
 
-	int invWork(double *invInput,double *invOutput);
-
 	int intial(unsigned int seed);
 
 	int GetNumIn(){return(this->Num_Input);}
 	
 	int GetNumout(){return(this->Num_Output);}
 
-	friend ANNet;
+	int SetParameters(double *InWeightMatrix,double *InBiasVector);
 
 private:
 	
@@ -100,23 +98,13 @@ private:
 		return(input>0.0?input:0);
 	}
 	*/
+
 	double dot(double *v1,double *v2,int len){
 		double sum=0.0;
 		int i;
 
 		for (i=0;i<len;i++){
 			sum+=v1[i]*v2[i];
-		}
-
-		return(sum);
-	}
-
-	double invdot(double *v1,int jmp,double *v2,int len){
-		double sum=0.0;
-		int i;
-
-		for(i=0;i<len;i++){
-			sum+=v2[i]*v1[i*jmp];
 		}
 
 		return(sum);
@@ -168,6 +156,7 @@ public:
 
 	void PrintInfo();
 
+	int SetLayerParameters(double *InWeightMatrix,double *InBiasVector,int LayerID);
 private:
 	
 	Layer *Layers;
