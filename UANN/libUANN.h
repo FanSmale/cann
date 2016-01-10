@@ -22,6 +22,7 @@ public:
 	int SetParameters(double *InWeightMatrix,double *InBiasVector);
 
 	int Work(double *Input,double *Output){
+		//inline function 用于计算该层的输入输出
 		int i;
 		for(i=0;i<this->Num_Output;i++){
 			Output[i]=this->autotf
@@ -48,6 +49,7 @@ private:
 	int isfree32(void *D_Pointer);
 	
 	double autotf(double input){
+		//根据该层激活函数标记计算激活函数
 		switch (this->tf){
 		case 's':
 			return(1/(1+exp(-input)));//sigmoid
@@ -73,6 +75,34 @@ private:
 		}
 	}
 	
+	double autodf(double input){
+		//根据该层激活函数计算
+		switch (this->tf){
+		case 's':
+			double u = 1/(1+exp(-input));
+			return(u*(1-u));//diff sigmoid
+			break;
+		case 't':
+			double x1=exp(input);
+			double x2=exp(-input);
+			double u = (x1-x2)/(x1+x2);
+			return(1-u*u);//diff tansig
+			break;
+		case 'l':
+			return(1);
+			break;
+		case 'g':
+			return(-2*input*exp(-input*input));
+			break;
+		case 'r':
+			return(input>0.0?1:0);
+			break;
+		default:
+			double u = 1/(1+exp(-input));
+			return(u*(1-u));//diff sigmoid
+			break;
+		}
+	}
 	/*
 	//常见传递函数的代码，已集成在上述函数中，故注释
 	double sigmoid(double input){
