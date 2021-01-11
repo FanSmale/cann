@@ -1,0 +1,14 @@
+# depslib dependency file v1.0
+1610373566 source:e:\c\cann\main.cpp
+	<iostream>
+	<stdio.h>
+	<e:\c\cann\include\Matrix.h>
+
+1610373404 e:\c\cann\include\matrix.h
+
+1610373418 source:e:\c\cann\src\matrix.cpp
+	<e:\c\cann\include\Matrix.h>
+	"Malloc.h"
+	<iostream>
+	<stdio.h>
+

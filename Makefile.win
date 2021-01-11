@@ -1,0 +1,32 @@
+# Project: cannmf
+# Makefile created by Dev-C++ 5.3.0.3
+
+CPP      = g++.exe -D__DEBUG__
+CC       = gcc.exe -D__DEBUG__
+WINDRES  = windres.exe
+OBJ      = main.o src/Matrix.o $(RES)
+LINKOBJ  = main.o src/Matrix.o $(RES)
+LIBS     = -L"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -g3
+INCS     = -I"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include"
+CXXINCS  = -I"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include"
+BIN      = cannmf.exe
+CXXFLAGS = $(CXXINCS)  -g3
+CFLAGS   = $(INCS)  -g3
+RM       = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CPP) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+main.o: main.cpp
+	$(CPP) -c main.cpp -o main.o $(CXXFLAGS)
+
+src/Matrix.o: src/Matrix.cpp
+	$(CPP) -c src/Matrix.cpp -o src/Matrix.o $(CXXFLAGS)
