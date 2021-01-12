@@ -17,22 +17,25 @@ class Matrix
         void showMe();
 
         //Copy a matrix
-        void copy(Matrix *paraMatrix);
+        Matrix* copy();
 
         //Add another one with the same size
-        void add(Matrix *paraMatrix);
+        Matrix* add(Matrix *paraMatrix);
 
         //Minus another one with the same size
-        void minus(Matrix *paraMatrix);
+        Matrix* minus(Matrix *paraMatrix);
 
         //Multiply another one with the same size
-        void multiply(Matrix *paraMatrix);
+        Matrix* multiply(Matrix *paraMatrix);
 
         //Dot multiply, return a new matrix
         Matrix* dot(Matrix *paraMatrix);
 
         //Transpose, return a new matrix
         Matrix* transpose();
+
+        //Code unit test
+        void selfTest();
 
     protected:
 

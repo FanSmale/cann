@@ -7,7 +7,7 @@ using namespace std;
 //The default constructor
 Matrix::Matrix()
 {
-    data = NULL;
+    data = nullptr;
 }
 
 //Initialize a matrix with given sizes
@@ -41,112 +41,104 @@ Matrix::~Matrix()
 }
 
 //Copy a matrix
-void Matrix::copy(Matrix *paraMatrix)
+Matrix* Matrix::copy()
 {
-    rows = paraMatrix -> rows;
-    columns = paraMatrix -> columns;
-    printf("before copy data\r\n");
-
-    //Allocate space
-    data = new double *[rows];
-    for (int i = 0; i < rows; i ++)
-    {
-        data[i] = new double[columns];
-    }//Of for i
+    Matrix* resultMatrix = new Matrix(rows, columns);
 
     //Copy
     for (int i = 0; i < rows; i ++)
     {
         for (int j = 0; j < columns; j ++)
         {
-            data[i][j] = paraMatrix -> data[i][j];
+            resultMatrix -> data[i][j] = data[i][j];
         }//Of for j
     }//Of for i
+
+    return resultMatrix;
 }//Of copy
 
 //Add another one with the same size
-void Matrix::add(Matrix *paraMatrix)
+Matrix* Matrix::add(Matrix* paraMatrix)
 {
-    printf("Add test 1.\r\n");
+    Matrix* resultMatrix = copy();
 
-    rows = paraMatrix -> rows;
-    columns = paraMatrix -> columns;
-
-    printf("Add test 2.\r\n");
     if (rows != paraMatrix -> rows)
     {
         printf("Rows do not match.");
-        return;
+        return nullptr;
     }//Of if
 
-    printf("Add test 3.\r\n");
     if (columns != paraMatrix -> columns)
     {
         printf("Columns do not match.");
-        return;
+        return nullptr;
     }//Of if
 
     for (int i = 0; i < rows; i ++)
     {
         for (int j = 0; j < columns; j ++)
         {
-            data[i][j] += paraMatrix -> data[i][j];
+            resultMatrix -> data[i][j] += paraMatrix -> data[i][j];
         }//Of for j
     }//Of for i
+
+    return resultMatrix;
 }//Of add
 
 //Minus another one with the same size
-void Matrix::minus(Matrix *paraMatrix)
+Matrix* Matrix::minus(Matrix* paraMatrix)
 {
-    rows = paraMatrix -> rows;
-    columns = paraMatrix -> columns;
+    Matrix* resultMatrix = copy();
 
     if (rows != paraMatrix -> rows)
     {
         printf("Rows do not match.");
-        return;
+        return nullptr;
     }//Of if
 
     if (columns != paraMatrix -> columns)
     {
         printf("Columns do not match.");
-        return;
+        return nullptr;
     }//Of if
 
     for (int i = 0; i < rows; i ++)
     {
         for (int j = 0; j < columns; j ++)
         {
-            data[i][j] -= paraMatrix -> data[i][j];
+            resultMatrix -> data[i][j] -= paraMatrix -> data[i][j];
         }//Of for j
     }//Of for i
+
+    return resultMatrix;
 }//Of minus
 
 //Multiply another one with the same size
-void Matrix::multiply(Matrix *paraMatrix)
+Matrix* Matrix::multiply(Matrix* paraMatrix)
 {
-    rows = paraMatrix -> rows;
-    columns = paraMatrix -> columns;
+    Matrix* resultMatrix = copy();
 
     if (rows != paraMatrix -> rows)
     {
         printf("Rows do not match.");
-        return;
+        return nullptr;
     }//Of if
 
     if (columns != paraMatrix -> columns)
     {
         printf("Columns do not match.");
-        return;
+        return nullptr;
     }//Of if
 
     for (int i = 0; i < rows; i ++)
     {
         for (int j = 0; j < columns; j ++)
         {
-            data[i][j] *= paraMatrix -> data[i][j];
+            resultMatrix -> data[i][j] *= paraMatrix -> data[i][j];
         }//Of for j
     }//Of for i
+
+    return resultMatrix;
 }//Of multiply
 
 //Dot multiply, return a new matrix
@@ -216,3 +208,34 @@ void Matrix::showMe()
     return;
 }//Of showMe
 
+//Code self test
+void Matrix::selfTest()
+{
+    Matrix* tempMatrix = new Matrix(2, 3);
+    printf("Original\r\n");
+    tempMatrix -> showMe();
+
+    Matrix* tempMatrix2 = tempMatrix -> copy();
+    printf("Copy\r\n");
+    tempMatrix2 -> showMe();
+
+    Matrix* tempTransposed = tempMatrix -> transpose();
+    printf("Transpose\r\n");
+    tempTransposed -> showMe();
+
+    Matrix* tempDot = tempMatrix -> dot(tempTransposed);
+    printf("Dot\r\n");
+    tempDot -> showMe();
+
+    Matrix* tempAdded = tempMatrix -> add(tempMatrix2);
+    printf("Add\r\n");
+    tempAdded -> showMe();
+
+    Matrix* tempMultiply = tempMatrix -> multiply(tempMatrix2);
+    printf("Multiply\r\n");
+    tempMultiply -> showMe();
+
+    Matrix* tempMinus = tempMultiply  -> minus(tempMatrix);
+    printf("Minus\r\n");
+    tempMinus -> showMe();
+}//Of selfTest
