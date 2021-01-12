@@ -1,19 +1,33 @@
 # depslib dependency file v1.0
-1610435636 source:e:\c\cann\main.cpp
+1610439587 source:e:\c\cann\main.cpp
 	<iostream>
 	<stdio.h>
 	<e:\c\cann\include\Matrix.h>
+	<e:\c\cann\include\AnnLayer.h>
 
-1610435750 e:\c\cann\include\matrix.h
+1610441478 e:\c\cann\include\matrix.h
 
-1610434358 source:e:\c\cann\src\matrix.cpp
+1610441666 source:e:\c\cann\src\matrix.cpp
 	<e:\c\cann\include\Matrix.h>
 	"Malloc.h"
 	<iostream>
 	<stdio.h>
+	<stdlib.h>
+	<math.h>
 
-1610435327 source:e:\c\cann\src\annlayer.cpp
+1610441724 source:e:\c\cann\src\annlayer.cpp
 	"AnnLayer.h"
+	"Malloc.h"
+	"Math.h"
+	"stdio.h"
 
-1610435327 e:\c\cann\include\annlayer.h
+1610440544 e:\c\cann\include\annlayer.h
+	<matrix.h>
+
+1610442963 source:e:\c\cann\src\fullann.cpp
+	"FullAnn.h"
+
+1610443433 e:\c\cann\include\fullann.h
+	<Matrix.h>
+	<AnnLayer.h>
 

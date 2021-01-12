@@ -22,17 +22,32 @@ class Matrix
         //Add another one with the same size
         Matrix* add(Matrix* paraMatrix);
 
+        //Add another one with the same size to me, no space allocation
+        void addToMe(Matrix* paraMatrix);
+
         //Minus another one with the same size
         Matrix* minus(Matrix* paraMatrix);
 
+        //Minus another one with the same size to me, no space allocation
+        void minusToMe(Matrix* paraMatrix);
+
         //Multiply another one with the same size
         Matrix* multiply(Matrix* paraMatrix);
+
+        //Multiply another one with the same size to me, no space allocation
+        void multiplyToMe(Matrix* paraMatrix);
 
         //Dot multiply, return a new matrix
         Matrix* dot(Matrix* paraMatrix);
 
         //Transpose, return a new matrix
         Matrix* transpose();
+
+        //Activate all values of the matrix
+        void activate(char paraFunction);
+
+        //Activate
+        double activate(double paraValue, char paraFunction);
 
         //Code unit test
         void selfTest();

@@ -34,8 +34,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/AnnLayer.h" />
+		<Unit filename="include/FullAnn.h" />
 		<Unit filename="include/Matrix.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/AnnLayer.cpp" />
+		<Unit filename="src/FullAnn.cpp" />
 		<Unit filename="src/Matrix.cpp" />
 		<Extensions />
 	</Project>

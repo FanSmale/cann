@@ -2,8 +2,11 @@
 #include "Malloc.h"
 #include <iostream>
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
 using namespace std;
+
 //The default constructor
 Matrix::Matrix()
 {
@@ -28,7 +31,8 @@ Matrix::Matrix(int paraRows, int paraColumns)
     {
         for (int j = 0; j < columns; j ++)
         {
-            data[i][j] = (i + 1) * (j + 1);
+            data[i][j] = rand() / (double)(RAND_MAX);
+            //data[i][j] = (i + 1) * (j + 1);
         }//Of for j
     }//Of for i
 }
@@ -85,6 +89,30 @@ Matrix* Matrix::add(Matrix* paraMatrix)
     return resultMatrix;
 }//Of add
 
+//Add another one with the same size to me
+void Matrix::addToMe(Matrix* paraMatrix)
+{
+    if (rows != paraMatrix -> rows)
+    {
+        printf("Rows do not match.");
+        return;
+    }//Of if
+
+    if (columns != paraMatrix -> columns)
+    {
+        printf("Columns do not match.");
+        return;
+    }//Of if
+
+    for (int i = 0; i < rows; i ++)
+    {
+        for (int j = 0; j < columns; j ++)
+        {
+            data[i][j] += paraMatrix -> data[i][j];
+        }//Of for j
+    }//Of for i
+}//Of addToMe
+
 //Minus another one with the same size
 Matrix* Matrix::minus(Matrix* paraMatrix)
 {
@@ -113,6 +141,30 @@ Matrix* Matrix::minus(Matrix* paraMatrix)
     return resultMatrix;
 }//Of minus
 
+//Minus another one with the same size to me
+void Matrix::minusToMe(Matrix* paraMatrix)
+{
+    if (rows != paraMatrix -> rows)
+    {
+        printf("Rows do not match.");
+        return;
+    }//Of if
+
+    if (columns != paraMatrix -> columns)
+    {
+        printf("Columns do not match.");
+        return;
+    }//Of if
+
+    for (int i = 0; i < rows; i ++)
+    {
+        for (int j = 0; j < columns; j ++)
+        {
+            data[i][j] -= paraMatrix -> data[i][j];
+        }//Of for j
+    }//Of for i
+}//Of minusToMe
+
 //Multiply another one with the same size
 Matrix* Matrix::multiply(Matrix* paraMatrix)
 {
@@ -140,6 +192,30 @@ Matrix* Matrix::multiply(Matrix* paraMatrix)
 
     return resultMatrix;
 }//Of multiply
+
+//Multiply another one with the same size to me
+void Matrix::multiplyToMe(Matrix* paraMatrix)
+{
+    if (rows != paraMatrix -> rows)
+    {
+        printf("Rows do not match.");
+        return;
+    }//Of if
+
+    if (columns != paraMatrix -> columns)
+    {
+        printf("Columns do not match.");
+        return;
+    }//Of if
+
+    for (int i = 0; i < rows; i ++)
+    {
+        for (int j = 0; j < columns; j ++)
+        {
+            data[i][j] *= paraMatrix -> data[i][j];
+        }//Of for j
+    }//Of for i
+}//Of multiplyToMe
 
 //Dot multiply, return a new matrix
 Matrix* Matrix::dot(Matrix *paraMatrix)
@@ -189,6 +265,39 @@ Matrix* Matrix::transpose()
 
     return newMatrixPtr;
 }//Of transpose
+
+//Activate myself
+void Matrix::activate(char paraFunction)
+{
+    for (int i = 0; i < rows; i ++)
+    {
+        for (int j = 0; j < columns; j ++)
+        {
+            data[i][j] = activate(data[i][j], paraFunction);
+        }//Of for j
+    }//Of for i
+}//Of activate
+
+//Activate for the given value, independent of this object
+double Matrix::activate(double paraValue, char paraFunction)
+{
+    switch (paraFunction)
+    {
+    case 's':
+        return 1 / (1 + exp(-paraValue));
+    case 'r':
+        if (paraValue > 0)
+        {
+            return paraValue;
+        }
+        else
+        {
+            return 0;
+        }//Of if
+    default:
+        return paraValue;
+    }//Of switch
+}//Of activate
 
 //Show me
 void Matrix::showMe()
