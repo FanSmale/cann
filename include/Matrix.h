@@ -20,16 +20,16 @@ class Matrix
         Matrix* copy();
 
         //Add another one with the same size
-        Matrix* add(Matrix *paraMatrix);
+        Matrix* add(Matrix* paraMatrix);
 
         //Minus another one with the same size
-        Matrix* minus(Matrix *paraMatrix);
+        Matrix* minus(Matrix* paraMatrix);
 
         //Multiply another one with the same size
-        Matrix* multiply(Matrix *paraMatrix);
+        Matrix* multiply(Matrix* paraMatrix);
 
         //Dot multiply, return a new matrix
-        Matrix* dot(Matrix *paraMatrix);
+        Matrix* dot(Matrix* paraMatrix);
 
         //Transpose, return a new matrix
         Matrix* transpose();
