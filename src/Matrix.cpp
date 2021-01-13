@@ -1,17 +1,32 @@
-#include <e:\c\cann\include\Matrix.h>
+/*
+ * The C++ Artificial Neural network project.
+ * This class manages matrices.
+ * Parallel computing using GPU will be enabled soon.
+ * Code available at: github.com/fansmale/cann.
+ * Author: Fan Min
+ *   Lab of Machine Learning, School of Computer Science, Southwest Petroleum University, Chengdu, China
+ *   www.fansmale.com
+ *   minfanphd@163.com, minfan@swpu.edu.cn
+ */
+
 #include "Malloc.h"
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <Matrix.h>
+#include <MfMath.h>
+#include <string>
 
 using namespace std;
 
 //The default constructor
 Matrix::Matrix()
 {
+    rows = 0;
+    columns = 0;
     data = nullptr;
-}
+}//Of the default constructor
 
 //Initialize a matrix with given sizes
 Matrix::Matrix(int paraRows, int paraColumns)
@@ -32,17 +47,56 @@ Matrix::Matrix(int paraRows, int paraColumns)
         for (int j = 0; j < columns; j ++)
         {
             data[i][j] = rand() / (double)(RAND_MAX);
-            //data[i][j] = (i + 1) * (j + 1);
         }//Of for j
     }//Of for i
-}
+}//Of the second constructor
 
 //Destructor
 Matrix::~Matrix()
 {
     free(data);
-    //delete data;
-}
+}//Of the destructor
+
+//Show me with a string for display
+string Matrix::toString()
+{
+    string resultString = "I am a matrix with size " + to_string(rows)
+        + "*" + to_string(columns) + "\r\n";
+    for (int i = 0; i < rows; i ++)
+    {
+        for (int j = 0; j < columns; j ++)
+        {
+            resultString += to_string(data[i][j]) +  ", ";
+        }//Of for j
+        resultString += "\r\n";
+    }//Of for i
+
+    resultString += "matrix ends. \r\n";
+
+    return resultString;
+}//Of toString
+
+//Get a value at the given position
+double Matrix::getValue(int paraRow, int paraColumn)
+{
+    if ((paraRow >= rows) || (paraColumn >= columns))
+    {
+        printf("Matrix.getValue() out of range.");
+        throw OUT_OF_RANGE_EXCEPTION;
+    }//Of if
+    return data[paraRow][paraColumn];
+}//Of getValue
+
+//Set a value at the given position
+double Matrix::setValue(int paraRow, int paraColumn, double paraValue)
+{
+    if ((paraRow >= rows) || (paraColumn >= columns))
+    {
+        printf("Matrix.setValue() out of range.");
+        throw OUT_OF_RANGE_EXCEPTION;
+    }//Of if
+    data[paraRow][paraColumn] = paraValue;
+}//Of setValue
 
 //Copy a matrix
 Matrix* Matrix::copy()
@@ -69,13 +123,13 @@ Matrix* Matrix::add(Matrix* paraMatrix)
     if (rows != paraMatrix -> rows)
     {
         printf("Rows do not match.");
-        return nullptr;
+        throw SIZE_NOT_MATCH_EXCEPTION;
     }//Of if
 
     if (columns != paraMatrix -> columns)
     {
         printf("Columns do not match.");
-        return nullptr;
+        throw SIZE_NOT_MATCH_EXCEPTION;
     }//Of if
 
     for (int i = 0; i < rows; i ++)
@@ -94,14 +148,14 @@ void Matrix::addToMe(Matrix* paraMatrix)
 {
     if (rows != paraMatrix -> rows)
     {
-        printf("Rows do not match.");
-        return;
+        printf("Matrix.addToMe(), rows do not match.");
+        throw SIZE_NOT_MATCH_EXCEPTION;
     }//Of if
 
     if (columns != paraMatrix -> columns)
     {
-        printf("Columns do not match.");
-        return;
+        printf("Matrix.addToMe(), columns do not match.");
+        throw SIZE_NOT_MATCH_EXCEPTION;
     }//Of if
 
     for (int i = 0; i < rows; i ++)
@@ -120,14 +174,14 @@ Matrix* Matrix::minus(Matrix* paraMatrix)
 
     if (rows != paraMatrix -> rows)
     {
-        printf("Rows do not match.");
-        return nullptr;
+        printf("Matrix.minus(), rows do not match.");
+        throw SIZE_NOT_MATCH_EXCEPTION;
     }//Of if
 
     if (columns != paraMatrix -> columns)
     {
-        printf("Columns do not match.");
-        return nullptr;
+        printf("Matrix.minus(), columns do not match.");
+        throw SIZE_NOT_MATCH_EXCEPTION;
     }//Of if
 
     for (int i = 0; i < rows; i ++)
@@ -147,13 +201,13 @@ void Matrix::minusToMe(Matrix* paraMatrix)
     if (rows != paraMatrix -> rows)
     {
         printf("Rows do not match.");
-        return;
+        throw SIZE_NOT_MATCH_EXCEPTION;
     }//Of if
 
     if (columns != paraMatrix -> columns)
     {
         printf("Columns do not match.");
-        return;
+        throw SIZE_NOT_MATCH_EXCEPTION;
     }//Of if
 
     for (int i = 0; i < rows; i ++)
@@ -173,13 +227,13 @@ Matrix* Matrix::multiply(Matrix* paraMatrix)
     if (rows != paraMatrix -> rows)
     {
         printf("Rows do not match.");
-        return nullptr;
+        throw SIZE_NOT_MATCH_EXCEPTION;
     }//Of if
 
     if (columns != paraMatrix -> columns)
     {
         printf("Columns do not match.");
-        return nullptr;
+        throw SIZE_NOT_MATCH_EXCEPTION;
     }//Of if
 
     for (int i = 0; i < rows; i ++)
@@ -199,13 +253,13 @@ void Matrix::multiplyToMe(Matrix* paraMatrix)
     if (rows != paraMatrix -> rows)
     {
         printf("Rows do not match.");
-        return;
+        throw SIZE_NOT_MATCH_EXCEPTION;
     }//Of if
 
     if (columns != paraMatrix -> columns)
     {
         printf("Columns do not match.");
-        return;
+        throw SIZE_NOT_MATCH_EXCEPTION;
     }//Of if
 
     for (int i = 0; i < rows; i ++)
@@ -226,7 +280,7 @@ Matrix* Matrix::dot(Matrix *paraMatrix)
     if (columns != paraMatrix -> rows)
     {
         printf("Matrices do not match.");
-        return nullptr;
+        throw SIZE_NOT_MATCH_EXCEPTION;
     }//Of if
 
     Matrix* newMatrixPtr = new Matrix(tempRows, tempColumns);
@@ -237,7 +291,8 @@ Matrix* Matrix::dot(Matrix *paraMatrix)
         for (int j = 0; j < tempColumns; j ++)
         {
             tempValue = 0;
-            for (int k = 0; k < columns; k ++) {
+            for (int k = 0; k < columns; k ++)
+            {
                 tempValue += data[i][k] * paraMatrix -> data[k][j];
             }//Of for k
             newMatrixPtr -> data[i][j] = tempValue;
@@ -299,52 +354,35 @@ double Matrix::activate(double paraValue, char paraFunction)
     }//Of switch
 }//Of activate
 
-//Show me
-void Matrix::showMe()
-{
-    printf("I am a matrix with size %d * %d. \r\n", rows, columns);
-    for (int i = 0; i < rows; i ++)
-    {
-        for (int j = 0; j < columns; j ++)
-        {
-            printf("%f, ", data[i][j]);
-        }//Of for j
-        printf("\r\n");
-    }//Of for i
-
-    printf("matrix ends. \r\n");
-
-    return;
-}//Of showMe
-
 //Code self test
 void Matrix::selfTest()
 {
     Matrix* tempMatrix = new Matrix(2, 3);
     printf("Original\r\n");
-    tempMatrix -> showMe();
+
+    printf(tempMatrix -> toString().data());
 
     Matrix* tempMatrix2 = tempMatrix -> copy();
     printf("Copy\r\n");
-    tempMatrix2 -> showMe();
+    printf(tempMatrix2 -> toString().data());
 
     Matrix* tempTransposed = tempMatrix -> transpose();
     printf("Transpose\r\n");
-    tempTransposed -> showMe();
+    printf(tempTransposed -> toString().data());
 
     Matrix* tempDot = tempMatrix -> dot(tempTransposed);
     printf("Dot\r\n");
-    tempDot -> showMe();
+    printf(tempDot -> toString().data());
 
     Matrix* tempAdded = tempMatrix -> add(tempMatrix2);
     printf("Add\r\n");
-    tempAdded -> showMe();
+    printf(tempAdded -> toString().data());
 
     Matrix* tempMultiply = tempMatrix -> multiply(tempMatrix2);
     printf("Multiply\r\n");
-    tempMultiply -> showMe();
+    printf(tempMultiply -> toString().data());
 
     Matrix* tempMinus = tempMultiply  -> minus(tempMatrix);
     printf("Minus\r\n");
-    tempMinus -> showMe();
+    printf(tempMinus -> toString().data());
 }//Of selfTest

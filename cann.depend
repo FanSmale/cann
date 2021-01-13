@@ -1,33 +1,51 @@
 # depslib dependency file v1.0
-1610439587 source:e:\c\cann\main.cpp
+1610542799 source:e:\c\cann\main.cpp
 	<iostream>
 	<stdio.h>
-	<e:\c\cann\include\Matrix.h>
-	<e:\c\cann\include\AnnLayer.h>
+	<Matrix.h>
+	<AnnLayer.h>
+	<IntArray.h>
+	<FullAnn.h>
 
-1610441478 e:\c\cann\include\matrix.h
+1610540466 e:\c\cann\include\matrix.h
+	<string>
 
-1610441666 source:e:\c\cann\src\matrix.cpp
-	<e:\c\cann\include\Matrix.h>
+1610538107 source:e:\c\cann\src\matrix.cpp
 	"Malloc.h"
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
+	<Matrix.h>
+	<MfMath.h>
+	<string>
 
-1610441724 source:e:\c\cann\src\annlayer.cpp
+1610542981 source:e:\c\cann\src\annlayer.cpp
 	"AnnLayer.h"
 	"Malloc.h"
 	"Math.h"
 	"stdio.h"
 
-1610440544 e:\c\cann\include\annlayer.h
-	<matrix.h>
+1610541770 e:\c\cann\include\annlayer.h
+	<Matrix.h>
 
-1610442963 source:e:\c\cann\src\fullann.cpp
+1610542733 source:e:\c\cann\src\fullann.cpp
 	"FullAnn.h"
+	"MfMath.h"
 
-1610443433 e:\c\cann\include\fullann.h
+1610541872 e:\c\cann\include\fullann.h
 	<Matrix.h>
 	<AnnLayer.h>
+	<IntArray.h>
+
+1610541390 source:e:\c\cann\src\intarray.cpp
+	"IntArray.h"
+	<Malloc.h>
+	<stdio.h>
+	<string>
+
+1610541320 e:\c\cann\include\intarray.h
+	<string>
+
+1610536264 e:\c\cann\include\mfmath.h
 

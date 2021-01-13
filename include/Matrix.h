@@ -1,9 +1,25 @@
+/*
+ * The C++ Artificial Neural network project.
+ * This class manages matrices.
+ * Parallel computing using GPU will be enabled soon.
+ * Code available at: github.com/fansmale/cann.
+ * Author: Fan Min
+ *   Lab of Machine Learning, School of Computer Science, Southwest Petroleum University, Chengdu, China
+ *   www.fansmale.com
+ *   minfanphd@163.com, minfan@swpu.edu.cn
+ */
+
 #ifndef MATRIX_H
 #define MATRIX_H
+
+#include <string>
+
+using namespace std;
 
 class Matrix
 {
     public:
+
         //The default constructor
         Matrix();
 
@@ -13,8 +29,14 @@ class Matrix
         //Destructor
         virtual ~Matrix();
 
-        //Show me
-        void showMe();
+        //Convert to string for display
+        string toString();
+
+        //Get a value at the given position
+        double getValue(int paraRow, int paraColumn);
+
+        //Set a value at the given position
+        double setValue(int paraRow, int paraColumn, double paraValue);
 
         //Copy a matrix
         Matrix* copy();
@@ -62,6 +84,8 @@ class Matrix
 
         //The data
         double** data;
+
+        //string tempString;
 
     private:
 };

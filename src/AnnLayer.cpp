@@ -1,3 +1,13 @@
+/*
+ * The C++ Artificial Neural network project.
+ * This class manages one layer of ANN.
+ * Code available at: github.com/fansmale/cann.
+ * Author: Fan Min
+ *   Lab of Machine Learning, School of Computer Science, Southwest Petroleum University, Chengdu, China
+ *   www.fansmale.com
+ *   minfanphd@163.com, minfan@swpu.edu.cn
+ */
+
 #include "AnnLayer.h"
 #include "Malloc.h"
 #include "Math.h"
@@ -28,21 +38,42 @@ AnnLayer::~AnnLayer()
     free(weightMatrix);
 }//Of the destructor
 
+//Convert to string for display
+string AnnLayer::toString()
+{
+    string resultString = "I am an ANN layer with size " + to_string(inputSize)
+        + "*" + to_string(outputSize) + "\r\n";
+    resultString += "weight matrix: \r\n";
+    resultString += weightMatrix -> toString();
+
+    resultString += "offset matrix: \r\n";
+    resultString += offsetMatrix -> toString();
+    resultString += "weights ends. \r\n";
+
+    return resultString;
+}//Of toString
+
+//Set the activation function
+void AnnLayer::setActivation(char paraActivation)
+{
+    activation = paraActivation;
+}//Of setActivation
+
 //Activate
 Matrix* AnnLayer::forward(Matrix* paraData)
 {
-    printf("Forwarding, the data is: \r\n");
-    paraData -> showMe();
+    //printf("Forwarding, the data is: \r\n");
+    //printf(paraData -> toString().data());
 
     printf("The weights are: \r\n");
-    weightMatrix -> showMe();
+    printf(weightMatrix -> toString().data());
 
     Matrix* resultData = paraData -> dot(weightMatrix);
     resultData -> addToMe(offsetMatrix);
     resultData -> activate(activation);
 
     printf("The resultData are: \r\n");
-    resultData -> showMe();
+    printf(resultData -> toString().data());
     return resultData;
 }//Of forward
 
@@ -52,12 +83,12 @@ void AnnLayer::selfTest()
     AnnLayer* tempLayer = new AnnLayer(2, 3, 's');
     Matrix* tempInput = new Matrix(1, 2);
     printf("The input is: \r\n");
-    tempInput -> showMe();
+    printf(tempInput -> toString().data());
 
     printf("The weights are: \r\n");
-    tempLayer -> weightMatrix -> showMe();
+    printf(tempLayer -> weightMatrix -> toString().data());
 
     Matrix* tempOutput = tempLayer -> forward(tempInput);
     printf("The output is: \r\n");
-    tempOutput -> showMe();
+    printf(tempOutput -> toString().data());
 }//Of selfTest

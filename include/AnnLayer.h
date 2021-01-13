@@ -1,7 +1,17 @@
+/*
+ * The C++ Artificial Neural network project.
+ * This class manages one layer of ANN.
+ * Code available at: github.com/fansmale/cann.
+ * Author: Fan Min
+ *   Lab of Machine Learning, School of Computer Science, Southwest Petroleum University, Chengdu, China
+ *   www.fansmale.com
+ *   minfanphd@163.com, minfan@swpu.edu.cn
+ */
+
 #ifndef ANNLAYER_H
 #define ANNLAYER_H
 
-#include <matrix.h>
+#include <Matrix.h>
 
 class AnnLayer
 {
@@ -14,6 +24,12 @@ class AnnLayer
 
         //Destructor
         virtual ~AnnLayer();
+
+        //Convert to string for display
+        string toString();
+
+        //Set the activation function
+        void setActivation(char paraActivation);
 
         //Forward calculation
         Matrix* forward(Matrix* paraMatrix);
