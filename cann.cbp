@@ -36,11 +36,14 @@
 		</Compiler>
 		<Unit filename="include/AnnLayer.h" />
 		<Unit filename="include/FullAnn.h" />
-		<Unit filename="include/Matrix.h" />
+		<Unit filename="include/IntArray.h" />
+		<Unit filename="include/MfMath.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="main.cpp" />
 		<Unit filename="src/AnnLayer.cpp" />
 		<Unit filename="src/FullAnn.cpp" />
-		<Unit filename="src/Matrix.cpp" />
+		<Unit filename="src/IntArray.cpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

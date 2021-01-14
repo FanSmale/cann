@@ -11,7 +11,12 @@
 #ifndef ANNLAYER_H
 #define ANNLAYER_H
 
-#include <Matrix.h>
+#include <E:\c\eigen\Eigen\Dense>
+//#include <MfMatrix.h>
+#include <string>
+#include "MfMath.h"
+
+using namespace std;
 
 class AnnLayer
 {
@@ -31,8 +36,11 @@ class AnnLayer
         //Set the activation function
         void setActivation(char paraActivation);
 
+        //Activiate
+        double activate(double paraValue, char paraFunction);
+
         //Forward calculation
-        Matrix* forward(Matrix* paraMatrix);
+        DoubleMatrix forward(DoubleMatrix paraData);
 
         //Code unit test
         void selfTest();
@@ -48,10 +56,10 @@ class AnnLayer
         char activation;
 
         //The weights for edges
-        Matrix* weightMatrix;
+        DoubleMatrix weightMatrix;
 
         //The offset
-        Matrix* offsetMatrix;
+        DoubleMatrix offsetMatrix;
 
     private:
 };

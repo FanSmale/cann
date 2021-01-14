@@ -8,10 +8,12 @@
  *   minfanphd@163.com, minfan@swpu.edu.cn
  */
 
+#include <Malloc.h>
+#include <Math.h>
+#include <iostream>
+#include <stdio.h>
 #include "AnnLayer.h"
-#include "Malloc.h"
-#include "Math.h"
-#include "stdio.h"
+#include "MfMath.h"
 
 //The default constructor
 AnnLayer::AnnLayer()
@@ -23,11 +25,17 @@ AnnLayer::AnnLayer()
 //Constructor for input/output size
 AnnLayer::AnnLayer(int paraInputSize, int paraOutputSize, char paraActivation)
 {
+    printf("AnnLayer constructor\r\n");
     inputSize = paraInputSize;
     outputSize = paraOutputSize;
 
-    weightMatrix = new Matrix(paraInputSize, paraOutputSize);
-    offsetMatrix = new Matrix(1, paraOutputSize);
+    printf("Trying to resize the weight matrix with %d and %d.\r\n", paraInputSize, paraOutputSize);
+    weightMatrix.resize(paraInputSize, paraOutputSize);
+    //weightMatrix.setRandom();
+    weightMatrix.setOnes();
+    printf("Matrix resized \r\n");
+    offsetMatrix.resize(1, paraOutputSize);
+    offsetMatrix.setOnes();
 
     activation = paraActivation;
 }//Of the second constructor
@@ -35,20 +43,20 @@ AnnLayer::AnnLayer(int paraInputSize, int paraOutputSize, char paraActivation)
 //Destructor
 AnnLayer::~AnnLayer()
 {
-    free(weightMatrix);
+    //free(weightMatrix);
 }//Of the destructor
 
 //Convert to string for display
 string AnnLayer::toString()
 {
     string resultString = "I am an ANN layer with size " + to_string(inputSize)
-        + "*" + to_string(outputSize) + "\r\n";
-    resultString += "weight matrix: \r\n";
-    resultString += weightMatrix -> toString();
+                          + "*" + to_string(outputSize) + "\r\n";
+    //resultString += "weight matrix: \r\n";
+    //resultString += weightMatrix -> toString();
 
-    resultString += "offset matrix: \r\n";
-    resultString += offsetMatrix -> toString();
-    resultString += "weights ends. \r\n";
+    //resultString += "offset matrix: \r\n";
+    //resultString += offsetMatrix -> toString();
+    //resultString += "weights ends. \r\n";
 
     return resultString;
 }//Of toString
@@ -59,21 +67,54 @@ void AnnLayer::setActivation(char paraActivation)
     activation = paraActivation;
 }//Of setActivation
 
+//Activate for the given value, independent of this object
+double AnnLayer::activate(double paraValue, char paraFunction)
+{
+    switch (paraFunction)
+    {
+    case 's':
+        return 1 / (1 + exp(-paraValue));
+    case 'r':
+        if (paraValue > 0)
+        {
+            return paraValue;
+        }
+        else
+        {
+            return 0;
+        }//Of if
+    default:
+        return paraValue;
+    }//Of switch
+}//Of activate
+
 //Activate
-Matrix* AnnLayer::forward(Matrix* paraData)
+DoubleMatrix AnnLayer::forward(DoubleMatrix paraData)
 {
     //printf("Forwarding, the data is: \r\n");
     //printf(paraData -> toString().data());
 
-    printf("The weights are: \r\n");
-    printf(weightMatrix -> toString().data());
+    //printf("The weights are: \r\n");
+    //printf(weightMatrix -> toString().data());
 
-    Matrix* resultData = paraData -> dot(weightMatrix);
-    resultData -> addToMe(offsetMatrix);
-    resultData -> activate(activation);
+    printf("paraData: \r\n");
+    cout << paraData << endl;
+    printf("weights: \r\n");
+    cout << weightMatrix << endl;
+    DoubleMatrix resultData = paraData * weightMatrix;
+    printf("After weighted sum: \r\n");
+    cout << resultData << endl;
+    resultData += offsetMatrix;
+    printf("After adding offset: \r\n");
+    cout << resultData << endl;
+    //resultData -> activate(activation);
+    printf("before activiate:\r\n");
+    //cout << resultData(1, 0) << endl;
+    cout << resultData.data() << endl;
 
-    printf("The resultData are: \r\n");
-    printf(resultData -> toString().data());
+    resultData(1, 0) = activate(resultData(1, 0), activation);
+    printf("After activiate: \r\n");
+
     return resultData;
 }//Of forward
 
@@ -81,14 +122,15 @@ Matrix* AnnLayer::forward(Matrix* paraData)
 void AnnLayer::selfTest()
 {
     AnnLayer* tempLayer = new AnnLayer(2, 3, 's');
-    Matrix* tempInput = new Matrix(1, 2);
+    Eigen::Matrix<double, 1, 2> tempInput;
+    tempInput << 1.0, 4.0;
     printf("The input is: \r\n");
-    printf(tempInput -> toString().data());
+    //printf(tempInput -> toString().data());
 
     printf("The weights are: \r\n");
-    printf(tempLayer -> weightMatrix -> toString().data());
+    //printf(tempLayer -> weightMatrix -> toString().data());
 
-    Matrix* tempOutput = tempLayer -> forward(tempInput);
+    //Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> tempOutput = tempLayer -> forward(tempInput);
     printf("The output is: \r\n");
-    printf(tempOutput -> toString().data());
+    //printf(tempOutput -> toString().data());
 }//Of selfTest

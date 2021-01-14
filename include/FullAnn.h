@@ -11,9 +11,9 @@
 #ifndef FULLANN_H
 #define FULLANN_H
 
-#include <Matrix.h>
-#include <AnnLayer.h>
-#include <IntArray.h>
+#include "AnnLayer.h"
+#include "IntArray.h"
+#include "MfMath.h"
 
 class FullAnn
 {
@@ -34,7 +34,7 @@ class FullAnn
         void setActivation(int paraLayer, char paraActivation);
 
         //Forward layer by layer
-        Matrix* forward(Matrix* paraInput);
+        DoubleMatrix forward(DoubleMatrix paraInput);
 
         //Back propagation
         void backpropagation();
