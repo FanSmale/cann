@@ -10,10 +10,9 @@
 
 #include <iostream>
 #include <stdio.h>
-#include <D:\c\eigen\Eigen\Dense>
 #include "AnnLayer.h"
-#include "IntArray.h"
 #include "FullAnn.h"
+#include "MfMath.h"
 
 using namespace std;
 
@@ -24,12 +23,13 @@ int main()
     //Matrix tempMatrix(2, 3);
     //tempMatrix.selfTest();
 
-    //AnnLayer tempLayer(1, 1, 'r');
+    //AnnLayer tempLayer(1, 1, 'r', 0.01, 0.1);
     //tempLayer.selfTest();
 
     //IntArray tempArray(3);
     //tempArray.selfTest();
     //Matrix<double, 3, 3> A;
+
     FullAnn tempFullAnn;
     tempFullAnn.selfTest();
 

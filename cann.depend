@@ -1,11 +1,10 @@
 # depslib dependency file v1.0
-1610597479 source:e:\c\cann\main.cpp
+1610693436 source:e:\c\cann\main.cpp
 	<iostream>
 	<stdio.h>
-	<E:\c\eigen\Eigen\Dense>
 	"AnnLayer.h"
-	"IntArray.h"
 	"FullAnn.h"
+	"MfMath.h"
 
 1610540466 e:\c\cann\include\matrix.h
 	<string>
@@ -20,26 +19,25 @@
 	<MfMath.h>
 	<string>
 
-1610607342 source:e:\c\cann\src\annlayer.cpp
+1610699707 source:e:\c\cann\src\annlayer.cpp
 	<Malloc.h>
 	<Math.h>
+	<iostream>
 	<stdio.h>
 	"AnnLayer.h"
 	"MfMath.h"
 
-1610613057 e:\c\cann\include\annlayer.h
-	<E:\c\eigen\Eigen\Dense>
+1610699643 e:\c\cann\include\annlayer.h
 	<string>
 	"MfMath.h"
 
-1610606321 source:e:\c\cann\src\fullann.cpp
+1610698642 source:e:\c\cann\src\fullann.cpp
 	<iostream>
 	"MfMath.h"
 	"FullAnn.h"
 
-1610596993 e:\c\cann\include\fullann.h
+1610699739 e:\c\cann\include\fullann.h
 	"AnnLayer.h"
-	"IntArray.h"
 	"MfMath.h"
 
 1610541390 source:e:\c\cann\src\intarray.cpp
@@ -51,7 +49,10 @@
 1610541320 e:\c\cann\include\intarray.h
 	<string>
 
-1610596756 e:\c\cann\include\mfmath.h
+1610694149 e:\c\cann\include\mfmath.h
+	<stdlib.h>
+	<E:\c\eigen\Eigen\Dense>
+	<E:\c\eigen\Eigen\src\core\Array.h>
 
 1610592611 source:e:\c\cann\src\mfmatrix.cpp
 	"Malloc.h"

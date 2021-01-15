@@ -12,7 +12,6 @@
 #define FULLANN_H
 
 #include "AnnLayer.h"
-#include "IntArray.h"
 #include "MfMath.h"
 
 class FullAnn
@@ -22,7 +21,7 @@ class FullAnn
         FullAnn();
 
         //The Ann with given sizes and activation function
-        FullAnn(IntArray* paraSizes, char paraActivation);
+        FullAnn(IntArray paraSizes, char paraActivation, double paraRate, double paraMobp);
 
         //Destructor
         virtual ~FullAnn();
@@ -37,7 +36,16 @@ class FullAnn
         DoubleMatrix forward(DoubleMatrix paraInput);
 
         //Back propagation
-        void backpropagation();
+        void backPropagation(DoubleMatrix paraTarget);
+
+        //Train
+        void train(DoubleMatrix paraX, IntArray paraY, int paraNumClasses);
+
+        //Test
+        double test(DoubleMatrix paraX, IntArray paraY);
+
+        //Show weight of the network, not including the offset
+        void showWeight();
 
         //Code unit test
         void selfTest();
@@ -47,8 +55,23 @@ class FullAnn
         //Number of layers
         int numLayers;
 
+        //Learning rate
+        double rate;
+
+        //Mobp
+        double mobp;
+
+        //Activation
+        char activation;
+
+        //The sizes of layers
+        IntArray layerSizes;
+
         //All layers
         AnnLayer** layers;
+
+        //The output for current instance
+        DoubleMatrix currentOutput;
 
     private:
 };
