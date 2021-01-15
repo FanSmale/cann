@@ -119,7 +119,7 @@ void FullAnn::train(DoubleMatrix paraX, IntArray paraY, int paraNumClasses)
     tempData.resize(1, tempNumConditions);
     DoubleMatrix tempDecision;
     tempDecision.resize(1, paraNumClasses);
-    printf("The data has %d instances and %d conditions.\r\n", tempNumInstances, tempNumConditions);
+    //printf("The data has %d instances and %d conditions.\r\n", tempNumInstances, tempNumConditions);
     for(int i = 0; i < tempNumInstances; i ++)
     {
         //Copy this instance
@@ -193,13 +193,13 @@ double FullAnn::test(DoubleMatrix paraX, IntArray paraY)
 //Show weight
 void FullAnn::showWeight()
 {
-    printf("The weights are:\r\n");
+    //printf("The weights are:\r\n");
     printf("numLayers = %d \r\n", numLayers);
     for(int i = 0; i < numLayers; i ++)
     {
         layers[i] -> showWeight();
     }//Of for i
-    printf("showWeight end:\r\n");
+    //printf("showWeight end:\r\n");
 }//Of showWeight
 
 //Code self test

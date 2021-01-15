@@ -193,7 +193,7 @@ void AnnLayer::selfTest()
 
     //printf(tempInput -> toString().data());
 
-    printf("The weights are: \r\n");
+    //printf("The weights are: \r\n");
     cout << tempLayer -> weightMatrix << endl;
 
     DoubleMatrix tempOutput = tempLayer -> forward(tempInput);
