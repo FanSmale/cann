@@ -11,8 +11,6 @@
 #ifndef ANNLAYER_H
 #define ANNLAYER_H
 
-
-
 //#include <MfMatrix.h>
 #include <string>
 #include "MfMath.h"
@@ -26,7 +24,8 @@ class AnnLayer
         AnnLayer();
 
         //Constructor for input/output size
-        AnnLayer(int paraInputSize, int paraOutputSize, char paraActivation);
+        AnnLayer(int paraInputSize, int paraOutputSize, char paraActivation,
+                 double paraRate, double paraMobp);
 
         //Destructor
         virtual ~AnnLayer();
@@ -43,24 +42,52 @@ class AnnLayer
         //Forward calculation
         DoubleMatrix forward(DoubleMatrix paraData);
 
+        //Back propagation calculation
+        DoubleMatrix backPropagation(DoubleMatrix paraLabel);
+
         //Code unit test
         void selfTest();
 
-    protected:
-        //The size of the input
-        int inputSize;
+        //Show weights
+        void showWeight();
 
         //The size of the output
         int outputSize;
 
+    protected:
+
+        //The size of the input
+        int inputSize;
+
         //The activation function
         char activation;
+
+        //Learning rate
+        double rate;
+
+        //Mobp
+        double mobp;
+
+        //Weighted error sum
+        double errorSum;
+
+        //The input data, only one row
+        DoubleMatrix inputData;
 
         //The weights for edges
         DoubleMatrix weightMatrix;
 
+        //The weight change for edges
+        DoubleMatrix weightDeltaMatrix;
+
         //The offset
         DoubleMatrix offsetMatrix;
+
+        //The offset delta
+        DoubleMatrix offsetDeltaMatrix;
+
+        //The layer node error
+        DoubleMatrix errorMatrix;
 
     private:
 };

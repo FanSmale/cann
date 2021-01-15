@@ -25,19 +25,35 @@ AnnLayer::AnnLayer()
 }//Of the default constructor
 
 //Constructor for input/output size
-AnnLayer::AnnLayer(int paraInputSize, int paraOutputSize, char paraActivation)
+AnnLayer::AnnLayer(int paraInputSize, int paraOutputSize, char paraActivation,
+                   double paraRate, double paraMobp)
 {
     printf("AnnLayer constructor\r\n");
     inputSize = paraInputSize;
     outputSize = paraOutputSize;
+    rate = paraRate;
+    mobp = paraMobp;
 
-    printf("Trying to resize the weight matrix with %d and %d.\r\n", paraInputSize, paraOutputSize);
     weightMatrix.resize(paraInputSize, paraOutputSize);
-    //weightMatrix.setRandom();
-    weightMatrix.setOnes();
+    weightDeltaMatrix.resize(paraInputSize, paraOutputSize);
+    errorMatrix.resize(1, paraInputSize);
+
+    for(int i = 0; i < paraInputSize; i ++)
+    {
+        for (int j = 0; j < paraOutputSize; j ++)
+        {
+            weightMatrix(i, j) = random();
+        }//Of for j
+    }//Of for i
+
+    //weightMatrix.setOnes();
     printf("Matrix resized \r\n");
     offsetMatrix.resize(1, paraOutputSize);
-    offsetMatrix.setOnes();
+    offsetDeltaMatrix.resize(1, paraOutputSize);
+    for (int i = 0; i < paraOutputSize; i ++)
+    {
+        offsetMatrix(0, i) = random();
+    }//Of for i
 
     activation = paraActivation;
 }//Of the second constructor
@@ -53,8 +69,8 @@ string AnnLayer::toString()
 {
     string resultString = "I am an ANN layer with size " + to_string(inputSize)
                           + "*" + to_string(outputSize) + "\r\n";
-    //resultString += "weight matrix: \r\n";
-    //resultString += weightMatrix -> toString();
+    resultString += "weight matrix: \r\n";
+    //resultString += to_string(weightMatrix);
 
     //resultString += "offset matrix: \r\n";
     //resultString += offsetMatrix -> toString();
@@ -98,52 +114,95 @@ DoubleMatrix AnnLayer::forward(DoubleMatrix paraData)
 
     //printf("The weights are: \r\n");
     //printf(weightMatrix -> toString().data());
+    inputData = paraData;
 
-    printf("paraData: \r\n");
-    cout << paraData << endl;
-    printf("weights: \r\n");
-    cout << weightMatrix << endl;
+    //printf("paraData: \r\n");
+    //cout << paraData << endl;
+    //printf("weights: \r\n");
+    //cout << weightMatrix << endl;
     DoubleMatrix resultData = paraData * weightMatrix;
-    printf("After weighted sum: \r\n");
-    cout << resultData << endl;
+    //printf("After weighted sum: \r\n");
+    //cout << resultData << endl;
     resultData += offsetMatrix;
-    printf("After adding offset: \r\n");
-    cout << resultData << endl;
+    //printf("After adding offset: \r\n");
+    //cout << resultData << endl;
     //resultData -> activate(activation);
-    printf("before activate:\r\n");
+    //printf("before activate:\r\n");
     //cout << resultData(1, 0) << endl;
-    cout << resultData << endl;
+    //cout << resultData << endl;
 
-    for(int i = 0; i < resultData.cols(); i ++) {
+    for(int i = 0; i < resultData.cols(); i ++)
+    {
         resultData(0, i) = activate(resultData(0, i), activation);
     }//Of for i
 
-    //DoubleArray tempArray = resultData.array();
-    //printf("tempArray:\r\n");
-    //cout << tempArray << endl;
-
-    //tempArray(0, 1) = 1.9;
-    //resultData(0, 1) = 1.8;
-    //activate(tempArray(1, 0), activation);
-    printf("After activate: \r\n");
-    cout << resultData << endl;
+    //printf("After activate: \r\n");
+    //cout << resultData << endl;
 
     return resultData;
 }//Of forward
 
+//Back propagation
+DoubleMatrix AnnLayer::backPropagation(DoubleMatrix paraErrors)
+{
+    for(int i = 0; i < inputSize; i ++)
+    {
+        double errorSum = 0;
+
+        //Weights adjusting
+        for(int j = 0; j < outputSize; j ++)
+        {
+            errorSum += paraErrors(0, j) * weightMatrix(i, j);
+            weightDeltaMatrix(i, j) = mobp * weightDeltaMatrix(i, j)
+                                      + rate * paraErrors(0, j) * inputData(0, i);
+            weightMatrix(i, j) += weightDeltaMatrix(i, j);
+            //printf("%d, %d weightMatrix(i, j) += weightDeltaMatrix(i, j) %lf; = %lf\r\n",
+            //      i, j, weightMatrix(i, j), weightDeltaMatrix(i, j));
+
+            if (i == inputSize - 1)
+            {
+                // Offset adjusting
+                offsetDeltaMatrix(0, j) = mobp * offsetDeltaMatrix(0, j)
+                                                  + rate * paraErrors(0, j);
+                offsetMatrix(0, j) += offsetDeltaMatrix(0, j);
+            }//Of if
+        }//Of for j
+
+
+        errorMatrix(0, i) = inputData(0, i) * (1 - inputData(0, i)) * errorSum;
+    }//Of for i
+
+    return errorMatrix;
+}//Of backPropagation
+
+//Show weight
+void AnnLayer::showWeight()
+{
+    cout << weightMatrix << endl;
+}//Of showWeight
+
 //Code self test
 void AnnLayer::selfTest()
 {
-    AnnLayer* tempLayer = new AnnLayer(2, 3, 's');
-    Eigen::Matrix<double, 1, 2> tempInput;
+    AnnLayer* tempLayer = new AnnLayer(2, 3, 's', 0.01, 0.1);
+    DoubleMatrix tempInput;
+    tempInput.resize(1, 2);
     tempInput << 1.0, 4.0;
     printf("The input is: \r\n");
+    cout << tempInput << endl;
+
     //printf(tempInput -> toString().data());
 
     printf("The weights are: \r\n");
-    //printf(tempLayer -> weightMatrix -> toString().data());
+    cout << tempLayer -> weightMatrix << endl;
 
-    //Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic> tempOutput = tempLayer -> forward(tempInput);
+    DoubleMatrix tempOutput = tempLayer -> forward(tempInput);
     printf("The output is: \r\n");
-    //printf(tempOutput -> toString().data());
+    cout << tempOutput << endl;
+
+    printf("Back propogation \r\n");
+    tempLayer -> backPropagation(tempOutput);
+
+    printf("Show me: \r\n");
+    cout << toString() << endl;
 }//Of selfTest
