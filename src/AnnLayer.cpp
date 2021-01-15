@@ -15,6 +15,8 @@
 #include "AnnLayer.h"
 #include "MfMath.h"
 
+using namespace Eigen;
+
 //The default constructor
 AnnLayer::AnnLayer()
 {
@@ -108,12 +110,23 @@ DoubleMatrix AnnLayer::forward(DoubleMatrix paraData)
     printf("After adding offset: \r\n");
     cout << resultData << endl;
     //resultData -> activate(activation);
-    printf("before activiate:\r\n");
+    printf("before activate:\r\n");
     //cout << resultData(1, 0) << endl;
-    cout << resultData.data() << endl;
+    cout << resultData << endl;
 
-    resultData(1, 0) = activate(resultData(1, 0), activation);
-    printf("After activiate: \r\n");
+    for(int i = 0; i < resultData.cols(); i ++) {
+        resultData(0, i) = activate(resultData(0, i), activation);
+    }//Of for i
+
+    //DoubleArray tempArray = resultData.array();
+    //printf("tempArray:\r\n");
+    //cout << tempArray << endl;
+
+    //tempArray(0, 1) = 1.9;
+    //resultData(0, 1) = 1.8;
+    //activate(tempArray(1, 0), activation);
+    printf("After activate: \r\n");
+    cout << resultData << endl;
 
     return resultData;
 }//Of forward

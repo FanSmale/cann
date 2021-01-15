@@ -11,7 +11,8 @@
 #ifndef ANNLAYER_H
 #define ANNLAYER_H
 
-#include <E:\c\eigen\Eigen\Dense>
+
+
 //#include <MfMatrix.h>
 #include <string>
 #include "MfMath.h"
