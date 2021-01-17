@@ -12,6 +12,7 @@
 #include <iostream>
 #include "MfMath.h"
 #include "FullAnn.h"
+#include "DataReader.h"
 
 //The default constructor
 FullAnn::FullAnn()
@@ -169,7 +170,7 @@ double FullAnn::test(DoubleMatrix paraX, IntArray paraY)
             tempData(j) = paraX(i, j);
         }//Of for j
         printf("The %dth testing data is: ", i);
-        cout << tempData << endl;
+        cout << tempData << ", " << paraY(0, i) << endl;
 
         tempPrediction = forward(tempData);
         for(int j = 0; j < tempPrediction.cols(); j ++)
@@ -236,14 +237,16 @@ void FullAnn::selfTest()
 
     //Build the network structure
     IntArray tempIntArray;
-    tempIntArray.resize(1, 3);
-    tempIntArray(0) = 2;
-    tempIntArray(1) = 4;
-    tempIntArray(2) = 2;
+    tempIntArray.resize(1, 4);
+    tempIntArray(0) = 4;
+    tempIntArray(1) = 5;
+    tempIntArray(2) = 5;
+    tempIntArray(3) = 3;
     FullAnn* tempFullAnn = new FullAnn(tempIntArray, 's', 0.1, 0.1);
 
     printf("Train:\r\n");
 
+    /*
     DoubleMatrix tempX;
     tempX.resize(3, 2);
     tempX(0, 0) = 1.0;
@@ -258,12 +261,28 @@ void FullAnn::selfTest()
     tempY(0, 0) = 0;
     tempY(0, 1) = 0;
     tempY(0, 2) = 1;
+    */
 
-    //printf("Data generated:\r\n");
+    string tempString = "d:\\c\\cann\\data\\iris.txt";
+    char *tempFilename = (char *)tempString.c_str();
+    //char *s_input = (char *)tempString.c_str();
+
+    DataReader tempReader(tempFilename);
+
+    tempReader.randomize();
+    tempReader.splitInTwo(0.6);
+
+    DoubleMatrix tempX = tempReader.getTrainingX()[0];
+    IntArray tempY = tempReader.getTrainingY()[0];
+    DoubleMatrix tempTestingX = tempReader.getTrainingX()[0];
+    IntArray tempTestingY = tempReader.getTrainingY()[0];
+
+    printf("Training/testing data generated:\r\n");
+
     for(int i = 0; i < 1000; i ++)
     {
-        tempFullAnn -> train(tempX, tempY, 2);
-        if (i % 10 == 0)
+        tempFullAnn -> train(tempX, tempY, 3);
+        if (i % 100 == 0)
         {
             tempFullAnn -> showWeight();
         }//Of if
@@ -271,7 +290,7 @@ void FullAnn::selfTest()
 
     printf("After training:\r\n\r\n\r\n\r\n");
 
-    double tempPrecision = tempFullAnn -> test(tempX, tempY);
+    double tempPrecision = tempFullAnn -> test(tempTestingX, tempTestingY);
     printf("After testing, the precision is %lf:\r\n", tempPrecision);
 
     printf("Finish. \r\n");

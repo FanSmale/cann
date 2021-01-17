@@ -1,10 +1,11 @@
 # depslib dependency file v1.0
-1610693436 source:e:\c\cann\main.cpp
+1610766438 source:e:\c\cann\main.cpp
 	<iostream>
 	<stdio.h>
 	"AnnLayer.h"
 	"FullAnn.h"
 	"MfMath.h"
+	"DataReader.h"
 
 1610540466 e:\c\cann\include\matrix.h
 	<string>
@@ -19,7 +20,7 @@
 	<MfMath.h>
 	<string>
 
-1610699707 source:e:\c\cann\src\annlayer.cpp
+1610762425 source:e:\c\cann\src\annlayer.cpp
 	<Malloc.h>
 	<Math.h>
 	<iostream>
@@ -31,7 +32,7 @@
 	<string>
 	"MfMath.h"
 
-1610698642 source:e:\c\cann\src\fullann.cpp
+1610762425 source:e:\c\cann\src\fullann.cpp
 	<iostream>
 	"MfMath.h"
 	"FullAnn.h"
@@ -49,7 +50,7 @@
 1610541320 e:\c\cann\include\intarray.h
 	<string>
 
-1610694149 e:\c\cann\include\mfmath.h
+1610765449 e:\c\cann\include\mfmath.h
 	<stdlib.h>
 	<E:\c\eigen\Eigen\Dense>
 	<E:\c\eigen\Eigen\src\core\Array.h>
@@ -923,18 +924,19 @@
 
 1610589568 e:\c\eigen\eigen\src\eigenvalues\selfadjointeigensolver_lapacke.h
 
-1610720978 source:d:\c\cann\main.cpp
+1610891537 source:d:\c\cann\main.cpp
 	<iostream>
 	<stdio.h>
 	"AnnLayer.h"
 	"FullAnn.h"
 	"MfMath.h"
+	"DataReader.h"
 
 1610720978 d:\c\cann\include\annlayer.h
 	<string>
 	"MfMath.h"
 
-1610724287 d:\c\cann\include\mfmath.h
+1610881364 d:\c\cann\include\mfmath.h
 	<stdlib.h>
 	<D:\c\eigen\Eigen\Dense>
 	<D:\c\eigen\Eigen\src\core\Array.h>
@@ -946,7 +948,7 @@
 	"AnnLayer.h"
 	"MfMath.h"
 
-1610720978 source:d:\c\cann\src\annlayer.cpp
+1610724641 source:d:\c\cann\src\annlayer.cpp
 	<Malloc.h>
 	<Math.h>
 	<iostream>
@@ -954,10 +956,11 @@
 	"AnnLayer.h"
 	"MfMath.h"
 
-1610720978 source:d:\c\cann\src\fullann.cpp
+1610891761 source:d:\c\cann\src\fullann.cpp
 	<iostream>
 	"MfMath.h"
 	"FullAnn.h"
+	"DataReader.h"
 
 1610669579 source:d:\c\cann\src\intarray.cpp
 	"IntArray.h"
@@ -1820,4 +1823,25 @@
 1610589568 d:\c\eigen\eigen\src\eigenvalues\complexschur_lapacke.h
 
 1610589568 d:\c\eigen\eigen\src\eigenvalues\selfadjointeigensolver_lapacke.h
+
+1610765532 e:\c\cann\include\datareader.h
+	<random>
+	"MfMath.h"
+
+1610766637 source:e:\c\cann\src\datareader.cpp
+	<iostream>
+	"DataReader.h"
+
+1610885969 d:\c\cann\include\datareader.h
+	<random>
+	<string>
+	"MfMath.h"
+
+1610891990 source:d:\c\cann\src\datareader.cpp
+	<fstream>
+	<iostream>
+	<string>
+	<sstream>
+	"DataReader.h"
+	"MfMath.h"
 

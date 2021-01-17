@@ -8,6 +8,7 @@
 //Constants
 #define OUT_OF_RANGE_EXCEPTION -1
 #define LENGTH_NOT_MATCH_EXCEPTION -3
+#define FILE_NOT_EXISTS_EXCEPTION -5
 
 //Classes
 //#define DoubleMatrix Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic>

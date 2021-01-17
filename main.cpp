@@ -13,6 +13,7 @@
 #include "AnnLayer.h"
 #include "FullAnn.h"
 #include "MfMath.h"
+#include "DataReader.h"
 
 using namespace std;
 
@@ -33,7 +34,12 @@ int main()
     FullAnn tempFullAnn;
     tempFullAnn.selfTest();
 
+    //DataReader tempReader;
+    //tempReader.selfTest();
+
+    printf("end.\r\n");
     getchar();
+
 
     return 0;
 }//Of main
