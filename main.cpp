@@ -13,6 +13,7 @@
 #include "AnnLayer.h"
 #include "FullAnn.h"
 #include "MfMath.h"
+#include "DataReader.h"
 
 using namespace std;
 
@@ -30,8 +31,11 @@ int main()
     //tempArray.selfTest();
     //Matrix<double, 3, 3> A;
 
-    FullAnn tempFullAnn;
-    tempFullAnn.selfTest();
+    //FullAnn tempFullAnn;
+    //tempFullAnn.selfTest();
+
+    DataReader tempReader;
+    tempReader.selfTest();
 
     getchar();
 

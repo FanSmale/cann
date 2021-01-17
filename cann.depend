@@ -1,10 +1,11 @@
 # depslib dependency file v1.0
-1610693436 source:e:\c\cann\main.cpp
+1610766438 source:e:\c\cann\main.cpp
 	<iostream>
 	<stdio.h>
 	"AnnLayer.h"
 	"FullAnn.h"
 	"MfMath.h"
+	"DataReader.h"
 
 1610540466 e:\c\cann\include\matrix.h
 	<string>
@@ -19,7 +20,7 @@
 	<MfMath.h>
 	<string>
 
-1610699707 source:e:\c\cann\src\annlayer.cpp
+1610762425 source:e:\c\cann\src\annlayer.cpp
 	<Malloc.h>
 	<Math.h>
 	<iostream>
@@ -31,7 +32,7 @@
 	<string>
 	"MfMath.h"
 
-1610698642 source:e:\c\cann\src\fullann.cpp
+1610762425 source:e:\c\cann\src\fullann.cpp
 	<iostream>
 	"MfMath.h"
 	"FullAnn.h"
@@ -49,7 +50,7 @@
 1610541320 e:\c\cann\include\intarray.h
 	<string>
 
-1610694149 e:\c\cann\include\mfmath.h
+1610765449 e:\c\cann\include\mfmath.h
 	<stdlib.h>
 	<E:\c\eigen\Eigen\Dense>
 	<E:\c\eigen\Eigen\src\core\Array.h>
@@ -1820,4 +1821,12 @@
 1610589568 d:\c\eigen\eigen\src\eigenvalues\complexschur_lapacke.h
 
 1610589568 d:\c\eigen\eigen\src\eigenvalues\selfadjointeigensolver_lapacke.h
+
+1610765532 e:\c\cann\include\datareader.h
+	<random>
+	"MfMath.h"
+
+1610766637 source:e:\c\cann\src\datareader.cpp
+	<iostream>
+	"DataReader.h"
 
