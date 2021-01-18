@@ -1,15 +1,11 @@
-<<<<<<< HEAD
 #include<fstream>
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <iostream>
 
 #include "DataReader.h"
 #include "MfMath.h"
-=======
-#include <iostream>
-#include "DataReader.h"
->>>>>>> 56e6ec17f478bfda9b0d79871de29d1189a18001
 
 using namespace std;
 
@@ -22,7 +18,6 @@ DataReader::DataReader()
 //Read the data from the given file
 DataReader::DataReader(char* paraFilename)
 {
-<<<<<<< HEAD
     //Initialize
     numInstances = 0;
     numConditions = 0;
@@ -106,32 +101,21 @@ DataReader::DataReader(char* paraFilename)
     */
 
     tempInputStream.close();
-=======
-    //ctor
-    int tempNumInstances;
-    int tempNumConditions;
->>>>>>> 56e6ec17f478bfda9b0d79871de29d1189a18001
 }//Of the second constructor
 
 DataReader::~DataReader()
 {
-<<<<<<< HEAD
     free(wholeX);
     free(wholeY);
     free(trainingX);
     free(trainingY);
     free(testingX);
     free(testingY);
-=======
-    //free();
-
->>>>>>> 56e6ec17f478bfda9b0d79871de29d1189a18001
 }//Of the destructor
 
 //Split the data into the training and testing parts according to the given fraction
 void DataReader::splitInTwo(double paraTrainingFraction)
 {
-<<<<<<< HEAD
     int tempTrainingSize = (int)(numInstances * paraTrainingFraction);
     int tempTestingSize = numInstances - tempTrainingSize;
 
@@ -158,49 +142,30 @@ void DataReader::splitInTwo(double paraTrainingFraction)
         }//Of for j
         testingY[0](0, i - tempTrainingSize) = wholeY[0](0, randomArray[0](0, i));
     }//Of for i
-=======
-
->>>>>>> 56e6ec17f478bfda9b0d79871de29d1189a18001
 }//Of splitInTwo
 
 //The getter
 DoubleMatrix* DataReader::getTrainingX()
 {
-<<<<<<< HEAD
     return trainingX;
-=======
-    return &trainingX;
->>>>>>> 56e6ec17f478bfda9b0d79871de29d1189a18001
 }//Of getTrainingX
 
 //The getter
 IntArray* DataReader::getTrainingY()
 {
-<<<<<<< HEAD
     return trainingY;
-=======
-    return &trainingY;
->>>>>>> 56e6ec17f478bfda9b0d79871de29d1189a18001
 }//Of getTrainingY
 
 //The getter
 DoubleMatrix* DataReader::getTestingX()
 {
-<<<<<<< HEAD
     return testingX;
-=======
-    return &testingX;
->>>>>>> 56e6ec17f478bfda9b0d79871de29d1189a18001
 }//Of getTestingX
 
 //The getter
 IntArray* DataReader::getTestingY()
 {
-<<<<<<< HEAD
     return testingY;
-=======
-    return &testingY;
->>>>>>> 56e6ec17f478bfda9b0d79871de29d1189a18001
 }//Of getTestingY
 
 //Construct a random index array
@@ -226,8 +191,6 @@ IntArray* DataReader::getRandomIndexArray(int paraLength)
     return tempArrayPtr;
 }//Of getRandomIndexArray
 
-<<<<<<< HEAD
-
 //Construct a random index array
 void DataReader::randomize()
 {
@@ -251,13 +214,4 @@ void DataReader::selfTest()
     //printf("The training X is: \r\n");
 
     //cout << tempArrayPtr[0] << endl;
-=======
-//Code self test
-void DataReader::selfTest()
-{
-    DataReader tempReader;
-    IntArray* tempArrayPtr = tempReader.getRandomIndexArray(10);
-
-    cout << tempArrayPtr[0] << endl;
->>>>>>> 56e6ec17f478bfda9b0d79871de29d1189a18001
 }//Of selfTest

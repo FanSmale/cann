@@ -31,11 +31,11 @@ int main()
     //tempArray.selfTest();
     //Matrix<double, 3, 3> A;
 
-    //FullAnn tempFullAnn;
-    //tempFullAnn.selfTest();
+    FullAnn tempFullAnn;
+    tempFullAnn.selfTest();
 
-    DataReader tempReader;
-    tempReader.selfTest();
+    //DataReader tempReader;
+    //tempReader.selfTest();
 
     //DataReader tempReader;
     //tempReader.selfTest();

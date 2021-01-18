@@ -2,11 +2,8 @@
 #define DATAREADER_H
 
 #include <random>
-<<<<<<< HEAD
 #include <string>
 
-=======
->>>>>>> 56e6ec17f478bfda9b0d79871de29d1189a18001
 #include "MfMath.h"
 
 using std::default_random_engine;
@@ -41,18 +38,14 @@ class DataReader
         //Construct a random index array
         IntArray* getRandomIndexArray(int paraLength);
 
-<<<<<<< HEAD
         //The random array is stored in the object
         void randomize();
 
-=======
->>>>>>> 56e6ec17f478bfda9b0d79871de29d1189a18001
         //Code self test
         void selfTest();
 
     protected:
 
-<<<<<<< HEAD
         //The number of instances
         int numInstances;
 
@@ -61,8 +54,6 @@ class DataReader
 
         IntArray* randomArray;
 
-=======
->>>>>>> 56e6ec17f478bfda9b0d79871de29d1189a18001
         //The whole input
         DoubleMatrix* wholeX;
 

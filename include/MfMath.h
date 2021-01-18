@@ -2,8 +2,8 @@
 #define MFMATH_H_INCLUDED
 
 #include <stdlib.h>
-#include <E:\c\eigen\Eigen\Dense>
-#include <E:\c\eigen\Eigen\src\core\Array.h>
+#include <D:\c\eigen\Eigen\Dense>
+#include <D:\c\eigen\Eigen\src\core\Array.h>
 
 //Constants
 #define OUT_OF_RANGE_EXCEPTION -1
