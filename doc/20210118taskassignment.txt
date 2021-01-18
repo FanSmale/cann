@@ -1,0 +1,41 @@
+任务1：激活函数
+完成人：
+任务动机：神经网络有很多激活函数，需要对它们都提供支撑。
+当前进度：仅在AnnLayer.cpp里面实现了sigmoid函数。
+任务描述：写一个Activator.h与对应的Activator.cpp
+  数据包括：
+    char type; //可取's', 'r'等
+    其它参数，如leaky relu的斜率
+  方法包括：
+    构造方法
+    对参数的setter
+    activate方法: double activate(double paraValue); //参数需要在调用它之前调用
+    selfTest方法: 参见其它类的selfTest
+  集成测试：
+    在AnnLayer.cpp内修改相应的代码，使它们使用到Activator类，并使用数据运行。
+
+任务2：DataReader的优化
+完成人：
+任务动机：提供10CV之类的支持
+当前进度：当前仅提供了splitInTwo()方法
+任务描述：完善DataReader
+  数据包括：
+    int numFolds; //用于k折交叉检验
+  方法包括：
+    DoubleMatrix getXAt(int paraIndex); //返回第paraIndex个数据，注意不是根据原始的顺序，而是乱序后的。参见randomArray已有用法。
+    DoubleMatrix getFoldSize(int paraFold); //返回第paraFold折的对象个数。
+    DoubleMatrix getXAt(int paraFold, int paraIndex); //返回第paraFold折的第paraIndex个数据。也需要是乱序后的。
+  集成测试：
+    在FullAnn.cpp修改selfTest等代码，支持10折交叉。注意需要与任务3协同完成。
+
+任务3：FullAnn的优化
+完成人：
+任务动机：提供10CV之类的支持
+当前进度：当前仅提供了基于splitInTwo()方法的training/testing
+任务描述：完善FullAnn
+  方法包括：
+    补充setRate()，setMobp等基础方法，以支持动态的调整
+    void train(DoubleMatrix paraX, int paraY, int paraNumClasses); //只训练一个对象，所以Y是一个整数
+    bool test(DoubleMatrix paraX, int paraY); //只测试一个对象，所以Y是一个整数
+  集成测试：
+    在FullAnn.cpp修改selfTest等代码，支持10折交叉。注意需要与任务2协同完成。
