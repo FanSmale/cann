@@ -31,14 +31,17 @@ int main()
     //tempArray.selfTest();
     //Matrix<double, 3, 3> A;
 
-    FullAnn tempFullAnn;
-    tempFullAnn.selfTest();
-
     //DataReader tempReader;
     //tempReader.selfTest();
 
     //DataReader tempReader;
     //tempReader.selfTest();
+
+    Activator tempActivator;
+    tempActivator.selfTest();
+
+    //FullAnn tempFullAnn;
+    //tempFullAnn.selfTest();
 
     printf("end.\r\n");
     getchar();

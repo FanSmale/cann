@@ -924,7 +924,7 @@
 
 1610589568 e:\c\eigen\eigen\src\eigenvalues\selfadjointeigensolver_lapacke.h
 
-1610892408 source:d:\c\cann\main.cpp
+1610939583 source:d:\c\cann\main.cpp
 	<iostream>
 	<stdio.h>
 	"AnnLayer.h"
@@ -932,9 +932,10 @@
 	"MfMath.h"
 	"DataReader.h"
 
-1610720978 d:\c\cann\include\annlayer.h
+1611394671 d:\c\cann\include\annlayer.h
 	<string>
 	"MfMath.h"
+	"Activator.h"
 
 1610939460 d:\c\cann\include\mfmath.h
 	<stdlib.h>
@@ -944,19 +945,20 @@
 1610669579 d:\c\cann\include\intarray.h
 	<string>
 
-1610720978 d:\c\cann\include\fullann.h
+1611394798 d:\c\cann\include\fullann.h
 	"AnnLayer.h"
 	"MfMath.h"
 
-1610724641 source:d:\c\cann\src\annlayer.cpp
+1611394663 source:d:\c\cann\src\annlayer.cpp
 	<Malloc.h>
 	<Math.h>
 	<iostream>
 	<stdio.h>
 	"AnnLayer.h"
 	"MfMath.h"
+	"Activator.h"
 
-1610892200 source:d:\c\cann\src\fullann.cpp
+1611394818 source:d:\c\cann\src\fullann.cpp
 	<iostream>
 	"MfMath.h"
 	"FullAnn.h"
@@ -1845,4 +1847,11 @@
 	<iostream>
 	"DataReader.h"
 	"MfMath.h"
+
+1611394324 source:d:\c\cann\src\activator.cpp
+	<math.h>
+	<stdio.h>
+	"Activator.h"
+
+1611393943 d:\c\cann\include\activator.h
 

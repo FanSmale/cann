@@ -30,7 +30,7 @@ class FullAnn
         string toString();
 
         //Set the activation function for the given layer
-        void setActivation(int paraLayer, char paraActivation);
+        void setActivationFunction(int paraLayer, char paraFunction);
 
         //Forward layer by layer
         DoubleMatrix forward(DoubleMatrix paraInput);

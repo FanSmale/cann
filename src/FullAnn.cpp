@@ -62,14 +62,14 @@ string FullAnn::toString()
     return resultString;
 }//Of toString
 
-void FullAnn::setActivation(int paraLayer, char paraActivation)
+void FullAnn::setActivationFunction(int paraLayer, char paraActivation)
 {
     if (paraLayer >= numLayers)
     {
         throw OUT_OF_RANGE_EXCEPTION;
     }//Of if
-    layers[paraLayer] -> setActivation(paraActivation);
-}//Of setActivation
+    layers[paraLayer] -> setActivationFunction(paraActivation);
+}//Of setActivationFunction
 
 //Forward layer by layer
 DoubleMatrix FullAnn::forward(DoubleMatrix paraInput)
@@ -263,7 +263,7 @@ void FullAnn::selfTest()
     tempY(0, 2) = 1;
     */
 
-    string tempString = "d:\\c\\cann\\data\\iris.txt";
+    string tempString = "D:\\C\\cann\\data\\iris.txt";
     char *tempFilename = (char *)tempString.c_str();
     //char *s_input = (char *)tempString.c_str();
 

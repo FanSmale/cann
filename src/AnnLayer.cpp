@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include "AnnLayer.h"
 #include "MfMath.h"
+#include "Activator.h"
 
 using namespace Eigen;
 
@@ -55,7 +56,9 @@ AnnLayer::AnnLayer(int paraInputSize, int paraOutputSize, char paraActivation,
         offsetMatrix(0, i) = random();
     }//Of for i
 
-    activation = paraActivation;
+    //activation = paraActivation;
+    //activator = new Activator(paraActivation);
+    activator.setActivationFunction(paraActivation);
 }//Of the second constructor
 
 //Destructor
@@ -80,31 +83,16 @@ string AnnLayer::toString()
 }//Of toString
 
 //Set the activation function
-void AnnLayer::setActivation(char paraActivation)
+void AnnLayer::setActivationFunction(char paraFunction)
 {
-    activation = paraActivation;
-}//Of setActivation
+    activator.setActivationFunction(paraFunction);
+}//Of setActivationFunction
 
-//Activate for the given value, independent of this object
-double AnnLayer::activate(double paraValue, char paraFunction)
-{
-    switch (paraFunction)
-    {
-    case 's':
-        return 1 / (1 + exp(-paraValue));
-    case 'r':
-        if (paraValue > 0)
-        {
-            return paraValue;
-        }
-        else
-        {
-            return 0;
-        }//Of if
-    default:
-        return paraValue;
-    }//Of switch
-}//Of activate
+//Activate for the given value, dependent on this object
+//double AnnLayer::activate(double paraValue)
+//{
+//return activator.activate(paraValue)
+//}//Of activate
 
 //Activate
 DoubleMatrix AnnLayer::forward(DoubleMatrix paraData)
@@ -133,7 +121,7 @@ DoubleMatrix AnnLayer::forward(DoubleMatrix paraData)
 
     for(int i = 0; i < resultData.cols(); i ++)
     {
-        resultData(0, i) = activate(resultData(0, i), activation);
+        resultData(0, i) = activator.activate(resultData(0, i));
     }//Of for i
 
     //printf("After activate: \r\n");
@@ -163,7 +151,7 @@ DoubleMatrix AnnLayer::backPropagation(DoubleMatrix paraErrors)
             {
                 // Offset adjusting
                 offsetDeltaMatrix(0, j) = mobp * offsetDeltaMatrix(0, j)
-                                                  + rate * paraErrors(0, j);
+                                          + rate * paraErrors(0, j);
                 offsetMatrix(0, j) += offsetDeltaMatrix(0, j);
             }//Of if
         }//Of for j

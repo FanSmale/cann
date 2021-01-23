@@ -14,6 +14,7 @@
 //#include <MfMatrix.h>
 #include <string>
 #include "MfMath.h"
+#include "Activator.h"
 
 using namespace std;
 
@@ -34,10 +35,10 @@ class AnnLayer
         string toString();
 
         //Set the activation function
-        void setActivation(char paraActivation);
+        void setActivationFunction(char paraActivation);
 
-        //Activiate
-        double activate(double paraValue, char paraFunction);
+        //Activate
+        //double activate(double paraValue);
 
         //Forward calculation
         DoubleMatrix forward(DoubleMatrix paraData);
@@ -60,7 +61,10 @@ class AnnLayer
         int inputSize;
 
         //The activation function
-        char activation;
+        //char activation;
+
+        //The activator
+        Activator activator;
 
         //Learning rate
         double rate;

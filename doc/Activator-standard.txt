@@ -1,0 +1,10 @@
+当前Activator.cpp里面的函数实现正确，修改了AnnLayer.cpp相应代码可以运行。从编程习惯上来看，还可有如下方面可以改进：
+1. double AnnLayer::activate(double paraValue, char paraFunction)函数内部，不应该出现常数（0.01等）。这些应该封装到Activator中设置；
+2. Activator不应该在AnnLayer::activate该方法内声明，而应该作为一个成员变量，避免多次的空间分配。
+  注意：从神经网络的角度，同一层应该使用相同的激活函数，所以这样做是正确的。但不同层可能使用不同的激活函数，因此不能将Activator弄到FullAnn.cpp里面。
+3. switch的逻辑，应该封装到Activator中。
+4. 实际上，该方法可以简化到
+double AnnLayer::activate(double paraValue)
+{
+	return activator.activate(paraValue);
+}//Of activate
