@@ -18,7 +18,7 @@ DataReader::DataReader()
 //Read the data from the given file
 DataReader::DataReader(char* paraFilename)
 {
-    //Initialize
+    //Step 1. Initialize
     numInstances = 0;
     numConditions = 0;
     ifstream tempInputStream(paraFilename);
@@ -32,7 +32,8 @@ DataReader::DataReader(char* paraFilename)
     double tempDouble;
     char *tempValues;
     const char * tempSplit = ",";
-    //How many instances and conditions
+
+    //Step 2. Prepare to read data. How many instances and conditions
     while (getline(tempInputStream, tempLine)) // line中不包括每行的换行符
     {
         if (tempLine.erase(0, tempLine.find_first_not_of(" ")) != "")
@@ -41,11 +42,10 @@ DataReader::DataReader(char* paraFilename)
             if (numConditions == 0)
             {
                 tempValues = (char *)tempLine.c_str();
-                // 以逗号为分隔符拆分字符串
+                // Split the string
                 char *tempRemaining = strtok(tempValues, tempSplit);
                 while(tempRemaining != NULL)
                 {
-                    // char * -> int
                     sscanf(tempRemaining, "%lf", &tempDouble);
                     tempRemaining = strtok(NULL, tempSplit);
                     numConditions ++;
@@ -54,24 +54,20 @@ DataReader::DataReader(char* paraFilename)
         }//Of if
     }//Of while
 
-    //Allocate space
+    //Step 3. Allocate space
     numConditions --;
     wholeX = new DoubleMatrix(numInstances, numConditions);
     wholeY = new IntArray(1, numInstances);
 
     printf("Data read, numInstances = %d, numConditions = %d, the whole X is \r\n",
-        numInstances, numConditions);
-    //DoubleMatrix tempMatrix = wholeX[0];
-    //cout << tempMatrix(0, 0) << endl;
+           numInstances, numConditions);
 
-    //Now read data
+    //Step 4. Now read data
     tempInputStream.close();
     tempInputStream.open(paraFilename);
     int tempInstanceIndex = 0;
-    //int tempConditionIndex = 0;
     while (getline(tempInputStream, tempLine)) // line中不包括每行的换行符
     {
-        //tempConditionIndex = 0;
         if (tempLine.erase(0, tempLine.find_first_not_of(" ")) != "")
         {
             stringstream tempStringStream(tempLine);
@@ -86,23 +82,27 @@ DataReader::DataReader(char* paraFilename)
             }//Of for i
 
             sscanf(tempRemaining, "%d", &wholeY[0](0, tempInstanceIndex));
-            //printf("%d\r\n", wholeY[0](0, tempInstanceIndex));
             tempInstanceIndex ++;
         }//Of if
     }//Of while
 
-    /*
-    printf("The pointer is: ");
-    cout << wholeX << endl;
-    DoubleMatrix tempMatrix = wholeX[0];
-    cout << tempMatrix << endl;
-    cout << tempMatrix(0, 0) << endl;
-    printf("The first value shown. ");
-    */
-
     tempInputStream.close();
+
+    //Step 5. Maybe you do not want to randomize
+    randomArray = new IntArray(1, numInstances);
+    for(int i = 0; i < numInstances; i ++)
+    {
+        randomArray[0](0, i) = i;
+    }//Of for i
+
+    //Step 6. Initialize other pointers
+    trainingX = nullptr;
+    trainingY = nullptr;
+    testingX = nullptr;
+    testingY = nullptr;
 }//Of the second constructor
 
+//The destructor
 DataReader::~DataReader()
 {
     free(wholeX);
@@ -111,6 +111,7 @@ DataReader::~DataReader()
     free(trainingY);
     free(testingX);
     free(testingY);
+    free(randomArray);
 }//Of the destructor
 
 //Split the data into the training and testing parts according to the given fraction
@@ -119,12 +120,20 @@ void DataReader::splitInTwo(double paraTrainingFraction)
     int tempTrainingSize = (int)(numInstances * paraTrainingFraction);
     int tempTestingSize = numInstances - tempTrainingSize;
 
+    //Free space if allocated in the past
+    if (trainingX != nullptr)
+    {
+        free(trainingX);
+        free(trainingY);
+        free(testingX);
+        free(testingY);
+    }//Of if
     trainingX = new DoubleMatrix(tempTrainingSize, numConditions);
     trainingY = new IntArray(1, tempTrainingSize);
     testingX = new DoubleMatrix(tempTestingSize, numConditions);
     testingY = new IntArray(1, tempTestingSize);
 
-    //randomArray[0](0, i) support randomized order
+    //Training set. Support randomized order
     for(int i = 0; i < tempTrainingSize; i ++)
     {
         for(int j = 0; j < numConditions; j ++)
@@ -134,6 +143,7 @@ void DataReader::splitInTwo(double paraTrainingFraction)
         trainingY[0](0, i) = wholeY[0](0, randomArray[0](0, i));
     }//Of for i
 
+    //Testing set
     for(int i = tempTrainingSize; i < numInstances; i ++)
     {
         for(int j = 0; j < numConditions; j ++)
@@ -143,6 +153,55 @@ void DataReader::splitInTwo(double paraTrainingFraction)
         testingY[0](0, i - tempTrainingSize) = wholeY[0](0, randomArray[0](0, i));
     }//Of for i
 }//Of splitInTwo
+
+//Split the data according to cross-validation
+void DataReader::crossValidationSplit(int paraNumFolds, int paraFoldIndex)
+{
+    int tempTestingSize = numInstances / paraNumFolds;
+    if (paraFoldIndex < numInstances % paraNumFolds)
+    {
+        tempTestingSize ++;
+    }//Of if
+    int tempTrainingSize = numInstances - tempTestingSize;
+    printf("The training size is %d\r\n", tempTrainingSize);
+
+    //Free space if allocated in the past
+    if (trainingX != nullptr)
+    {
+        free(trainingX);
+        free(trainingY);
+        free(testingX);
+        free(testingY);
+    }//Of if
+    trainingX = new DoubleMatrix(tempTrainingSize, numConditions);
+    trainingY = new IntArray(1, tempTrainingSize);
+    testingX = new DoubleMatrix(tempTestingSize, numConditions);
+    testingY = new IntArray(1, tempTestingSize);
+    int tempTrainingIndex = 0;
+    int tempTestingIndex = 0;
+
+    for(int i = 0; i < numInstances; i ++)
+    {
+        if (i % paraNumFolds != paraFoldIndex)
+        {
+            for(int j = 0; j < numConditions; j ++)
+            {
+                trainingX[0](tempTrainingIndex, j) = wholeX[0](randomArray[0](0, i), j);
+            }//Of for j
+            trainingY[0](0, tempTrainingIndex) = wholeY[0](0, randomArray[0](0, i));
+            tempTrainingIndex ++;
+        }
+        else
+        {
+            for(int j = 0; j < numConditions; j ++)
+            {
+                testingX[0](tempTestingIndex, j) = wholeX[0](randomArray[0](0, i), j);
+            }//Of for j
+            testingY[0](0, tempTestingIndex) = wholeY[0](0, randomArray[0](0, i));
+            tempTestingIndex ++;
+        }//Of if
+    }//Of for i
+}//Of crossValidationSplit
 
 //The getter
 DoubleMatrix* DataReader::getTrainingX()
@@ -194,6 +253,7 @@ IntArray* DataReader::getRandomIndexArray(int paraLength)
 //Construct a random index array
 void DataReader::randomize()
 {
+    free(randomArray);
     randomArray = getRandomIndexArray(numInstances);
 }//Of randomize
 

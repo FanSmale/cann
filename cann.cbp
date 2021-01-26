@@ -34,6 +34,7 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/Activator.h" />
 		<Unit filename="include/AnnLayer.h" />
 		<Unit filename="include/DataReader.h" />
 		<Unit filename="include/FullAnn.h" />
@@ -41,6 +42,7 @@
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Activator.cpp" />
 		<Unit filename="src/AnnLayer.cpp" />
 		<Unit filename="src/DataReader.cpp" />
 		<Unit filename="src/FullAnn.cpp" />

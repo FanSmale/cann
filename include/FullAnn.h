@@ -44,6 +44,9 @@ class FullAnn
         //Test
         double test(DoubleMatrix paraX, IntArray paraY);
 
+        //Get the number of correctly classified instances in the current round
+        int getNumCorrect();
+
         //Show weight of the network, not including the offset
         void showWeight();
 
@@ -72,6 +75,10 @@ class FullAnn
 
         //The output for current instance
         DoubleMatrix currentOutput;
+
+        //Number of correctly classified instances in the current round
+        //It is used for statistics especially on cross-validation
+        int numCorrect;
 
     private:
 };

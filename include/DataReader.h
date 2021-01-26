@@ -20,6 +20,9 @@ class DataReader
         //Split the data into the training and testing parts according to the given fraction
         void splitInTwo(double paraTrainingFraction);
 
+        //Split the data according to cross-validation
+        void crossValidationSplit(int paraNumFolds, int paraFoldIndex);
+
         //Destructor
         virtual ~DataReader();
 

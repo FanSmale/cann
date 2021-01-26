@@ -37,11 +37,11 @@ int main()
     //DataReader tempReader;
     //tempReader.selfTest();
 
-    Activator tempActivator;
-    tempActivator.selfTest();
+    //Activator tempActivator;
+    //tempActivator.selfTest();
 
-    //FullAnn tempFullAnn;
-    //tempFullAnn.selfTest();
+    FullAnn tempFullAnn;
+    tempFullAnn.selfTest();
 
     printf("end.\r\n");
     getchar();

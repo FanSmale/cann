@@ -146,7 +146,7 @@ double FullAnn::test(DoubleMatrix paraX, IntArray paraY)
 {
     int tempNumInstances = paraX.rows();
     int tempNumConditions = paraX.cols();
-    double tempCorrect = 0;
+    numCorrect = 0;
     int tempPredictionClass;
     double tempMaxValue;
 
@@ -185,11 +185,17 @@ double FullAnn::test(DoubleMatrix paraX, IntArray paraY)
 
         if (tempPredictionClass == paraY(0, i))
         {
-            tempCorrect ++;
+            numCorrect ++;
         }//Of if
     }//Of for i
-    return tempCorrect/tempNumInstances;
+    return (numCorrect + 0.0) / tempNumInstances;
 }//Of test
+
+//Get the number of correct classification
+FullAnn::getNumCorrect()
+{
+    return numCorrect;
+}//Of getNumCorrect
 
 //Show weight
 void FullAnn::showWeight()
@@ -270,29 +276,38 @@ void FullAnn::selfTest()
     DataReader tempReader(tempFilename);
 
     tempReader.randomize();
-    tempReader.splitInTwo(0.6);
+    //tempReader.splitInTwo(0.6);
 
-    DoubleMatrix tempX = tempReader.getTrainingX()[0];
-    IntArray tempY = tempReader.getTrainingY()[0];
-    DoubleMatrix tempTestingX = tempReader.getTrainingX()[0];
-    IntArray tempTestingY = tempReader.getTrainingY()[0];
-
-    printf("Training/testing data generated:\r\n");
-
-    for(int i = 0; i < 1000; i ++)
+    int tempNumFolds = 10;
+    int tempCorrectSum = 0;
+    for(int foldIndex = 0; foldIndex < tempNumFolds; foldIndex++)
     {
-        tempFullAnn -> train(tempX, tempY, 3);
-        if (i % 100 == 0)
+        tempReader.crossValidationSplit(tempNumFolds, foldIndex);
+
+        DoubleMatrix tempX = tempReader.getTrainingX()[0];
+        IntArray tempY = tempReader.getTrainingY()[0];
+        DoubleMatrix tempTestingX = tempReader.getTestingX()[0];
+        IntArray tempTestingY = tempReader.getTestingY()[0];
+
+        printf("Training/testing data generated:\r\n");
+
+        for(int i = 0; i < 1000; i ++)
         {
-            tempFullAnn -> showWeight();
-        }//Of if
-    }//Of for i
+            tempFullAnn -> train(tempX, tempY, 3);
+            //if (i % 100 == 0)
+            //{
+            //   tempFullAnn -> showWeight();
+            //}//Of if
+        }//Of for i
 
-    printf("After training:\r\n\r\n\r\n\r\n");
+        printf("After training:\r\n\r\n\r\n\r\n");
 
-    double tempPrecision = tempFullAnn -> test(tempTestingX, tempTestingY);
-    printf("After testing, the precision is %lf:\r\n", tempPrecision);
+        double tempPrecision = tempFullAnn -> test(tempTestingX, tempTestingY);
+        printf("After testing, the precision is %lf:\r\n", tempPrecision);
+        tempCorrectSum += tempFullAnn -> getNumCorrect();
+    }//Of for foldIndex
 
+    printf("Total correct: %d. \r\n", tempCorrectSum);
     printf("Finish. \r\n");
 
     /*
