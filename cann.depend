@@ -932,7 +932,7 @@
 	"MfMath.h"
 	"DataReader.h"
 
-1611976294 d:\c\cann\include\annlayer.h
+1611982710 d:\c\cann\include\annlayer.h
 	<string>
 	"MfMath.h"
 	"Activator.h"
@@ -945,11 +945,11 @@
 1610669579 d:\c\cann\include\intarray.h
 	<string>
 
-1611973597 d:\c\cann\include\fullann.h
+1611982568 d:\c\cann\include\fullann.h
 	"AnnLayer.h"
 	"MfMath.h"
 
-1611976282 source:d:\c\cann\src\annlayer.cpp
+1611982818 source:d:\c\cann\src\annlayer.cpp
 	<Malloc.h>
 	<Math.h>
 	<iostream>
@@ -958,7 +958,7 @@
 	"MfMath.h"
 	"Activator.h"
 
-1611975661 source:d:\c\cann\src\fullann.cpp
+1611983836 source:d:\c\cann\src\fullann.cpp
 	<iostream>
 	"MfMath.h"
 	"FullAnn.h"

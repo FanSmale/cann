@@ -106,6 +106,17 @@ void FullAnn::setMobp(double paraMobp)
 }//Of setMobp
 
 /**
+ * Reset all layers.
+ */
+void FullAnn::reset()
+{
+    for (int i = 0; i < numLayers; i ++)
+    {
+        layers[i] -> reset();
+    }//Of for i
+}//Of reset
+
+/**
  * Forward layer by layer.
  * paraInput: A row vector for one instance.
  * Attention: We may need batch training, that is,
@@ -445,11 +456,20 @@ void FullAnn::crossValidationTest()
 
     int tempNumFolds = 4;
     int tempCorrectSum = 0;
+
+    //Attention: 这里声明即赋值, 后面的多个网络结果才正确.
+    // 先声明为空指针, 后面再赋值, 都不行.
     FullAnn* tempFullAnn = new FullAnn(tempIntArray, 's', 0.1, 0.1);
-    for(int foldIndex = 0; foldIndex < tempNumFolds; foldIndex++)
+    for(int i = 0; i < tempNumFolds; i++)
     {
+        //Attention: 在这里生成新的网络, 第2个网络及以后均只能给出一个预测值.
+        //  原因未知.
+        //free(tempFullAnn);
         //tempFullAnn = new FullAnn(tempIntArray, 's', 0.1, 0.1);
-        tempReader.crossValidationSplit(tempNumFolds, foldIndex);
+
+        //消除上个网络的权值影响.
+        tempFullAnn -> reset();
+        tempReader.crossValidationSplit(tempNumFolds, i);
 
         DoubleMatrix tempX = tempReader.getTrainingX()[0];
         IntArray tempY = tempReader.getTrainingY()[0];
@@ -461,7 +481,7 @@ void FullAnn::crossValidationTest()
         for(int i = 0; i < 1000; i ++)
         {
             tempFullAnn -> train(tempX, tempY, 3);
-            //if (i % 100 == 0)
+            //if (i % 300 == 0)
             //{
             //   tempFullAnn -> showWeight();
             //}//Of if
@@ -472,7 +492,8 @@ void FullAnn::crossValidationTest()
         double tempPrecision = tempFullAnn -> test(tempTestingX, tempTestingY);
         printf("After testing, the precision is %lf:\r\n", tempPrecision);
         tempCorrectSum += tempFullAnn -> getNumCorrect();
-    }//Of for foldIndex
+    }//Of for i
+    free(tempFullAnn);
 
     printf("Total correct: %d. \r\n", tempCorrectSum);
     printf("Finish. \r\n");

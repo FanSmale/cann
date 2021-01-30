@@ -38,6 +38,9 @@ class FullAnn
         //Setter
         void setMobp(double paraMobp);
 
+        //Reset weights and other variables.
+        void reset();
+
         //Forward layer by layer
         DoubleMatrix forward(DoubleMatrix paraInput);
 

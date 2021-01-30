@@ -100,6 +100,25 @@ void AnnLayer::setActivationFunction(char paraFunction)
 }//Of setActivationFunction
 
 /**
+ * Reset weights and other variables.
+ */
+ void AnnLayer::reset()
+ {
+    for(int i = 0; i < inputSize; i ++)
+    {
+        for (int j = 0; j < outputSize; j ++)
+        {
+            weightMatrix(i, j) = random();
+        }//Of for j
+    }//Of for i
+
+    for (int i = 0; i < outputSize; i ++)
+    {
+        offsetMatrix(0, i) = random();
+    }//Of for i
+ }//Of reset
+
+/**
  * Forward computing.
  * paraData: now only one instance is supported.
  */

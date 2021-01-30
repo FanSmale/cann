@@ -37,6 +37,9 @@ class AnnLayer
         //Set the activation function
         void setActivationFunction(char paraActivation);
 
+        //Reset weight and other variables.
+        void reset();
+
         //Activate
         //double activate(double paraValue);
 
