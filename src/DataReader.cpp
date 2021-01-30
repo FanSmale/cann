@@ -9,13 +9,17 @@
 
 using namespace std;
 
-//Empty constructor
+/**
+ * Empty constructor.
+ */
 DataReader::DataReader()
 {
-    //ctor
 }//Of the default constructor
 
-//Read the data from the given file
+/**
+ * Read the data from the given file.
+ * paraFilename: the data filename.
+ */
 DataReader::DataReader(char* paraFilename)
 {
     //Step 1. Initialize
@@ -102,7 +106,9 @@ DataReader::DataReader(char* paraFilename)
     testingY = nullptr;
 }//Of the second constructor
 
-//The destructor
+/**
+ * The destructor.
+ */
 DataReader::~DataReader()
 {
     free(wholeX);
@@ -114,7 +120,10 @@ DataReader::~DataReader()
     free(randomArray);
 }//Of the destructor
 
-//Split the data into the training and testing parts according to the given fraction
+/**
+ * Split the data into the training and testing parts.
+ * paraTrainingFraction: the training fraction.
+ */
 void DataReader::splitInTwo(double paraTrainingFraction)
 {
     int tempTrainingSize = (int)(numInstances * paraTrainingFraction);
@@ -154,7 +163,14 @@ void DataReader::splitInTwo(double paraTrainingFraction)
     }//Of for i
 }//Of splitInTwo
 
-//Split the data according to cross-validation
+/**
+ * Split the data according to cross-validation.
+ *   Only one fold is generated at a time.
+ *   For full CV, please invoke this method in a loop with
+ *   paraFoldIndex ranging [0 .. paraNumFolds-1].
+ * paraNumFolds: the number of folds.
+ * paraFoldIndex: the index of the current fold.
+ */
 void DataReader::crossValidationSplit(int paraNumFolds, int paraFoldIndex)
 {
     int tempTestingSize = numInstances / paraNumFolds;
@@ -203,31 +219,42 @@ void DataReader::crossValidationSplit(int paraNumFolds, int paraFoldIndex)
     }//Of for i
 }//Of crossValidationSplit
 
-//The getter
+/**
+ * Getter.
+ */
 DoubleMatrix* DataReader::getTrainingX()
 {
     return trainingX;
 }//Of getTrainingX
 
-//The getter
+/**
+ * Getter.
+ */
 IntArray* DataReader::getTrainingY()
 {
     return trainingY;
 }//Of getTrainingY
 
-//The getter
+/**
+ * Getter.
+ */
 DoubleMatrix* DataReader::getTestingX()
 {
     return testingX;
 }//Of getTestingX
 
-//The getter
+/**
+ * Getter.
+ */
 IntArray* DataReader::getTestingY()
 {
     return testingY;
 }//Of getTestingY
 
-//Construct a random index array
+/**
+ * Construct an index array as a randomization of [0, paraLength - 1].
+ * paraLength: the length of the array.
+ */
 IntArray* DataReader::getRandomIndexArray(int paraLength)
 {
     IntArray* tempArrayPtr = new IntArray(1, paraLength);
@@ -250,15 +277,20 @@ IntArray* DataReader::getRandomIndexArray(int paraLength)
     return tempArrayPtr;
 }//Of getRandomIndexArray
 
-//Construct a random index array
+/**
+ * Randomize the data through generating a random int array.
+ *   Data are accessed through indirect addressing.
+ */
 void DataReader::randomize()
 {
     free(randomArray);
     randomArray = getRandomIndexArray(numInstances);
 }//Of randomize
 
-//Code self test
-void DataReader::selfTest()
+/**
+ * Code unit test.
+ */
+void DataReader::unitTest()
 {
     string tempString = "d:\\c\\cann\\data\\iris.txt";
     char *tempFilename = (char *)tempString.c_str();
@@ -274,4 +306,4 @@ void DataReader::selfTest()
     //printf("The training X is: \r\n");
 
     //cout << tempArrayPtr[0] << endl;
-}//Of selfTest
+}//Of unitTest

@@ -14,14 +14,25 @@
 #include "FullAnn.h"
 #include "DataReader.h"
 
-//The default constructor
+/**
+ * The default constructor.
+ */
 FullAnn::FullAnn()
 {
     numLayers = 0;
     layers = nullptr;
 }//Of the default constructor
 
-//The second constructor
+/**
+ * The second constructor.
+ * paraSizes: The sizes of layers, the first element is the number of conditions,
+ *   and the last element is the number of classes.
+ *   e.g., {4, 6, 10, 3} for iris.
+ * paraActivation: The activation function name, e.g., 's' for sigmoid.
+ *   This parameter and the following two will be stored as member variables.
+ * paraRate: The learning rate.
+ * paraMobp: The mobp.
+ */
 FullAnn::FullAnn(IntArray paraSizes, char paraActivation, double paraRate, double paraMobp)
 {
     layerSizes = paraSizes;
@@ -29,21 +40,20 @@ FullAnn::FullAnn(IntArray paraSizes, char paraActivation, double paraRate, doubl
     rate = paraRate;
     mobp = paraMobp;
 
-    //printf("Test the constructor of FullAnn.cpp\r\n");
     //Allocate space
     numLayers = layerSizes.cols() - 1;
     layers = new AnnLayer* [numLayers];
-    //printf("layers allocated \r\n");
+
     for (int i = 0; i < numLayers; i ++)
     {
-        //printf("layer %d \r\n", i);
         layers[i] = new AnnLayer(layerSizes(i), layerSizes(i + 1),
                                  activation, rate, mobp);
     }//Of for i
-    printf("End of the constructor of FullAnn.cpp\r\n");
 }//Of the second constructor
 
-//Destructor
+/**
+ * The destructor. Free space.
+ */
 FullAnn::~FullAnn()
 {
     for(int i = 0; i < numLayers; i ++)
@@ -53,7 +63,9 @@ FullAnn::~FullAnn()
     free(layers);
 }//Of the destructor
 
-//Convert to string for display
+/**
+ * Convert to string for display.
+ */
 string FullAnn::toString()
 {
     string resultString = "I am a full ANN with " + to_string(numLayers)
@@ -62,6 +74,12 @@ string FullAnn::toString()
     return resultString;
 }//Of toString
 
+/**
+ * Set activation function for the given layer.
+ *   Different layers can have different activation functions.
+ * paraLayer: The layer index.
+ * paraActivation: The new activation function.
+ */
 void FullAnn::setActivationFunction(int paraLayer, char paraActivation)
 {
     if (paraLayer >= numLayers)
@@ -71,7 +89,29 @@ void FullAnn::setActivationFunction(int paraLayer, char paraActivation)
     layers[paraLayer] -> setActivationFunction(paraActivation);
 }//Of setActivationFunction
 
-//Forward layer by layer
+/**
+ * Setter.
+ */
+void FullAnn::setRate(double paraRate)
+{
+    rate = paraRate;
+}//Of setRate
+
+/**
+ * Setter.
+ */
+void FullAnn::setMobp(double paraMobp)
+{
+    mobp = paraMobp;
+}//Of setMobp
+
+/**
+ * Forward layer by layer.
+ * paraInput: A row vector for one instance.
+ * Attention: We may need batch training, that is,
+ *   forward a set of instances at a time.
+ *   To do so, AnnLayer.forward() instead of this method should be revised.
+ */
 DoubleMatrix FullAnn::forward(DoubleMatrix paraInput)
 {
     DoubleMatrix tempData = paraInput;
@@ -87,7 +127,11 @@ DoubleMatrix FullAnn::forward(DoubleMatrix paraInput)
     return currentOutput;
 }//Of forward
 
-//Back propagation
+/**
+ * Back propagation. It relies on currentOutput computed during forward().
+ *   Hence it should be invoked immediately after forward().
+ * paraTarget: The actual class information.
+ */
 void FullAnn::backPropagation(DoubleMatrix paraTarget)
 {
     int tempSize = layers[numLayers - 1] -> outputSize;
@@ -106,7 +150,29 @@ void FullAnn::backPropagation(DoubleMatrix paraTarget)
     }//Of for i
 }//Of backPropagation
 
-//Train the network
+/**
+ * Train the network with only one instance.
+ * paraX: the instance (1 * m row vector).
+ * paraY: the decision of the instance.
+ * paraNumClasses: the number of classes of this dataset.
+ */
+void FullAnn::train(DoubleMatrix paraX, int paraY, int paraNumClasses)
+{
+    DoubleMatrix tempDecision;
+    tempDecision.resize(1, paraNumClasses);
+    tempDecision.fill(0);
+    tempDecision(0, paraY) = 1;
+
+    forward(paraX);
+    backPropagation(tempDecision);
+}//Of train
+
+/**
+ * Train the network with a dataset.
+ * paraX: the data (n * m matrix).
+ * paraY: the decisions (n * 1 column vector).
+ * paraNumClasses: the number of classes of this dataset.
+ */
 void FullAnn::train(DoubleMatrix paraX, IntArray paraY, int paraNumClasses)
 {
     int tempNumInstances = paraX.rows();
@@ -126,7 +192,7 @@ void FullAnn::train(DoubleMatrix paraX, IntArray paraY, int paraNumClasses)
         //Copy this instance
         for(int j = 0; j < tempNumConditions; j ++)
         {
-            tempData(j) = paraX(i, j);
+            tempData(0, j) = paraX(i, j);
         }//Of for j
         tempDecision.fill(0);
         tempDecision(0, paraY(0, i)) = 1;
@@ -141,12 +207,41 @@ void FullAnn::train(DoubleMatrix paraX, IntArray paraY, int paraNumClasses)
     }//Of for i
 }//Of train
 
-//Test the network
+/**
+ * Test the network with only one instance.
+ * paraX: the data (n * m matrix).
+ * paraY: the decision.
+ * Returns: correct or not.
+ */
+bool FullAnn::test(DoubleMatrix paraX, int paraY)
+{
+    int tempPredictionClass = -1;
+    double tempMaxValue = -10;
+
+    DoubleMatrix tempPrediction = forward(paraX);
+    for(int i = 0; i < tempPrediction.cols(); i ++)
+    {
+        if (tempMaxValue < tempPrediction(i))
+        {
+            tempMaxValue = tempPrediction(i);
+            tempPredictionClass = i;
+        }//Of if
+    }//Of for i
+    printf("The predicted class is %d\r\n", tempPredictionClass);
+
+    return tempPredictionClass == paraY;
+}//Of test
+
+/**
+ * Test the network with a dataset.
+ * paraX: the data (n * m matrix).
+ * paraY: the decisions (n * 1 column vector).
+ * Returns: the prediction accuracy.
+ */
 double FullAnn::test(DoubleMatrix paraX, IntArray paraY)
 {
     int tempNumInstances = paraX.rows();
     int tempNumConditions = paraX.cols();
-    numCorrect = 0;
     int tempPredictionClass;
     double tempMaxValue;
 
@@ -158,6 +253,8 @@ double FullAnn::test(DoubleMatrix paraX, IntArray paraY)
     DoubleMatrix tempData;
     tempData.resize(1, tempNumConditions);
 
+    //Initialize this member variable
+    numCorrect = 0;
     DoubleMatrix tempPrediction;
     for(int i = 0; i < tempNumInstances; i ++)
     {
@@ -167,7 +264,7 @@ double FullAnn::test(DoubleMatrix paraX, IntArray paraY)
         //Copy this instance
         for(int j = 0; j < tempNumConditions; j ++)
         {
-            tempData(j) = paraX(i, j);
+            tempData(0, j) = paraX(i, j);
         }//Of for j
         printf("The %dth testing data is: ", i);
         cout << tempData << ", " << paraY(0, i) << endl;
@@ -191,13 +288,17 @@ double FullAnn::test(DoubleMatrix paraX, IntArray paraY)
     return (numCorrect + 0.0) / tempNumInstances;
 }//Of test
 
-//Get the number of correct classification
-FullAnn::getNumCorrect()
+/**
+ * Getter.
+ */
+int FullAnn::getNumCorrect()
 {
     return numCorrect;
 }//Of getNumCorrect
 
-//Show weight
+/**
+ * Show weight. For debug only.
+ */
 void FullAnn::showWeight()
 {
     //printf("The weights are:\r\n");
@@ -209,10 +310,11 @@ void FullAnn::showWeight()
     //printf("showWeight end:\r\n");
 }//Of showWeight
 
-//Code self test
-void FullAnn::selfTest()
+/**
+ * Code unit test.
+ */
+void FullAnn::unitTest()
 {
-    /*
     printf("Test FullAnn.cpp\r\n");
     int tempArray[3] = {3, 5, 7};
     IntArray tempIntArray;
@@ -239,9 +341,9 @@ void FullAnn::selfTest()
 
     printf("Back propagation:\r\n");
     tempFullAnn -> backPropagation(tempData);
-    */
 
     //Build the network structure
+    /*
     IntArray tempIntArray;
     tempIntArray.resize(1, 4);
     tempIntArray(0) = 4;
@@ -251,6 +353,7 @@ void FullAnn::selfTest()
     FullAnn* tempFullAnn = new FullAnn(tempIntArray, 's', 0.1, 0.1);
 
     printf("Train:\r\n");
+    */
 
     /*
     DoubleMatrix tempX;
@@ -269,19 +372,83 @@ void FullAnn::selfTest()
     tempY(0, 2) = 1;
     */
 
+}//Of selfTest
+
+/**
+ * Training/testing test.
+ */
+void FullAnn::trainingTestingTest()
+{
     string tempString = "D:\\C\\cann\\data\\iris.txt";
     char *tempFilename = (char *)tempString.c_str();
-    //char *s_input = (char *)tempString.c_str();
+
+    DataReader tempReader(tempFilename);
+    tempReader.randomize();
+    tempReader.splitInTwo(0.6);
+
+    DoubleMatrix tempX = tempReader.getTrainingX()[0];
+    IntArray tempY = tempReader.getTrainingY()[0];
+    DoubleMatrix tempTestingX = tempReader.getTestingX()[0];
+    IntArray tempTestingY = tempReader.getTestingY()[0];
+
+    printf("Training/testing data generated:\r\n");
+
+    int tempDepth = 4;
+    int tempArray[tempDepth] = {4, 5, 6, 3};
+    IntArray tempIntArray;
+    tempIntArray.resize(1, tempDepth);
+    for(int i = 0; i < tempDepth; i ++)
+    {
+        tempIntArray(i) = tempArray[i];
+    }//Of for i
+    FullAnn* tempFullAnn = new FullAnn(tempIntArray, 's', 0.1, 0.1);
+
+    printf("Ann constructed:\r\n");
+    for(int i = 0; i < 1000; i ++)
+    {
+        tempFullAnn -> train(tempX, tempY, 3);
+        if (i % 200 == 0)
+        {
+           tempFullAnn -> showWeight();
+        }//Of if
+    }//Of for i
+
+    printf("After training:\r\n\r\n\r\n\r\n");
+
+    //double tempPrecision = tempFullAnn -> test(tempTestingX, tempTestingY);
+    double tempPrecision = tempFullAnn -> test(tempX, tempY);
+    printf("After testing, the precision is %lf:\r\n", tempPrecision);
+
+    printf("Finish. \r\n");
+}//Of trainingTestingTest
+
+/**
+ * Cross validation test.
+ */
+void FullAnn::crossValidationTest()
+{
+    string tempString = "D:\\C\\cann\\data\\iris.txt";
+    char *tempFilename = (char *)tempString.c_str();
 
     DataReader tempReader(tempFilename);
 
     tempReader.randomize();
-    //tempReader.splitInTwo(0.6);
 
-    int tempNumFolds = 10;
+    int tempDepth = 4;
+    int tempArray[tempDepth] = {4, 8, 8, 3};
+    IntArray tempIntArray;
+    tempIntArray.resize(1, tempDepth);
+    for(int i = 0; i < tempDepth; i ++)
+    {
+        tempIntArray(i) = tempArray[i];
+    }//Of for i
+
+    int tempNumFolds = 4;
     int tempCorrectSum = 0;
+    FullAnn* tempFullAnn = new FullAnn(tempIntArray, 's', 0.1, 0.1);
     for(int foldIndex = 0; foldIndex < tempNumFolds; foldIndex++)
     {
+        //tempFullAnn = new FullAnn(tempIntArray, 's', 0.1, 0.1);
         tempReader.crossValidationSplit(tempNumFolds, foldIndex);
 
         DoubleMatrix tempX = tempReader.getTrainingX()[0];
@@ -309,22 +476,5 @@ void FullAnn::selfTest()
 
     printf("Total correct: %d. \r\n", tempCorrectSum);
     printf("Finish. \r\n");
+}//Of crossValidationTest
 
-    /*
-    MfMatrix* tempData = new MfMatrix(1, 3);
-    tempData -> setValue(0, 0, 3.0);
-    tempData -> setValue(0, 1, 2.0);
-    tempData -> setValue(0, 2, 1.0);
-
-    for (int i = 0; i < tempFullAnn -> numLayers; i ++)
-    {
-        tempData = tempFullAnn -> layers[i] -> forward(tempData);
-        printf("After layer %d.\r\n", i);
-        printf(tempData -> toString().data());
-    }//Of for i
-
-    printf("The final results are: ");
-    printf(tempData -> toString().data());
-    */
-
-}//Of selfTest

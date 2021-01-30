@@ -18,14 +18,18 @@
 
 using namespace Eigen;
 
-//The default constructor
+/**
+ * The default constructor
+ */
 AnnLayer::AnnLayer()
 {
     inputSize = 1;
     outputSize = 1;
 }//Of the default constructor
 
-//Constructor for input/output size
+/**
+ * Constructor for input/output size
+ */
 AnnLayer::AnnLayer(int paraInputSize, int paraOutputSize, char paraActivation,
                    double paraRate, double paraMobp)
 {
@@ -61,13 +65,17 @@ AnnLayer::AnnLayer(int paraInputSize, int paraOutputSize, char paraActivation,
     activator.setActivationFunction(paraActivation);
 }//Of the second constructor
 
-//Destructor
+/**
+ * Destructor.
+ */
 AnnLayer::~AnnLayer()
 {
-    //free(weightMatrix);
 }//Of the destructor
 
-//Convert to string for display
+/**
+ * Convert to string for display.
+ * Returns: The string showing myself.
+ */
 string AnnLayer::toString()
 {
     string resultString = "I am an ANN layer with size " + to_string(inputSize)
@@ -82,19 +90,19 @@ string AnnLayer::toString()
     return resultString;
 }//Of toString
 
-//Set the activation function
+/**
+ * Set the activation function.
+ * paraFunction: the activation function in char.
+ */
 void AnnLayer::setActivationFunction(char paraFunction)
 {
     activator.setActivationFunction(paraFunction);
 }//Of setActivationFunction
 
-//Activate for the given value, dependent on this object
-//double AnnLayer::activate(double paraValue)
-//{
-//return activator.activate(paraValue)
-//}//Of activate
-
-//Activate
+/**
+ * Forward computing.
+ * paraData: now only one instance is supported.
+ */
 DoubleMatrix AnnLayer::forward(DoubleMatrix paraData)
 {
     //printf("Forwarding, the data is: \r\n");
@@ -130,7 +138,12 @@ DoubleMatrix AnnLayer::forward(DoubleMatrix paraData)
     return resultData;
 }//Of forward
 
-//Back propagation
+/**
+ * Back propagation.
+ *   The activation function of the last layer is considered.
+ * paraErrors: the error at the output end.
+ * Returns: the error at the input end (attention: activation function).
+ */
 DoubleMatrix AnnLayer::backPropagation(DoubleMatrix paraErrors)
 {
     for(int i = 0; i < inputSize; i ++)
@@ -156,21 +169,25 @@ DoubleMatrix AnnLayer::backPropagation(DoubleMatrix paraErrors)
             }//Of if
         }//Of for j
 
-
+        //For the activation function.
         errorMatrix(0, i) = inputData(0, i) * (1 - inputData(0, i)) * errorSum;
     }//Of for i
 
     return errorMatrix;
 }//Of backPropagation
 
-//Show weight
+/**
+ * Show weights for display.
+ */
 void AnnLayer::showWeight()
 {
     cout << weightMatrix << endl;
 }//Of showWeight
 
-//Code self test
-void AnnLayer::selfTest()
+/**
+ * Code unit test.
+ */
+void AnnLayer::unitTest()
 {
     AnnLayer* tempLayer = new AnnLayer(2, 3, 's', 0.01, 0.1);
     DoubleMatrix tempInput;
@@ -193,4 +210,4 @@ void AnnLayer::selfTest()
 
     printf("Show me: \r\n");
     cout << toString() << endl;
-}//Of selfTest
+}//Of unitTest

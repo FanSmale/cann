@@ -47,7 +47,7 @@ class AnnLayer
         DoubleMatrix backPropagation(DoubleMatrix paraLabel);
 
         //Code unit test
-        void selfTest();
+        void unitTest();
 
         //Show weights
         void showWeight();

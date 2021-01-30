@@ -61,7 +61,7 @@ class Activator
         //Activate
         double activate(double paraValue);
 
-        void selfTest();
+        void unitTest();
 
     protected:
         //The activation function

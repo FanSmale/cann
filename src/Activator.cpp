@@ -4,7 +4,9 @@
 
 #include "Activator.h"
 
-//The default constructor
+/**
+ * The default constructor.
+ */
 Activator::Activator()
 {
     activationFunction = 's';
@@ -12,7 +14,10 @@ Activator::Activator()
     activationBeta = DEFAULT_ACTIVATOR_BETA;
 }//Of the constructor
 
-//The second constructor
+/**
+ * The second constructor.
+ * paraActivationFunction: the activation function in char.
+ */
 Activator::Activator(char paraActivationFunction)
 {
     activationFunction = paraActivationFunction;
@@ -20,43 +25,60 @@ Activator::Activator(char paraActivationFunction)
     activationBeta = DEFAULT_ACTIVATOR_BETA;
 }//Of the second constructor
 
-//Destructor
+/**
+ * The destructor.
+ */
 Activator::~Activator()
 {
     //dtor
 }//Of the destructor
 
-//Setter
+/**
+ * Setter.
+ */
 void Activator::setActivationFunction(char paraFunction)
 {
     activationFunction = paraFunction;
 }//Of setActivationFunction
 
-//Setter
+/**
+ * Setter.
+ */
 void Activator::setGamma(double paraGamma)
 {
     activationGamma = paraGamma;
 }//Of setGamma
 
-//Setter
+/**
+ * Setter.
+ */
 void Activator::setBeta(double paraBeta)
 {
     activationBeta = paraBeta;
 }//Of setBeta
 
-//The sigmoid activation function
+/**
+ * The sigmoid activation function.
+ * Return: the activated value.
+ */
 double Activator::sigmoid(double paraValue)
 {
     return 1 / (1 + exp(-paraValue));
 }//Of sigmoid
 
-//The tanh activation function
+/**
+ * The tanh activation function.
+ * Return: the activated value.
+ */
 double Activator::tanh(double paraValue)
 {
     return (exp(paraValue) - exp(-paraValue)) / (exp(paraValue) + exp(-paraValue));
 }//Of tanh
 
-//The hard-logistic activation function
+/**
+ * The hard-logistic activation function.
+ * Return: the activated value.
+ */
 double Activator::hardLogistic(double paraValue)
 {
     double tempGx = 0.25 * paraValue + 0.5;
@@ -77,7 +99,10 @@ double Activator::hardLogistic(double paraValue)
     return resultHL;
 }//Of hardLogistic
 
-//The hard-tanh activation function
+/**
+ * The hard-tanh activation function.
+ * Return: the activated value.
+ */
 double Activator::hardTanh(double paraValue)
 {
     double resultHT = 0;
@@ -97,7 +122,10 @@ double Activator::hardTanh(double paraValue)
     return resultHT;
 }//Of hardTanh
 
-//The ReLU activation function
+/**
+ * The ReLU activation function.
+ * Return: the activated value.
+ */
 double Activator::relu(double paraValue)
 {
     if(paraValue >= 0)
@@ -110,7 +138,10 @@ double Activator::relu(double paraValue)
     }//of if
 }//Of relu
 
-//The LeakyReLU activation function
+/**
+ * The LeakyReLU activation function.
+ * Return: the activated value.
+ */
 double Activator::leakyRelu(double paraValue, double paraGamma)
 {
     if(paraValue >= 0)
@@ -123,7 +154,10 @@ double Activator::leakyRelu(double paraValue, double paraGamma)
     }//of if
 }//Of leakyRelu
 
-//The ELU activation function
+/**
+ * The ELU activation function.
+ * Return: the activated value.
+ */
 double Activator::elu(double paraValue, double paraGamma)
 {
     if(paraValue >= 0)
@@ -134,7 +168,10 @@ double Activator::elu(double paraValue, double paraGamma)
     return paraGamma *  (exp(paraValue) - 1);
 }//Of elu
 
-//The Softplus activation function
+/**
+ * The Softplus activation function.
+ * Return: the activated value.
+ */
 double Activator::softplus(double paraValue)
 {
     if(paraValue < 0)
@@ -152,25 +189,37 @@ double Activator::softplus(double paraValue)
     return tempSoft;
 }//Of softplus
 
-//The Softsign activation function
+/**
+ * The Softsign activation function.
+ * Return: the activated value.
+ */
 double Activator::softsign(double paraValue)
 {
     return paraValue / (1 + abs(paraValue));
 }//Of softsign
 
-//The Swish activation function
+/**
+ * The Swish activation function.
+ * Return: the activated value.
+ */
 double Activator::swish(double paraValue, double paraBeta)
 {
     return paraValue / (1 + exp(-paraBeta * paraValue));
 }//Of swish
 
-//The GELU activation function
+/**
+ * The GELU activation function.
+ * Return: the activated value.
+ */
 double Activator::gelu(double paraValue)
 {
     return paraValue / (1 + exp(-1.702 * paraValue));
 }//Of gelu
 
-//Activate
+/**
+ * Activate according to the current function.
+ * Return: the activated value.
+ */
 double Activator::activate(double paraValue)
 {
     double resultValue = 0;
@@ -217,8 +266,10 @@ double Activator::activate(double paraValue)
     return resultValue;
 }//Of activate
 
-//Code self test
-void Activator::selfTest()
+/**
+ * Code unit test.
+ */
+void Activator::unitTest()
 {
     Activator *tempActivator = new Activator('s');
 
@@ -238,6 +289,5 @@ void Activator::selfTest()
     tempActivator->setActivationFunction('t');
     tempValue = tempActivator->activate(5.0);
     printf("Tanh = %lf\r\n",tempValue);
-
-}//Of selfTest
+}//Of unitTest
 

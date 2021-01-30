@@ -41,7 +41,8 @@ int main()
     //tempActivator.selfTest();
 
     FullAnn tempFullAnn;
-    tempFullAnn.selfTest();
+    //tempFullAnn.trainingTestingTest();
+    tempFullAnn.crossValidationTest();
 
     printf("end.\r\n");
     getchar();

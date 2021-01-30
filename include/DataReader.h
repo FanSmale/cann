@@ -44,8 +44,8 @@ class DataReader
         //The random array is stored in the object
         void randomize();
 
-        //Code self test
-        void selfTest();
+        //Code unit test
+        void unitTest();
 
     protected:
 

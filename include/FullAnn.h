@@ -32,16 +32,33 @@ class FullAnn
         //Set the activation function for the given layer
         void setActivationFunction(int paraLayer, char paraFunction);
 
+        //Setter
+        void setRate(double paraRate);
+
+        //Setter
+        void setMobp(double paraMobp);
+
         //Forward layer by layer
         DoubleMatrix forward(DoubleMatrix paraInput);
 
         //Back propagation
         void backPropagation(DoubleMatrix paraTarget);
 
-        //Train
+        /**
+         * Train the network with only one instance
+         * paraX: the instance (1 * m row vector)
+         * paraY: the decision of the instance
+         * paraNumClasses: the number of classes of this dataset
+         */
+        void train(DoubleMatrix paraX, int paraY, int paraNumClasses);
+
+        //Train with a dataset
         void train(DoubleMatrix paraX, IntArray paraY, int paraNumClasses);
 
-        //Test
+        //Test with an instance
+        bool test(DoubleMatrix paraX, int paraY);
+
+        //Test with a dataset
         double test(DoubleMatrix paraX, IntArray paraY);
 
         //Get the number of correctly classified instances in the current round
@@ -51,7 +68,13 @@ class FullAnn
         void showWeight();
 
         //Code unit test
-        void selfTest();
+        void unitTest();
+
+        //Training/testing test
+        void trainingTestingTest();
+
+        //Cross validation test
+        void crossValidationTest();
 
     protected:
 
