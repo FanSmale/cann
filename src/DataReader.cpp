@@ -1,13 +1,14 @@
-#include<fstream>
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <iostream>
+/*
+ * The C++ Artificial Neural network project.
+ * Read data from a text file, and manage splitting.
+ * Code available at: github.com/fansmale/cann.
+ * Author: Fan Min
+ *   Lab of Machine Learning, School of Computer Science, Southwest Petroleum University, Chengdu, China
+ *   www.fansmale.com
+ *   minfanphd@163.com, minfan@swpu.edu.cn
+ */
 
 #include "DataReader.h"
-#include "MfMath.h"
-
-using namespace std;
 
 /**
  * Empty constructor.

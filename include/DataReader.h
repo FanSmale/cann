@@ -1,12 +1,27 @@
+/*
+ * The C++ Artificial Neural network project.
+ * Read data from a text file, and manage splitting.
+ * Code available at: github.com/fansmale/cann.
+ * Author: Fan Min
+ *   Lab of Machine Learning, School of Computer Science, Southwest Petroleum University, Chengdu, China
+ *   www.fansmale.com
+ *   minfanphd@163.com, minfan@swpu.edu.cn
+ */
+
 #ifndef DATAREADER_H
 #define DATAREADER_H
 
 #include <random>
 #include <string>
+#include<fstream>
+#include <iostream>
+#include <sstream>
+#include <iostream>
 
-#include "MfMath.h"
+#include "EigenSupport.h"
 
 using std::default_random_engine;
+using namespace std;
 
 class DataReader
 {

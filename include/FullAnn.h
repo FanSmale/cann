@@ -12,7 +12,7 @@
 #define FULLANN_H
 
 #include "AnnLayer.h"
-#include "MfMath.h"
+#include "EigenSupport.h"
 
 class FullAnn
 {

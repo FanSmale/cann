@@ -924,18 +924,28 @@
 
 1610589568 e:\c\eigen\eigen\src\eigenvalues\selfadjointeigensolver_lapacke.h
 
-1611975262 source:d:\c\cann\main.cpp
+1612356926 source:d:\c\cann\main.cpp
 	<iostream>
 	<stdio.h>
 	"AnnLayer.h"
 	"FullAnn.h"
-	"MfMath.h"
+	"EigenSupport.h"
 	"DataReader.h"
+	"CnnLayer.h"
+	"MfIntArray.h"
+	"MfDoubleMatrix.h"
+	"MfDataReader.h"
+	"MfAnnLayer.h"
+	"MfFullAnn.h"
 
-1611982710 d:\c\cann\include\annlayer.h
+1612308694 d:\c\cann\include\annlayer.h
 	<string>
-	"MfMath.h"
+	<Malloc.h>
+	<Math.h>
+	<iostream>
+	<stdio.h>
 	"Activator.h"
+	"EigenSupport.h"
 
 1610939460 d:\c\cann\include\mfmath.h
 	<stdlib.h>
@@ -945,22 +955,16 @@
 1610669579 d:\c\cann\include\intarray.h
 	<string>
 
-1611982568 d:\c\cann\include\fullann.h
+1612308581 d:\c\cann\include\fullann.h
 	"AnnLayer.h"
-	"MfMath.h"
+	"EigenSupport.h"
 
-1611982818 source:d:\c\cann\src\annlayer.cpp
-	<Malloc.h>
-	<Math.h>
-	<iostream>
-	<stdio.h>
+1612308727 source:d:\c\cann\src\annlayer.cpp
 	"AnnLayer.h"
-	"MfMath.h"
-	"Activator.h"
 
-1611983836 source:d:\c\cann\src\fullann.cpp
+1612308454 source:d:\c\cann\src\fullann.cpp
 	<iostream>
-	"MfMath.h"
+	"EigenSupport.h"
 	"FullAnn.h"
 	"DataReader.h"
 
@@ -1834,19 +1838,17 @@
 	<iostream>
 	"DataReader.h"
 
-1611976880 d:\c\cann\include\datareader.h
+1612308858 d:\c\cann\include\datareader.h
 	<random>
 	<string>
-	"MfMath.h"
-
-1611976865 source:d:\c\cann\src\datareader.cpp
 	<fstream>
 	<iostream>
-	<string>
 	<sstream>
 	<iostream>
+	"EigenSupport.h"
+
+1612308841 source:d:\c\cann\src\datareader.cpp
 	"DataReader.h"
-	"MfMath.h"
 
 1611977201 source:d:\c\cann\src\activator.cpp
 	<math.h>
@@ -1854,4 +1856,79 @@
 	"Activator.h"
 
 1611977220 d:\c\cann\include\activator.h
+
+1612015202 source:d:\c\cann\src\cnnlayer.cpp
+	"CnnLayer.h"
+
+1612308612 d:\c\cann\include\cnnlayer.h
+	<string>
+	<iostream>
+	<stdio.h>
+	"EigenSupport.h"
+
+1612271274 source:d:\c\cann\src\mfintarray.cpp
+	"MfIntArray.h"
+
+1612267753 d:\c\cann\include\mfintarray.h
+	<string>
+	<Malloc.h>
+	<stdio.h>
+	<random>
+	<fstream>
+	<iostream>
+
+1612355595 d:\c\cann\include\mfdoublematrix.h
+	<iostream>
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<string>
+	"Malloc.h"
+
+1612356872 source:d:\c\cann\src\mfdoublematrix.cpp
+	<MfDoubleMatrix.h>
+
+1612354847 d:\c\cann\include\mfdatareader.h
+	<random>
+	<stdlib.h>
+	<string>
+	<string.h>
+	<fstream>
+	<iostream>
+	<sstream>
+	"MfIntArray.h"
+	"MfDoubleMatrix.h"
+
+1612354865 source:d:\c\cann\src\mfdatareader.cpp
+	"MfDataReader.h"
+	<iostream>
+
+1612355530 source:d:\c\cann\src\mfannlayer.cpp
+	"MfAnnLayer.h"
+	"Activator.h"
+
+1612340479 d:\c\cann\include\mfannlayer.h
+	<random>
+	<string>
+	<Malloc.h>
+	<Math.h>
+	<iostream>
+	<stdio.h>
+	"MfDoubleMatrix.h"
+	"Activator.h"
+
+1610939460 d:\c\cann\include\eigensupport.h
+	<stdlib.h>
+	<D:\c\eigen\Eigen\Dense>
+	<D:\c\eigen\Eigen\src\core\Array.h>
+
+1612347431 source:d:\c\cann\src\mffullann.cpp
+	"MfFullAnn.h"
+
+1612341410 d:\c\cann\include\mffullann.h
+	<iostream>
+	"MfIntArray.h"
+	"MfDoubleMatrix.h"
+	"MfDataReader.h"
+	"MfAnnLayer.h"
 

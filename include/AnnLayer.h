@@ -13,10 +13,16 @@
 
 //#include <MfMatrix.h>
 #include <string>
-#include "MfMath.h"
+#include <Malloc.h>
+#include <Math.h>
+#include <iostream>
+#include <stdio.h>
+
 #include "Activator.h"
+#include "EigenSupport.h"
 
 using namespace std;
+using namespace Eigen;
 
 class AnnLayer
 {

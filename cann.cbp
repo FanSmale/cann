@@ -36,16 +36,28 @@
 		</Compiler>
 		<Unit filename="include/Activator.h" />
 		<Unit filename="include/AnnLayer.h" />
+		<Unit filename="include/CnnLayer.h" />
 		<Unit filename="include/DataReader.h" />
-		<Unit filename="include/FullAnn.h" />
-		<Unit filename="include/MfMath.h">
+		<Unit filename="include/EigenSupport.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="include/FullAnn.h" />
+		<Unit filename="include/MfAnnLayer.h" />
+		<Unit filename="include/MfDataReader.h" />
+		<Unit filename="include/MfDoubleMatrix.h" />
+		<Unit filename="include/MfFullAnn.h" />
+		<Unit filename="include/MfIntArray.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Activator.cpp" />
 		<Unit filename="src/AnnLayer.cpp" />
+		<Unit filename="src/CnnLayer.cpp" />
 		<Unit filename="src/DataReader.cpp" />
 		<Unit filename="src/FullAnn.cpp" />
+		<Unit filename="src/MfAnnLayer.cpp" />
+		<Unit filename="src/MfDataReader.cpp" />
+		<Unit filename="src/MfDoubleMatrix.cpp" />
+		<Unit filename="src/MfFullAnn.cpp" />
+		<Unit filename="src/MfIntArray.cpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

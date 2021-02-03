@@ -12,8 +12,14 @@
 #include <stdio.h>
 #include "AnnLayer.h"
 #include "FullAnn.h"
-#include "MfMath.h"
+#include "EigenSupport.h"
 #include "DataReader.h"
+#include "CnnLayer.h"
+#include "MfIntArray.h"
+#include "MfDoubleMatrix.h"
+#include "MfDataReader.h"
+#include "MfAnnLayer.h"
+#include "MfFullAnn.h"
 
 using namespace std;
 
@@ -40,13 +46,31 @@ int main()
     //Activator tempActivator;
     //tempActivator.selfTest();
 
-    FullAnn tempFullAnn;
+    //FullAnn tempFullAnn;
     //tempFullAnn.trainingTestingTest();
-    tempFullAnn.crossValidationTest();
+    //tempFullAnn.crossValidationTest();
+
+    //CnnLayer tempCnnLayer;
+    //tempCnnLayer.unitTest();
+
+    //MfIntArray tempArray;
+    //tempArray.unitTest();
+
+    //MfDoubleMatrix tempMatrix;
+    //tempMatrix.unitTest();
+
+    //MfDataReader tempReader;
+    //tempReader.unitTest();
+
+    //MfAnnLayer tempLayer;
+    //tempLayer.unitTest();
+
+    MfFullAnn tempMfFullAnn;
+    //tempMfFullAnn.trainingTestingTest();
+    tempMfFullAnn.crossValidationTest();
 
     printf("end.\r\n");
     getchar();
-
 
     return 0;
 }//Of main

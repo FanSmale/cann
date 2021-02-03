@@ -8,15 +8,7 @@
  *   minfanphd@163.com, minfan@swpu.edu.cn
  */
 
-#include <Malloc.h>
-#include <Math.h>
-#include <iostream>
-#include <stdio.h>
-#include "AnnLayer.h"
-#include "MfMath.h"
-#include "Activator.h"
-
-using namespace Eigen;
+ #include "AnnLayer.h"
 
 /**
  * The default constructor
