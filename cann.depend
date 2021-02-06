@@ -924,7 +924,7 @@
 
 1610589568 e:\c\eigen\eigen\src\eigenvalues\selfadjointeigensolver_lapacke.h
 
-1612356926 source:d:\c\cann\main.cpp
+1612606286 source:d:\c\cann\main.cpp
 	<iostream>
 	<stdio.h>
 	"AnnLayer.h"
@@ -937,6 +937,7 @@
 	"MfDataReader.h"
 	"MfAnnLayer.h"
 	"MfFullAnn.h"
+	"MfSize.h"
 
 1612308694 d:\c\cann\include\annlayer.h
 	<string>
@@ -1850,14 +1851,14 @@
 1612308841 source:d:\c\cann\src\datareader.cpp
 	"DataReader.h"
 
-1611977201 source:d:\c\cann\src\activator.cpp
-	<math.h>
-	<stdio.h>
+1612573748 source:d:\c\cann\src\activator.cpp
 	"Activator.h"
 
-1611977220 d:\c\cann\include\activator.h
+1612573758 d:\c\cann\include\activator.h
+	<math.h>
+	<stdio.h>
 
-1612015202 source:d:\c\cann\src\cnnlayer.cpp
+1612587605 source:d:\c\cann\src\cnnlayer.cpp
 	"CnnLayer.h"
 
 1612308612 d:\c\cann\include\cnnlayer.h
@@ -1866,7 +1867,7 @@
 	<stdio.h>
 	"EigenSupport.h"
 
-1612271274 source:d:\c\cann\src\mfintarray.cpp
+1612587485 source:d:\c\cann\src\mfintarray.cpp
 	"MfIntArray.h"
 
 1612267753 d:\c\cann\include\mfintarray.h
@@ -1877,15 +1878,17 @@
 	<fstream>
 	<iostream>
 
-1612355595 d:\c\cann\include\mfdoublematrix.h
+1612589196 d:\c\cann\include\mfdoublematrix.h
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	<string>
-	"Malloc.h"
+	<Malloc.h>
+	"Activator.h"
+	"MfSize.h"
 
-1612356872 source:d:\c\cann\src\mfdoublematrix.cpp
+1612605739 source:d:\c\cann\src\mfdoublematrix.cpp
 	<MfDoubleMatrix.h>
 
 1612354847 d:\c\cann\include\mfdatareader.h
@@ -1899,15 +1902,15 @@
 	"MfIntArray.h"
 	"MfDoubleMatrix.h"
 
-1612354865 source:d:\c\cann\src\mfdatareader.cpp
+1612587467 source:d:\c\cann\src\mfdatareader.cpp
 	"MfDataReader.h"
 	<iostream>
 
-1612355530 source:d:\c\cann\src\mfannlayer.cpp
+1612609792 source:d:\c\cann\src\mfannlayer.cpp
 	"MfAnnLayer.h"
 	"Activator.h"
 
-1612340479 d:\c\cann\include\mfannlayer.h
+1612514176 d:\c\cann\include\mfannlayer.h
 	<random>
 	<string>
 	<Malloc.h>
@@ -1922,7 +1925,7 @@
 	<D:\c\eigen\Eigen\Dense>
 	<D:\c\eigen\Eigen\src\core\Array.h>
 
-1612347431 source:d:\c\cann\src\mffullann.cpp
+1612606262 source:d:\c\cann\src\mffullann.cpp
 	"MfFullAnn.h"
 
 1612341410 d:\c\cann\include\mffullann.h
@@ -1931,4 +1934,10 @@
 	"MfDoubleMatrix.h"
 	"MfDataReader.h"
 	"MfAnnLayer.h"
+
+1612580414 d:\c\cann\include\mfsize.h
+	<string>
+
+1612576704 source:d:\c\cann\src\mfsize.cpp
+	"MfSize.h"
 

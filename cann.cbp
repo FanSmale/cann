@@ -47,6 +47,7 @@
 		<Unit filename="include/MfDoubleMatrix.h" />
 		<Unit filename="include/MfFullAnn.h" />
 		<Unit filename="include/MfIntArray.h" />
+		<Unit filename="include/MfSize.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Activator.cpp" />
 		<Unit filename="src/AnnLayer.cpp" />
@@ -58,6 +59,7 @@
 		<Unit filename="src/MfDoubleMatrix.cpp" />
 		<Unit filename="src/MfFullAnn.cpp" />
 		<Unit filename="src/MfIntArray.cpp" />
+		<Unit filename="src/MfSize.cpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

@@ -38,16 +38,16 @@ MfFullAnn::MfFullAnn(MfIntArray* paraSizes, char paraActivation, double paraRate
     mobp = paraMobp;
 
     //Allocate space
-    numLayers = layerSizes -> getLength() - 1;
+    numLayers = layerSizes->getLength() - 1;
     layers = new MfAnnLayer* [numLayers];
 
     for (int i = 0; i < numLayers; i ++)
     {
-        layers[i] = new MfAnnLayer(layerSizes -> getValue(i), layerSizes -> getValue(i + 1), activation, rate, mobp);
+        layers[i] = new MfAnnLayer(layerSizes->getValue(i), layerSizes->getValue(i + 1), activation, rate, mobp);
     }//Of for i
 
-    int tempInputSize = layerSizes -> getValue(0);
-    int tempOutputSize = layerSizes -> getValue(numLayers);
+    int tempInputSize = layerSizes->getValue(0);
+    int tempOutputSize = layerSizes->getValue(numLayers);
     currentInstance = new MfDoubleMatrix(1, tempInputSize);
     currentDecision = new MfDoubleMatrix(1, tempOutputSize);
     currentOutput = new MfDoubleMatrix(1, tempOutputSize);
@@ -65,8 +65,10 @@ MfFullAnn::~MfFullAnn()
     }//Of for i
     free(layers);
 
+    free(currentInstance);
     free(currentDecision);
     free(currentOutput);
+    free(outputOnesArray);
 }//Of the destructor
 
 /**
@@ -75,7 +77,7 @@ MfFullAnn::~MfFullAnn()
 string MfFullAnn::toString()
 {
     string resultString = "I am a full ANN with " + to_string(numLayers)
-                          + " Layers.\r\n";
+        + " Layers.\r\n";
 
     return resultString;
 }//Of toString
@@ -92,7 +94,7 @@ void MfFullAnn::setActivationFunction(int paraLayer, char paraActivation)
     {
         throw "MfFullAnn::setActivationFunction(), layer out of range.";
     }//Of if
-    layers[paraLayer] -> setActivationFunction(paraActivation);
+    layers[paraLayer]->setActivationFunction(paraActivation);
 }//Of setActivationFunction
 
 /**
@@ -118,7 +120,7 @@ void MfFullAnn::reset()
 {
     for (int i = 0; i < numLayers; i ++)
     {
-        layers[i] -> reset();
+        layers[i]->reset();
     }//Of for i
 }//Of reset
 
@@ -134,15 +136,9 @@ MfDoubleMatrix* MfFullAnn::forward(MfDoubleMatrix* paraInput)
     MfDoubleMatrix* tempData = paraInput;
     for (int i = 0; i < numLayers; i ++)
     {
-        //printf("Forward layer %d\r\n", i);
-        tempData = layers[i] -> forward(tempData);
-        //printf("After layer %d.\r\n", i);
-        //cout << tempData -> toString() <<endl;
+        tempData = layers[i]->forward(tempData);
     }//Of for i
-
-    currentOutput -> copyFrom(tempData);
-    //printf("MfFullAnn Forward complete, the currentOutput is\r\n");
-    //cout << currentOutput -> toString() << endl;
+    currentOutput->cloneFrom(tempData);
 
     return currentOutput;
 }//Of forward
@@ -154,22 +150,20 @@ MfDoubleMatrix* MfFullAnn::forward(MfDoubleMatrix* paraInput)
  */
 void MfFullAnn::backPropagation(MfDoubleMatrix* paraTarget)
 {
-    outputOnesArray -> fill(1);
+    outputOnesArray->fill(1);
 
-    MfDoubleMatrix* layerErrors = currentOutput -> cwiseProductToMe(outputOnesArray -> minusToMe(currentOutput)
-        -> cwiseProductToMe(paraTarget -> minusToMe(currentOutput)));
-    //printf("backPropagation, layerErrors = \r\n");
-    //cout << layerErrors -> toString() << endl;
-    //printf("numLayers = %d \r\n", numLayers);
-    //cout << layerErrors << endl;
+    //MfDoubleMatrix* layerErrors = currentOutput->cwiseProductToMe(outputOnesArray->subtractToMe(currentOutput)
+    //   ->cwiseProductToMe(paraTarget->subtractToMe(currentOutput)));
+    paraTarget->subtractToMe(paraTarget, currentOutput);
+    outputOnesArray->subtractToMe(outputOnesArray, currentOutput);
+    outputOnesArray->cwiseProductToMe(outputOnesArray, paraTarget);
+    currentOutput->cwiseProductToMe(currentOutput, outputOnesArray);
+    MfDoubleMatrix* layerErrors = currentOutput;
 
     for (int i = numLayers - 1; i >= 0; i --)
     {
-        //printf("Layer %d.\r\n", i);
-        layerErrors = layers[i] -> backPropagation(layerErrors);
-        //cout << layerErrors -> toString() <<endl;
+        layerErrors = layers[i]->backPropagation(layerErrors);
     }//Of for i
-    //printf("backPropagation ends\r\n");
 }//Of backPropagation
 
 /**
@@ -180,8 +174,8 @@ void MfFullAnn::backPropagation(MfDoubleMatrix* paraTarget)
  */
 void MfFullAnn::train(MfDoubleMatrix* paraX, int paraY, int paraNumClasses)
 {
-    currentDecision -> fill(0);
-    currentDecision -> setValue(0, paraY, 1);
+    currentDecision->fill(0);
+    currentDecision->setValue(0, paraY, 1);
 
     forward(paraX);
     backPropagation(currentDecision);
@@ -195,14 +189,12 @@ void MfFullAnn::train(MfDoubleMatrix* paraX, int paraY, int paraNumClasses)
  */
 void MfFullAnn::train(MfDoubleMatrix* paraX, MfIntArray* paraY, int paraNumClasses)
 {
-    //printf("Training test 1, Y = \r\n");
-    //cout << paraY -> toString() << endl;
-    int tempNumInstances = paraX -> getRows();
-    int tempNumConditions = paraX -> getColumns();
-    if(tempNumInstances != paraY -> getLength())
+    int tempNumInstances = paraX->getRows();
+    int tempNumConditions = paraX->getColumns();
+    if(tempNumInstances != paraY->getLength())
     {
         printf("The number of instances is %d while the number of labels is %d\r\n", tempNumInstances,
-               paraY -> getLength());
+               paraY->getLength());
         throw "MfFullAnn::train, length not match.";
     }//Of if
 
@@ -211,20 +203,12 @@ void MfFullAnn::train(MfDoubleMatrix* paraX, MfIntArray* paraY, int paraNumClass
         //Copy this instance
         for(int j = 0; j < tempNumConditions; j ++)
         {
-            //printf("tempData setValue, %d, %lf\r\n", j, paraX -> getValue(i, j));
-            currentInstance -> setValue(0, j, paraX ->getValue(i, j));
+            currentInstance->setValue(0, j, paraX ->getValue(i, j));
         }//Of for j
-        currentDecision -> fill(0);
-        //printf("tempDecision setValue, %d \r\n", paraY -> getValue(i));
-        currentDecision -> setValue(0, paraY -> getValue(i), 1);
-
-        //printf("The %dth training data is: ", i);
-        //cout << tempData << endl;
-        //printf("The class information is: ");
-        //cout << tempDecision << endl;
+        currentDecision->fill(0);
+        currentDecision->setValue(0, paraY->getValue(i), 1);
 
         forward(currentInstance);
-        //printf("Now backPropagation \r\n");
         backPropagation(currentDecision);
     }//Of for i
 }//Of train
@@ -241,11 +225,11 @@ bool MfFullAnn::test(MfDoubleMatrix* paraX, int paraY)
     double tempMaxValue = -10;
 
     MfDoubleMatrix* tempPrediction = forward(paraX);
-    for(int i = 0; i < tempPrediction -> getColumns(); i ++)
+    for(int i = 0; i < tempPrediction->getColumns(); i ++)
     {
-        if (tempMaxValue < tempPrediction -> getValue(0, i))
+        if (tempMaxValue < tempPrediction->getValue(0, i))
         {
-            tempMaxValue = tempPrediction -> getValue(0, i);
+            tempMaxValue = tempPrediction->getValue(0, i);
             tempPredictionClass = i;
         }//Of if
     }//Of for i
@@ -262,12 +246,12 @@ bool MfFullAnn::test(MfDoubleMatrix* paraX, int paraY)
  */
 double MfFullAnn::test(MfDoubleMatrix* paraX, MfIntArray* paraY)
 {
-    int tempNumInstances = paraX -> getRows();
-    int tempNumConditions = paraX -> getColumns();
+    int tempNumInstances = paraX->getRows();
+    int tempNumConditions = paraX->getColumns();
     int tempPredictionClass;
     double tempMaxValue;
 
-    if(tempNumInstances != paraY -> getLength())
+    if(tempNumInstances != paraY->getLength())
     {
         throw "MfFullAnn::test, length not match";
     }//Of if
@@ -282,23 +266,23 @@ double MfFullAnn::test(MfDoubleMatrix* paraX, MfIntArray* paraY)
         //Copy this instance
         for(int j = 0; j < tempNumConditions; j ++)
         {
-            currentInstance -> setValue(0, j, paraX -> getValue(i, j));
+            currentInstance->setValue(0, j, paraX->getValue(i, j));
         }//Of for j
         printf("The %dth testing data is: ", i);
-        cout << currentInstance -> toString() << ", " << paraY -> getValue(i) << endl;
+        cout << currentInstance->toString() << ", " << paraY->getValue(i) << endl;
 
         currentOutput = forward(currentInstance);
-        for(int j = 0; j < currentOutput -> getColumns(); j ++)
+        for(int j = 0; j < currentOutput->getColumns(); j ++)
         {
-            if (tempMaxValue < currentOutput -> getValue(0, j))
+            if (tempMaxValue < currentOutput->getValue(0, j))
             {
-                tempMaxValue = currentOutput -> getValue(0, j);
+                tempMaxValue = currentOutput->getValue(0, j);
                 tempPredictionClass = j;
             }//Of if
         }//Of for j
         printf("The predicted class is %d\r\n", tempPredictionClass);
 
-        if (tempPredictionClass == paraY -> getValue(i))
+        if (tempPredictionClass == paraY->getValue(i))
         {
             numCorrect ++;
         }//Of if
@@ -322,7 +306,7 @@ void MfFullAnn::showWeight()
     printf("numLayers = %d \r\n", numLayers);
     for(int i = 0; i < numLayers; i ++)
     {
-        layers[i] -> showWeight();
+        layers[i]->showWeight();
     }//Of for i
 }//Of showWeight
 
@@ -336,7 +320,7 @@ void MfFullAnn::unitTest()
     MfIntArray* tempMfIntArray = new MfIntArray(3);
     for(int i = 0; i < 3; i ++)
     {
-        tempMfIntArray -> setValue(i, tempArray[i]);
+        tempMfIntArray->setValue(i, tempArray[i]);
     }//Of for i
 
     printf("MfIntArray constructed. \r\n");
@@ -345,18 +329,18 @@ void MfFullAnn::unitTest()
     printf("MfFullAnn built\r\n");
 
     MfDoubleMatrix* tempData = new MfDoubleMatrix(1, 3);
-    tempData -> setValue(0, 0, 1.2);
-    tempData -> setValue(0, 1, 1.6);
-    tempData -> setValue(0, 2, 2.7);
+    tempData->setValue(0, 0, 1.2);
+    tempData->setValue(0, 1, 1.6);
+    tempData->setValue(0, 2, 2.7);
     printf("Input data built\r\n");
 
-    tempData = tempMfFullAnn -> forward(tempData);
+    tempData = tempMfFullAnn->forward(tempData);
     printf("After forward \r\n");
 
-    cout << tempData -> toString() <<endl;
+    cout << tempData->toString() <<endl;
 
     printf("Back propagation:\r\n");
-    tempMfFullAnn -> backPropagation(tempData);
+    tempMfFullAnn->backPropagation(tempData);
 
     //Build the network structure
     /*
@@ -399,13 +383,13 @@ void MfFullAnn::trainingTestingTest()
     char *tempFilename = (char *)tempString.c_str();
 
     MfDataReader* tempReader = new MfDataReader(tempFilename);
-    tempReader -> randomize();
-    tempReader -> splitInTwo(0.6);
+    tempReader->randomize();
+    tempReader->splitInTwo(0.6);
 
-    MfDoubleMatrix* tempX = tempReader -> getTrainingX();
-    MfIntArray* tempY = tempReader -> getTrainingY();
-    MfDoubleMatrix* tempTestingX = tempReader -> getTestingX();
-    MfIntArray* tempTestingY = tempReader -> getTestingY();
+    MfDoubleMatrix* tempX = tempReader->getTrainingX();
+    MfIntArray* tempY = tempReader->getTrainingY();
+    MfDoubleMatrix* tempTestingX = tempReader->getTestingX();
+    MfIntArray* tempTestingY = tempReader->getTestingY();
 
     printf("Training/testing data generated:\r\n");
 
@@ -414,7 +398,7 @@ void MfFullAnn::trainingTestingTest()
     MfIntArray* tempMfIntArray = new MfIntArray(tempDepth);
     for(int i = 0; i < tempDepth; i ++)
     {
-        tempMfIntArray -> setValue(i, tempArray[i]);
+        tempMfIntArray->setValue(i, tempArray[i]);
     }//Of for i
     MfFullAnn* tempMfFullAnn = new MfFullAnn(tempMfIntArray, 's', 0.1, 0.1);
 
@@ -422,16 +406,19 @@ void MfFullAnn::trainingTestingTest()
     for(int i = 0; i < 1000; i ++)
     {
         //printf("i = %d:\r\n", i);
-        tempMfFullAnn -> train(tempX, tempY, 3);
+        tempMfFullAnn->train(tempX, tempY, 3);
         if (i % 200 == 0)
         {
-           tempMfFullAnn -> showWeight();
+           tempMfFullAnn->showWeight();
         }//Of if
     }//Of for i
 
     printf("After training:\r\n\r\n\r\n\r\n");
-    double tempPrecision = tempMfFullAnn -> test(tempTestingX, tempTestingY);
+    double tempPrecision = tempMfFullAnn->test(tempTestingX, tempTestingY);
     printf("After testing, the precision is %lf:\r\n", tempPrecision);
+
+    free(tempMfIntArray);
+    free(tempMfFullAnn);
 
     printf("Finish. \r\n");
 }//Of trainingTestingTest
@@ -445,14 +432,14 @@ void MfFullAnn::crossValidationTest()
     char *tempFilename = (char *)tempString.c_str();
 
     MfDataReader* tempReader = new MfDataReader(tempFilename);
-    tempReader -> randomize();
+    tempReader->randomize();
 
     int tempDepth = 4;
     int tempArray[tempDepth] = {4, 8, 8, 3};
     MfIntArray* tempMfIntArray = new MfIntArray(tempDepth);
     for(int i = 0; i < tempDepth; i ++)
     {
-        tempMfIntArray -> setValue(i, tempArray[i]);
+        tempMfIntArray->setValue(i, tempArray[i]);
     }//Of for i
 
     int tempNumFolds = 5;
@@ -464,30 +451,30 @@ void MfFullAnn::crossValidationTest()
     for(int i = 0; i < tempNumFolds; i++)
     {
         //消除上个网络的权值影响.
-        tempMfFullAnn -> reset();
-        tempReader -> crossValidationSplit(tempNumFolds, i);
+        tempMfFullAnn->reset();
+        tempReader->crossValidationSplit(tempNumFolds, i);
 
-        MfDoubleMatrix* tempX = tempReader -> getTrainingX();
-        MfIntArray* tempY = tempReader -> getTrainingY();
-        MfDoubleMatrix* tempTestingX = tempReader -> getTestingX();
-        MfIntArray* tempTestingY = tempReader -> getTestingY();
+        MfDoubleMatrix* tempX = tempReader->getTrainingX();
+        MfIntArray* tempY = tempReader->getTrainingY();
+        MfDoubleMatrix* tempTestingX = tempReader->getTestingX();
+        MfIntArray* tempTestingY = tempReader->getTestingY();
 
         printf("Training/testing data generated:\r\n");
 
         for(int i = 0; i < 1000; i ++)
         {
-            tempMfFullAnn -> train(tempX, tempY, 3);
+            tempMfFullAnn->train(tempX, tempY, 3);
             //if (i % 300 == 0)
             //{
-            //   tempMfFullAnn -> showWeight();
+            //   tempMfFullAnn->showWeight();
             //}//Of if
         }//Of for i
 
         printf("After training:\r\n\r\n\r\n\r\n");
 
-        double tempPrecision = tempMfFullAnn -> test(tempTestingX, tempTestingY);
+        double tempPrecision = tempMfFullAnn->test(tempTestingX, tempTestingY);
         printf("After testing, the precision is %lf:\r\n", tempPrecision);
-        tempCorrectSum += tempMfFullAnn -> getNumCorrect();
+        tempCorrectSum += tempMfFullAnn->getNumCorrect();
     }//Of for i
     free(tempMfFullAnn);
 

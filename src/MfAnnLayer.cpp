@@ -18,6 +18,7 @@ MfAnnLayer::MfAnnLayer()
 {
     inputSize = 1;
     outputSize = 1;
+    activator = nullptr;
 }//Of the default constructor
 
 /**
@@ -42,7 +43,7 @@ MfAnnLayer::MfAnnLayer(int paraInputSize, int paraOutputSize, char paraActivatio
     {
         for (int j = 0; j < paraOutputSize; j ++)
         {
-            weightMatrix -> setValue(i, j, (double)rand()/RAND_MAX);
+            weightMatrix->setValue(i, j, (double)rand()/RAND_MAX);
         }//Of for j
     }//Of for i
 
@@ -51,10 +52,12 @@ MfAnnLayer::MfAnnLayer(int paraInputSize, int paraOutputSize, char paraActivatio
     offsetDeltaMatrix = new MfDoubleMatrix(1, paraOutputSize);
     for (int i = 0; i < paraOutputSize; i ++)
     {
-        offsetMatrix -> setValue(0, i, (double)rand()/RAND_MAX);
+        offsetMatrix->setValue(0, i, (double)rand()/RAND_MAX);
     }//Of for i
 
-    activator.setActivationFunction(paraActivation);
+    activator = new Activator(paraActivation);
+
+    outputData->setActivator(activator);
 }//Of the second constructor
 
 /**
@@ -62,6 +65,7 @@ MfAnnLayer::MfAnnLayer(int paraInputSize, int paraOutputSize, char paraActivatio
  */
 MfAnnLayer::~MfAnnLayer()
 {
+    free(activator);
     free(weightMatrix);
     free(weightDeltaMatrix);
     free(errorMatrix);
@@ -80,7 +84,7 @@ string MfAnnLayer::toString()
     string resultString = "I am an ANN layer with size " + to_string(inputSize)
                           + "*" + to_string(outputSize) + "\r\n";
     resultString += "weight matrix: \r\n";
-    resultString += weightMatrix -> toString();
+    resultString += weightMatrix->toString();
 
     return resultString;
 }//Of toString
@@ -91,7 +95,7 @@ string MfAnnLayer::toString()
  */
 void MfAnnLayer::setActivationFunction(char paraFunction)
 {
-    activator.setActivationFunction(paraFunction);
+    activator->setActivationFunction(paraFunction);
 }//Of setActivationFunction
 
 /**
@@ -103,13 +107,13 @@ void MfAnnLayer::setActivationFunction(char paraFunction)
     {
         for (int j = 0; j < outputSize; j ++)
         {
-            weightMatrix -> setValue(i, j, (double)rand()/RAND_MAX);
+            weightMatrix->setValue(i, j, (double)rand()/RAND_MAX);
         }//Of for j
     }//Of for i
 
     for (int i = 0; i < outputSize; i ++)
     {
-        offsetMatrix -> setValue(0, i, (double)rand()/RAND_MAX);
+        offsetMatrix->setValue(0, i, (double)rand()/RAND_MAX);
     }//Of for i
  }//Of reset
 
@@ -136,20 +140,17 @@ int MfAnnLayer::getOutputSize()
 MfDoubleMatrix* MfAnnLayer::forward(MfDoubleMatrix* paraData)
 {
     //printf("Forwarding, the data is: \r\n");
-    //cout << paraData -> toString() << endl;
+    //cout << paraData->toString() << endl;
 
     //printf("The weights are: \r\n");
-    //printf(weightMatrix -> toString().data());
+    //printf(weightMatrix->toString().data());
 
-    inputData -> copyFrom(paraData);
+    inputData->cloneFrom(paraData);
 
-    outputData -> timesToMe(paraData, weightMatrix);
-    outputData -> addToMe(offsetMatrix);
+    outputData->timesToMe(paraData, weightMatrix);
+    outputData->addToMe(outputData, offsetMatrix);
 
-    for(int i = 0; i < outputSize; i ++)
-    {
-        outputData -> setValue(0, i, activator.activate(outputData -> getValue(0, i)));
-    }//Of for i
+    outputData->activate();
 
     return outputData;
 }//Of forward
@@ -168,47 +169,34 @@ MfDoubleMatrix* MfAnnLayer::backPropagation(MfDoubleMatrix* paraErrors)
     {
         double errorSum = 0;
 
-        //printf("MfAnnLayer::backPropagation test 2.1, i = %d\r\n", i);
         //Weights adjusting
         for(int j = 0; j < outputSize; j ++)
         {
             //printf("MfAnnLayer::backPropagation test 2.1.1, j = %d\r\n", j);
-            errorSum += paraErrors -> getValue(0, j) * weightMatrix -> getValue(i, j);
-            //printf("MfAnnLayer::backPropagation test 2.1.2, weightDeltaMatrix = \r\n");
-            //cout << weightDeltaMatrix -> toString() << endl;
-            //printf("MfAnnLayer::backPropagation test 2.1.3, paraErrors = \r\n");
-            //cout << paraErrors -> toString() << endl;
-            //printf("MfAnnLayer::backPropagation test 2.1.4, inputData = \r\n");
-            //cout << inputData -> toString() << endl;
-            tempValue1 = mobp * weightDeltaMatrix -> getValue(i, j)
-                                      + rate * paraErrors -> getValue(0, j) * inputData -> getValue(0, i);
-            //printf("MfAnnLayer::backPropagation test 2.1.3, tempValue1 = %d\r\n", tempValue1);
-            weightDeltaMatrix -> setValue(i, j, tempValue1);
+            errorSum += paraErrors->getValue(0, j) * weightMatrix->getValue(i, j);
+            tempValue1 = mobp * weightDeltaMatrix->getValue(i, j)
+                + rate * paraErrors->getValue(0, j) * inputData->getValue(0, i);
+            weightDeltaMatrix->setValue(i, j, tempValue1);
 
-            //printf("MfAnnLayer::backPropagation test 2.1.4, j = %d\r\n", j);
-            tempValue2 = weightMatrix -> getValue(i, j);
-            weightMatrix -> setValue(i, j, tempValue1 + tempValue2);
-            //printf("%d, %d weightMatrix(i, j) += weightDeltaMatrix(i, j) %lf; = %lf\r\n",
-            //      i, j, weightMatrix(i, j), weightDeltaMatrix(i, j));
-            //printf("MfAnnLayer::backPropagation test 2.1.1, j = %d\r\n", j);
+            tempValue2 = weightMatrix->getValue(i, j);
+            weightMatrix->setValue(i, j, tempValue1 + tempValue2);
 
             if (i == inputSize - 1)
             {
                 // Offset adjusting
-                tempValue1 = offsetDeltaMatrix -> getValue(0, j);
-                tempValue2 = paraErrors -> getValue(0, j);
+                tempValue1 = offsetDeltaMatrix->getValue(0, j);
+                tempValue2 = paraErrors->getValue(0, j);
                 tempValue3 = mobp * tempValue1 + rate * tempValue2;
-                offsetDeltaMatrix -> setValue(0, j, tempValue3);
-                tempValue4 = offsetMatrix -> getValue(0, j);
+                offsetDeltaMatrix->setValue(0, j, tempValue3);
+                tempValue4 = offsetMatrix->getValue(0, j);
                 //offsetMatrix(0, j) += offsetDeltaMatrix(0, j);
-                offsetMatrix -> setValue(0, j, tempValue4 + tempValue3);
+                offsetMatrix->setValue(0, j, tempValue4 + tempValue3);
             }//Of if
         }//Of for j
 
         //For the activation function.
-        tempValue1 = inputData -> getValue(0, i);
-        errorMatrix -> setValue(0, i, tempValue1 * (1 - tempValue1) * errorSum);
-        // = inputData(0, i) * (1 - inputData(0, i)) * errorSum;
+        tempValue1 = inputData->getValue(0, i);
+        errorMatrix->setValue(0, i, tempValue1 * (1 - tempValue1) * errorSum);
     }//Of for i
 
     return errorMatrix;
@@ -219,7 +207,7 @@ MfDoubleMatrix* MfAnnLayer::backPropagation(MfDoubleMatrix* paraErrors)
  */
 void MfAnnLayer::showWeight()
 {
-    cout << weightMatrix -> toString() << endl;
+    cout << weightMatrix->toString() << endl;
 }//Of showWeight
 
 /**
@@ -229,22 +217,22 @@ void MfAnnLayer::unitTest()
 {
     MfAnnLayer* tempLayer = new MfAnnLayer(2, 3, 's', 0.01, 0.1);
     MfDoubleMatrix* tempInput = new MfDoubleMatrix(1, 2);
-    tempInput -> setValue(0, 0, 1.0);
-    tempInput -> setValue(0, 1, 4.0);
+    tempInput->setValue(0, 0, 1.0);
+    tempInput->setValue(0, 1, 4.0);
     //tempInput << 1.0, 4.0;
     printf("The input is: \r\n");
-    cout << tempInput -> toString() << endl;
+    cout << tempInput->toString() << endl;
 
     printf("The weights are: \r\n");
-    cout << tempLayer -> weightMatrix -> toString() << endl;
+    cout << tempLayer->weightMatrix->toString() << endl;
 
-    MfDoubleMatrix* tempOutput = tempLayer -> forward(tempInput);
+    MfDoubleMatrix* tempOutput = tempLayer->forward(tempInput);
     printf("The output is:\r\n");
-    cout << tempOutput -> toString() << endl;
+    cout << tempOutput->toString() << endl;
 
     printf("Back propogation \r\n");
-    tempLayer -> backPropagation(tempOutput);
+    tempLayer->backPropagation(tempOutput);
 
     printf("Show me: \r\n");
-    cout << tempLayer -> toString() << endl;
+    cout << tempLayer->toString() << endl;
 }//Of unitTest

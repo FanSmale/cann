@@ -125,7 +125,7 @@ MfIntArray* MfIntArray::copy()
     //Copy
     for (int i = 0; i < length; i ++)
     {
-        resultArray -> data[i] = data[i];
+        resultArray->data[i] = data[i];
     }//Of for i
 
     return resultArray;
@@ -137,16 +137,16 @@ MfIntArray* MfIntArray::copy()
  */
 void MfIntArray::copyFrom(MfIntArray* paraArray)
 {
-    if (length != paraArray -> length)
+    if (length != paraArray->length)
     {
         printf("Error occurred in MfIntArray.copyFrom(MfIntArray*), lengths do not match: %d vs. %d.\r\n",
-               length, paraArray -> length);
+               length, paraArray->length);
     }
 
     //Copy
     for (int i = 0; i < length; i ++)
     {
-        data[i] = paraArray -> data[i];
+        data[i] = paraArray->data[i];
     }//Of for i
 }//Of copyFrom
 
@@ -181,11 +181,11 @@ void MfIntArray::unitTest()
     MfIntArray* tempArray = new MfIntArray(3, tempMfIntArray);
 
     printf("Original data\r\n");
-    printf(tempArray -> toString().data());
+    printf(tempArray->toString().data());
 
-    tempArray -> setValue(1, 9);
+    tempArray->setValue(1, 9);
     printf("Set one value\r\n");
-    printf(tempArray -> toString().data());
+    printf(tempArray->toString().data());
 }//Of unitTest
 
 

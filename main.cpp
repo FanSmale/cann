@@ -20,12 +20,17 @@
 #include "MfDataReader.h"
 #include "MfAnnLayer.h"
 #include "MfFullAnn.h"
+#include "MfSize.h"
 
 using namespace std;
 
 int main()
 {
     printf("Hello world!\r\n");
+
+    /**
+     *For Ann
+     */
 
     //Matrix tempMatrix(2, 3);
     //tempMatrix.selfTest();
@@ -66,8 +71,14 @@ int main()
     //tempLayer.unitTest();
 
     MfFullAnn tempMfFullAnn;
-    //tempMfFullAnn.trainingTestingTest();
-    tempMfFullAnn.crossValidationTest();
+    tempMfFullAnn.trainingTestingTest();
+    //tempMfFullAnn.crossValidationTest();
+
+    /**
+     *For Cnn
+     */
+    //MfSize tempSize;
+    //tempSize.unitTest();
 
     printf("end.\r\n");
     getchar();

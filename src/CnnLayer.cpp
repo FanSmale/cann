@@ -9,7 +9,6 @@
  *   minfanphd@163.com, minfan@swpu.edu.cn
  */
 
-//#include <iostream>
 #include "CnnLayer.h"
 
 /**
@@ -59,8 +58,8 @@ CnnLayer::~CnnLayer()
  */
 DoubleMatrix* CnnLayer::convolutionLoseEdge(DoubleMatrix* paraMatrix)
 {
-    int tempInputNumRows = paraMatrix -> rows();
-    int tempInputNumCols = paraMatrix -> cols();
+    int tempInputNumRows = paraMatrix->rows();
+    int tempInputNumCols = paraMatrix->cols();
 
     int tempOutputNumRows = tempInputNumRows - kernelSize + 1;
     int tempOutputNumCols = tempInputNumCols - kernelSize + 1;
@@ -97,8 +96,8 @@ DoubleMatrix* CnnLayer::convolutionLoseEdge(DoubleMatrix* paraMatrix)
  */
 DoubleMatrix* CnnLayer::convolutionKeepEdge(DoubleMatrix* paraMatrix)
 {
-    int tempNumRows = paraMatrix -> rows();
-    int tempNumCols = paraMatrix -> cols();
+    int tempNumRows = paraMatrix->rows();
+    int tempNumCols = paraMatrix->cols();
 
     DoubleMatrix* resultMatrixPtr = new DoubleMatrix(tempNumRows, tempNumCols);
     double tempValue;

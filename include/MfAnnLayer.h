@@ -71,14 +71,14 @@ class MfAnnLayer
         //The size of the output
         int outputSize;
 
-        //The activator
-        Activator activator;
-
         //Learning rate
         double rate;
 
         //Mobp
         double mobp;
+
+        //The activator
+        Activator* activator;
 
         //Weighted error sum
         double errorSum;

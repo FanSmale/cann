@@ -1,6 +1,12 @@
-#include <math.h>
-#include <stdio.h>
-//#include <iostream>
+/*
+ * The C++ Artificial Neural network project.
+ * This class manages all kinds of activators.
+ * Code available at: github.com/fansmale/cann.
+ * Author: Heng-Ru Zhang and Fan Min
+ *   Lab of Machine Learning, School of Computer Science, Southwest Petroleum University, Chengdu, China
+ *   www.fansmale.com
+ *   minfanphd@163.com, minfan@swpu.edu.cn
+ */
 
 #include "Activator.h"
 

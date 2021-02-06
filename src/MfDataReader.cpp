@@ -93,14 +93,14 @@ MfDataReader::MfDataReader(char* paraFilename)
             {
                 sscanf(tempRemaining, "%lf", &tempDouble);
                 //printf("MfDataReader constructor test 4.1.1, %lf\r\n", tempDouble);
-                wholeX -> setValue(tempInstanceIndex, i, tempDouble);
+                wholeX->setValue(tempInstanceIndex, i, tempDouble);
                 //wholeX[0](tempInstanceIndex, i) = tempDouble;
                 tempRemaining = strtok(NULL, tempSplit);
             }//Of for i
 
             sscanf(tempRemaining, "%d", &tempInt);
             //printf("instance %d, y = %d.\r\n", tempInstanceIndex, tempInt);
-            wholeY -> setValue(tempInstanceIndex, tempInt);
+            wholeY->setValue(tempInstanceIndex, tempInt);
             //sscanf(tempRemaining, "%d", &[0](0, tempInstanceIndex));
 
             tempInstanceIndex ++;
@@ -108,7 +108,7 @@ MfDataReader::MfDataReader(char* paraFilename)
     }//Of while
 
     //printf("File read, wholeY is:\r\n");
-    //cout << wholeY -> toString() << endl;
+    //cout << wholeY->toString() << endl;
 
     tempInputStream.close();
 
@@ -117,7 +117,7 @@ MfDataReader::MfDataReader(char* paraFilename)
     randomArray = new MfIntArray(numInstances);
     for(int i = 0; i < numInstances; i ++)
     {
-        randomArray -> setValue(i, i);
+        randomArray->setValue(i, i);
     }//Of for i
 
     //Step 6. Initialize other pointers
@@ -170,13 +170,13 @@ void MfDataReader::splitInTwo(double paraTrainingFraction)
         for(int j = 0; j < numConditions; j ++)
         {
             //trainingX[0](i, j) = wholeX[0](randomArray[0](0, i), j);
-            trainingX -> setValue(i, j, wholeX -> getValue(randomArray -> getValue(i), j));
+            trainingX->setValue(i, j, wholeX->getValue(randomArray->getValue(i), j));
         }//Of for j
         //trainingY[0](0, i) = wholeY[0](0, randomArray[0](0, i));
-        trainingY -> setValue(i, wholeY -> getValue(randomArray -> getValue(i)));
+        trainingY->setValue(i, wholeY->getValue(randomArray->getValue(i)));
     }//Of for i
     //printf("In MfDataReader, the training Y is:\r\n");
-    //cout << trainingY -> toString() << endl;
+    //cout << trainingY->toString() << endl;
 
     //Testing set
     for(int i = tempTrainingSize; i < numInstances; i ++)
@@ -184,10 +184,10 @@ void MfDataReader::splitInTwo(double paraTrainingFraction)
         for(int j = 0; j < numConditions; j ++)
         {
             //testingX[0](i - tempTrainingSize, j) = wholeX[0](randomArray[0](0, i), j);
-            testingX -> setValue(i - tempTrainingSize, j, wholeX -> getValue(randomArray -> getValue(i), j));
+            testingX->setValue(i - tempTrainingSize, j, wholeX->getValue(randomArray->getValue(i), j));
         }//Of for j
         //testingY[0](0, i - tempTrainingSize) = wholeY[0](0, randomArray[0](0, i));
-        testingY -> setValue(i - tempTrainingSize, wholeY -> getValue(randomArray -> getValue(i)));
+        testingY->setValue(i - tempTrainingSize, wholeY->getValue(randomArray->getValue(i)));
     }//Of for i
 }//Of splitInTwo
 
@@ -231,10 +231,10 @@ void MfDataReader::crossValidationSplit(int paraNumFolds, int paraFoldIndex)
             for(int j = 0; j < numConditions; j ++)
             {
                 //trainingX[0](tempTrainingIndex, j) = wholeX[0](randomArray[0](0, i), j);
-                trainingX -> setValue(tempTrainingIndex, j, wholeX -> getValue(randomArray -> getValue(i), j));
+                trainingX->setValue(tempTrainingIndex, j, wholeX->getValue(randomArray->getValue(i), j));
             }//Of for j
             //trainingY[0](0, tempTrainingIndex) = wholeY[0](0, randomArray[0](0, i));
-            trainingY -> setValue(tempTrainingIndex, wholeY -> getValue(randomArray -> getValue(i)));
+            trainingY->setValue(tempTrainingIndex, wholeY->getValue(randomArray->getValue(i)));
             tempTrainingIndex ++;
         }
         else
@@ -242,10 +242,10 @@ void MfDataReader::crossValidationSplit(int paraNumFolds, int paraFoldIndex)
             for(int j = 0; j < numConditions; j ++)
             {
                 //testingX[0](tempTestingIndex, j) = wholeX[0](randomArray[0](0, i), j);
-                testingX -> setValue(tempTestingIndex, j, wholeX -> getValue(randomArray -> getValue(i), j));
+                testingX->setValue(tempTestingIndex, j, wholeX->getValue(randomArray->getValue(i), j));
             }//Of for j
             //testingY[0](0, tempTestingIndex) = wholeY[0](0, randomArray[0](0, i));
-            testingY -> setValue(tempTestingIndex, wholeY -> getValue(randomArray -> getValue(i)));
+            testingY->setValue(tempTestingIndex, wholeY->getValue(randomArray->getValue(i)));
             tempTestingIndex ++;
         }//Of if
     }//Of for i
@@ -289,7 +289,7 @@ MfIntArray* MfDataReader::getTestingY()
  */
 void MfDataReader::randomize()
 {
-    randomArray -> randomizeOrder();
+    randomArray->randomizeOrder();
 }//Of randomize
 
 /**
@@ -309,7 +309,7 @@ void MfDataReader::unitTest()
     tempReader.splitInTwo(0.6);
 
     printf("The training X is: \r\n");
-    cout << tempReader.trainingX -> toString() << endl;
+    cout << tempReader.trainingX->toString() << endl;
     //printf("The training X is: \r\n");
 
     //cout << tempArrayPtr[0] << endl;
