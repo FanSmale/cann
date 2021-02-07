@@ -37,6 +37,30 @@ MfSize::~MfSize()
 }//Of the destructor
 
 /**
+ * Set values.
+ * paraWidth: the given width.
+ * paraHeight: the given height.
+ */
+void MfSize::setValues(int paraWidth, int paraHeight)
+{
+    width = paraWidth;
+    height = paraHeight;
+}//Of setValues
+
+/**
+ * Clone the size to me.
+ * paraSize: the given size.
+ * Return: myself.
+ */
+MfSize* MfSize::cloneToMe(MfSize* paraSize)
+{
+    width = paraSize->width;
+    height = paraSize->height;
+
+    return this;
+}//Of cloneToMe
+
+/**
  * Divide two sizes, the result store to me.
  * paraFirstSize: the first size.
  * paraSecondSize: the second size.

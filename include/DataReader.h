@@ -70,6 +70,7 @@ class DataReader
         //The number of conditions
         int numConditions;
 
+        //For data randomization
         IntArray* randomArray;
 
         //The whole input

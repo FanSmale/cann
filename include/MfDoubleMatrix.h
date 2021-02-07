@@ -13,6 +13,8 @@
 #ifndef MFOUBLEMATRIX_H
 #define MFOUBLEMATRIX_H
 
+#define random0To1() rand()/(double)(RAND_MAX)
+
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -66,7 +68,7 @@ class MfDoubleMatrix
         MfDoubleMatrix* clone();
 
         //Copy a matrix
-        MfDoubleMatrix* cloneFrom(MfDoubleMatrix* paraMfDoubleMatrix);
+        MfDoubleMatrix* cloneToMe(MfDoubleMatrix* paraMfDoubleMatrix);
 
         //Add another one with the same size
         MfDoubleMatrix* add(MfDoubleMatrix* paraMfDoubleMatrix);

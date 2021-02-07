@@ -145,7 +145,7 @@ MfDoubleMatrix* MfAnnLayer::forward(MfDoubleMatrix* paraData)
     //printf("The weights are: \r\n");
     //printf(weightMatrix->toString().data());
 
-    inputData->cloneFrom(paraData);
+    inputData->cloneToMe(paraData);
 
     outputData->timesToMe(paraData, weightMatrix);
     outputData->addToMe(outputData, offsetMatrix);

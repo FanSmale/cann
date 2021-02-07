@@ -50,16 +50,11 @@ class MfFullAnn
         //Back propagation
         void backPropagation(MfDoubleMatrix* paraTarget);
 
-        /**
-         * Train the network with only one instance
-         * paraX: the instance (1 * m row vector)
-         * paraY: the decision of the instance
-         * paraNumClasses: the number of classes of this dataset
-         */
-        void train(MfDoubleMatrix* paraX, int paraY, int paraNumClasses);
+        //Train the network with only one instance
+         void train(MfDoubleMatrix* paraX, int paraY);
 
         //Train with a dataset
-        void train(MfDoubleMatrix* paraX, MfIntArray* paraY, int paraNumClasses);
+        void train(MfDoubleMatrix* paraX, MfIntArray* paraY);
 
         //Test with an instance
         bool test(MfDoubleMatrix* paraX, int paraY);

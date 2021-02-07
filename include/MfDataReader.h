@@ -72,6 +72,10 @@ class MfDataReader
         //The number of conditions
         int numConditions;
 
+        //The number of classes
+        int numClasses;
+
+        //For data randomization
         MfIntArray* randomArray;
 
         //The whole input

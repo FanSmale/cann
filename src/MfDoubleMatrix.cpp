@@ -24,7 +24,6 @@ MfDoubleMatrix::MfDoubleMatrix()
     activator = nullptr;
 }//Of the default constructor
 
-//
 /**
  * The constructor. Initialize a matrix with given sizes.
  * paraRows: the number of rows.
@@ -47,14 +46,16 @@ MfDoubleMatrix::MfDoubleMatrix(int paraRows, int paraColumns)
     {
         for (int j = 0; j < columns; j ++)
         {
-            data[i][j] = rand() / (double)(RAND_MAX);
+            data[i][j] = random0To1();
         }//Of for j
     }//Of for i
 
     activator = nullptr;
 }//Of the second constructor
 
-//Destructor
+/**
+ * The destructor.
+ */
 MfDoubleMatrix::~MfDoubleMatrix()
 {
     for (int i = 0; i < rows; i ++)
@@ -66,7 +67,10 @@ MfDoubleMatrix::~MfDoubleMatrix()
     free(activator);
 }//Of the destructor
 
-//Show me with a string for display
+/**
+ * Convert to string for display.
+ * Returns: The string showing myself.
+ */
 string MfDoubleMatrix::toString()
 {
     //string resultString = "I am a matrix with size " + to_string(rows)
@@ -196,7 +200,7 @@ MfDoubleMatrix* MfDoubleMatrix::clone()
  * paraMatrix: the given matrix
  * Return: myself.
  */
-MfDoubleMatrix* MfDoubleMatrix::cloneFrom(MfDoubleMatrix* paraMatrix)
+MfDoubleMatrix* MfDoubleMatrix::cloneToMe(MfDoubleMatrix* paraMatrix)
 {
     if (rows != paraMatrix->rows)
     {
@@ -221,7 +225,7 @@ MfDoubleMatrix* MfDoubleMatrix::cloneFrom(MfDoubleMatrix* paraMatrix)
     }//Of for i
 
     return this;
-}//Of cloneFrom
+}//Of cloneToMe
 
 /**
  * Add another one with the same size.

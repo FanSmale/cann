@@ -138,7 +138,7 @@ MfDoubleMatrix* MfFullAnn::forward(MfDoubleMatrix* paraInput)
     {
         tempData = layers[i]->forward(tempData);
     }//Of for i
-    currentOutput->cloneFrom(tempData);
+    currentOutput->cloneToMe(tempData);
 
     return currentOutput;
 }//Of forward
@@ -170,9 +170,8 @@ void MfFullAnn::backPropagation(MfDoubleMatrix* paraTarget)
  * Train the network with only one instance.
  * paraX: the instance (1 * m row vector).
  * paraY: the decision of the instance.
- * paraNumClasses: the number of classes of this dataset.
  */
-void MfFullAnn::train(MfDoubleMatrix* paraX, int paraY, int paraNumClasses)
+void MfFullAnn::train(MfDoubleMatrix* paraX, int paraY)
 {
     currentDecision->fill(0);
     currentDecision->setValue(0, paraY, 1);
@@ -185,9 +184,8 @@ void MfFullAnn::train(MfDoubleMatrix* paraX, int paraY, int paraNumClasses)
  * Train the network with a dataset.
  * paraX: the data (n * m matrix).
  * paraY: the decisions (n * 1 column vector).
- * paraNumClasses: the number of classes of this dataset.
  */
-void MfFullAnn::train(MfDoubleMatrix* paraX, MfIntArray* paraY, int paraNumClasses)
+void MfFullAnn::train(MfDoubleMatrix* paraX, MfIntArray* paraY)
 {
     int tempNumInstances = paraX->getRows();
     int tempNumConditions = paraX->getColumns();
@@ -406,7 +404,7 @@ void MfFullAnn::trainingTestingTest()
     for(int i = 0; i < 1000; i ++)
     {
         //printf("i = %d:\r\n", i);
-        tempMfFullAnn->train(tempX, tempY, 3);
+        tempMfFullAnn->train(tempX, tempY);
         if (i % 200 == 0)
         {
            tempMfFullAnn->showWeight();
@@ -463,7 +461,7 @@ void MfFullAnn::crossValidationTest()
 
         for(int i = 0; i < 1000; i ++)
         {
-            tempMfFullAnn->train(tempX, tempY, 3);
+            tempMfFullAnn->train(tempX, tempY);
             //if (i % 300 == 0)
             //{
             //   tempMfFullAnn->showWeight();

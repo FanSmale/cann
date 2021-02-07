@@ -26,6 +26,12 @@ class MfSize
         //The destructor.
         virtual ~MfSize();
 
+        //Set width and height.
+        void setValues(int, int);
+
+        //Clone the size to me.
+        MfSize* cloneToMe(MfSize* paraFirstSize);
+
         //Divide two sizes, the result is stored to me.
         MfSize* divideToMe(MfSize* paraFirstSize, MfSize* paraSecondSize);
 

@@ -43,6 +43,10 @@ MfDataReader::MfDataReader(char* paraFilename)
     char *tempValues;
     const char * tempSplit = ",";
 
+    //The class value boundaries.
+    int tempMinClass = 100;
+    int tempMaxClass = -1;
+
     //Step 2. Prepare to read data. How many instances and conditions
     //printf("MfDataReader constructor test 2\r\n");
     while (getline(tempInputStream, tempLine)) // line中不包括每行的换行符
@@ -103,6 +107,15 @@ MfDataReader::MfDataReader(char* paraFilename)
             wholeY->setValue(tempInstanceIndex, tempInt);
             //sscanf(tempRemaining, "%d", &[0](0, tempInstanceIndex));
 
+            if (tempMinClass > tempInt)
+            {
+                tempMinClass = tempInt;
+            }//Of if
+            if (tempMaxClass < tempInt)
+            {
+                tempMaxClass = tempInt;
+            }//Of if
+
             tempInstanceIndex ++;
         }//Of if
     }//Of while
@@ -111,6 +124,7 @@ MfDataReader::MfDataReader(char* paraFilename)
     //cout << wholeY->toString() << endl;
 
     tempInputStream.close();
+    numClasses = tempMaxClass - tempMinClass + 1;
 
     //Step 5. Maybe you do not want to randomize
     //printf("MfDataReader constructor test 5\r\n");
@@ -135,11 +149,12 @@ MfDataReader::~MfDataReader()
 {
     free(wholeX);
     free(wholeY);
+
+    free(randomArray);
     free(trainingX);
     free(trainingY);
     free(testingX);
     free(testingY);
-    free(randomArray);
 }//Of the destructor
 
 /**
@@ -155,9 +170,13 @@ void MfDataReader::splitInTwo(double paraTrainingFraction)
     if (trainingX != nullptr)
     {
         free(trainingX);
+        trainingX = nullptr;
         free(trainingY);
+        trainingY = nullptr;
         free(testingX);
+        testingX = nullptr;
         free(testingY);
+        testingY = nullptr;
     }//Of if
     trainingX = new MfDoubleMatrix(tempTrainingSize, numConditions);
     trainingY = new MfIntArray(tempTrainingSize);
@@ -303,6 +322,11 @@ void MfDataReader::unitTest()
 
     MfDataReader tempReader(tempFilename);
 
+    printf("%d instances, %d conditions, %d classes\r\n", tempReader.numInstances,
+           tempReader.numConditions, tempReader.numClasses);
+    //free(tempFilename);
+
+    /*
     //printf("Before ranomize \r\n");
     tempReader.randomize();
     //printf("After ranomize \r\n");
@@ -313,4 +337,5 @@ void MfDataReader::unitTest()
     //printf("The training X is: \r\n");
 
     //cout << tempArrayPtr[0] << endl;
+    */
 }//Of unitTest

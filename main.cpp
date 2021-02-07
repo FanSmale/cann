@@ -21,6 +21,7 @@
 #include "MfAnnLayer.h"
 #include "MfFullAnn.h"
 #include "MfSize.h"
+#include "Mf4DTensor.h"
 
 using namespace std;
 
@@ -71,14 +72,17 @@ int main()
     //tempLayer.unitTest();
 
     MfFullAnn tempMfFullAnn;
-    tempMfFullAnn.trainingTestingTest();
-    //tempMfFullAnn.crossValidationTest();
+    //tempMfFullAnn.trainingTestingTest();
+    tempMfFullAnn.crossValidationTest();
 
     /**
      *For Cnn
      */
     //MfSize tempSize;
     //tempSize.unitTest();
+
+    //Mf4DTensor* tempTensor = new Mf4DTensor();
+    //tempTensor->unitTest();
 
     printf("end.\r\n");
     getchar();
