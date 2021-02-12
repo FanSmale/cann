@@ -93,6 +93,15 @@ void Mf4DTensor::fill(double paraValue)
     }//Of for i
 }//Of fill
 
+
+/**
+ * Getter. Please use with caution.
+ */
+double**** Mf4DTensor::getData()
+{
+    return data;
+}//Of getData
+
 /**
  * Convert to string for display.
  * Returns: The string showing myself.
@@ -123,6 +132,39 @@ string Mf4DTensor::toString()
 
     return resultString;
 }//Of toString
+
+/**
+ * Set one value in the tensor.
+ * paraValue: the given value.
+ */
+void Mf4DTensor::setValue(int paraFirstIndex, int paraSecondIndex, int paraThirdIndex, int paraFourthIndex, double paraValue)
+{
+    data[paraFirstIndex][paraSecondIndex][paraThirdIndex][paraFourthIndex] = paraValue;
+}//Of setValue
+
+/**
+ * Sum to one matrix.
+ * paraIndex: an index for the second dimension.
+ * paraMatrix: the matrix.
+ */
+void Mf4DTensor::sumToMatrix(int paraIndex, MfDoubleMatrix* paraMatrix)
+{
+    int tempRows = paraMatrix->getRows();
+    int tempColumns = paraMatrix->getColumns();
+    double tempSum = 0;
+    for (int mi = 0; mi < tempRows; mi++)
+    {
+        for (int nj = 0; nj < tempColumns; nj++)
+        {
+            tempSum = 0;
+            for (int i = 0; i < firstLength; i++)
+            {
+                tempSum += data[i][paraIndex][mi][nj];
+            }//Of for i
+            paraMatrix->setValue(mi, nj, tempSum);
+        }//Of for nj
+    }//Of for mi
+}//Of sumToMatrix
 
 /**
  * Code unit test.

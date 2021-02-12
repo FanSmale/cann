@@ -31,8 +31,17 @@ class Mf4DTensor
         //Fill with one value.
         void fill(double);
 
+        //Getter.
+        double**** getData();
+
         //Convert to string for display.
         string toString();
+
+        //Set one value.
+        void setValue(int, int, int, int, double);
+
+        //Sum to a matrix.
+        void sumToMatrix(int paraIndex, MfDoubleMatrix* paraMatrix);
 
         //Unit test.
         void unitTest();

@@ -50,8 +50,11 @@ class MfFullAnn
         //Back propagation
         void backPropagation(MfDoubleMatrix* paraTarget);
 
+        //Update parameters.
+        void updateParameters();
+
         //Train the network with only one instance
-         void train(MfDoubleMatrix* paraX, int paraY);
+        void train(MfDoubleMatrix* paraX, int paraY);
 
         //Train with a dataset
         void train(MfDoubleMatrix* paraX, MfIntArray* paraY);

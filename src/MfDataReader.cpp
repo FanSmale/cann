@@ -35,6 +35,7 @@ MfDataReader::MfDataReader(char* paraFilename)
 
     if (!tempInputStream)
     {
+        printf("file not found\r\n");
         throw "file not found";
     }//Of if
 
@@ -301,6 +302,22 @@ MfIntArray* MfDataReader::getTestingY()
 {
     return testingY;
 }//Of getTestingY
+
+/**
+ * Getter.
+ */
+MfDoubleMatrix* MfDataReader::getWholeX()
+{
+    return wholeX;
+}//Of getWholeX
+
+/**
+ * Getter.
+ */
+MfIntArray* MfDataReader::getWholeY()
+{
+    return wholeY;
+}//Of getWholeY
 
 /**
  * Randomize the data through generating a random int array.

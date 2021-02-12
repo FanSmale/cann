@@ -44,9 +44,11 @@
 		<Unit filename="include/FullAnn.h" />
 		<Unit filename="include/Mf4DTensor.h" />
 		<Unit filename="include/MfAnnLayer.h" />
+		<Unit filename="include/MfCnnLayer.h" />
 		<Unit filename="include/MfDataReader.h" />
 		<Unit filename="include/MfDoubleMatrix.h" />
 		<Unit filename="include/MfFullAnn.h" />
+		<Unit filename="include/MfFullCnn.h" />
 		<Unit filename="include/MfIntArray.h" />
 		<Unit filename="include/MfSize.h" />
 		<Unit filename="main.cpp" />
@@ -57,9 +59,11 @@
 		<Unit filename="src/FullAnn.cpp" />
 		<Unit filename="src/Mf4DTensor.cpp" />
 		<Unit filename="src/MfAnnLayer.cpp" />
+		<Unit filename="src/MfCnnLayer.cpp" />
 		<Unit filename="src/MfDataReader.cpp" />
 		<Unit filename="src/MfDoubleMatrix.cpp" />
 		<Unit filename="src/MfFullAnn.cpp" />
+		<Unit filename="src/MfFullCnn.cpp" />
 		<Unit filename="src/MfIntArray.cpp" />
 		<Unit filename="src/MfSize.cpp" />
 		<Extensions />

@@ -61,10 +61,13 @@ MfDoubleMatrix::~MfDoubleMatrix()
     for (int i = 0; i < rows; i ++)
     {
         free(data[i]);
+        data[i] = nullptr;
     }//Of for i
     free(data);
+    data = nullptr;
 
     free(activator);
+    activator = nullptr;
 }//Of the destructor
 
 /**
@@ -295,6 +298,59 @@ MfDoubleMatrix* MfDoubleMatrix::addToMe(MfDoubleMatrix* paraFirstMatrix, MfDoubl
 
     return this;
 }//Of addToMe
+
+/**
+ * Each element adds the same value.
+ * paraValue: the given value.
+ * Return: myself.
+ */
+MfDoubleMatrix* MfDoubleMatrix::addValueToMe(double paraValue)
+{
+    for (int i = 0; i < rows; i ++)
+    {
+        for (int j = 0; j < columns; j ++)
+        {
+            data[i][j] += paraValue;
+        }//Of for j
+    }//Of for i
+
+    return this;
+}//Of addValueToMe
+
+/**
+ * Each element times the same value.
+ * paraValue: the given value.
+ * Return: myself.
+ */
+MfDoubleMatrix* MfDoubleMatrix::timesValueToMe(double paraValue)
+{
+    for (int i = 0; i < rows; i ++)
+    {
+        for (int j = 0; j < columns; j ++)
+        {
+            data[i][j] *= paraValue;
+        }//Of for j
+    }//Of for i
+
+    return this;
+}//Of timesValueToMe
+
+/**
+ * 1 - each element.
+ * Return: myself.
+ */
+MfDoubleMatrix* MfDoubleMatrix::oneValueToMe()
+{
+    for (int i = 0; i < rows; i ++)
+    {
+        for (int j = 0; j < columns; j ++)
+        {
+            data[i][j] = 1 - data[i][j];
+        }//Of for j
+    }//Of for i
+
+    return this;
+}//Of addValueToMe
 
 /**
  * Minus another one with the same size.
@@ -575,7 +631,7 @@ MfDoubleMatrix* MfDoubleMatrix::convolutionValidToMe(MfDoubleMatrix *paraData, M
         throw "columns not match.";
     }//Of if
 
-    //Step 2. Given then new names.
+    //Step 2. Give them new names.
     double** tempData = paraData->data;
     double** tempKernel = paraKernel->data;
 
@@ -625,27 +681,27 @@ MfDoubleMatrix* MfDoubleMatrix::convolutionFullToMe(MfDoubleMatrix *paraData, Mf
         throw "columns not match.";
     }//Of if
 
-    //Step 3. A temp matrix.
-    MfDoubleMatrix* tempExtendedMatrix = new MfDoubleMatrix(tempDataRows + 2 * (tempKernelRows - 1),
-            tempDataColumns + 2 * (tempKernelColumns - 1));
-    tempExtendedMatrix->fill(0);
-
-    //Step 4. Copy.
+    //Step 2. Give them new names.
     double** tempData = paraData->data;
-    double** tempExtended = tempExtendedMatrix->data;
-    for(int i = 0; i < tempDataRows; i ++)
+    double** tempKernel = paraKernel->data;
+
+    //Step 3. Now compute.
+    for(int i = 0; i < rows; i ++)
     {
-        for(int j = 0; j < tempDataColumns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
-            tempExtended[i + tempKernelRows - 1][j + tempKernelColumns - 1] = tempData[i][j];
+            data[i][j] = 0;
+            for(int k = 0; k < tempKernelRows; k ++)
+            {
+                for(int i1 = 0; i1 < tempKernelColumns; i1 ++)
+                {
+                    if ((i + k - tempKernelRows + 1 >= 0)&&(i + k - tempKernelRows + 1 < tempDataRows)
+                        && (j + i1 - tempKernelColumns + 1 >= 0)&&(j + i1 - tempKernelColumns + 1 < tempDataColumns))
+                        data[i][j] += tempData[i + k - tempKernelRows + 1][j + i1 - tempKernelColumns + 1] * tempKernel[k][i1];
+                }//Of for i1
+            }//Of for k
         }//Of for j
     }//Of for i
-
-    //Step 5. Convolution.
-    convolutionValidToMe(tempExtendedMatrix, paraKernel);
-
-    //Step 6. Free the space.
-    free(tempExtendedMatrix);
 
     return this;
 }//Of convolutionFullToMe
@@ -865,6 +921,40 @@ MfDoubleMatrix* MfDoubleMatrix::kroneckerToMe(MfDoubleMatrix* paraMatrix, MfSize
 }//Of kroneckerToMe
 
 /**
+ * Sigmoid derivation.
+ * paraMatrix: the given matrix.
+ * Return: myself.
+ */
+MfDoubleMatrix* MfDoubleMatrix::sigmoidDerivationToMe(MfDoubleMatrix* paraMatrix)
+{
+    double** paraData = paraMatrix->data;
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < columns; j++) {
+            data[i][j] = paraData[i][j] * (1 - paraData[i][j]);
+        }//Of for j
+    }//Of for i
+
+    return this;
+}//Of sigmoidDerivationToMe
+
+/**
+ * Sum up to a value.
+ * Return: the summed value.
+ */
+double MfDoubleMatrix::MfDoubleMatrix::sumUp()
+{
+    double resultValue = 0;
+    for(int i = 0; i < rows; i ++)
+    {
+        for(int j = 0; j < columns; j ++)
+        {
+            resultValue += data[i][j];
+        }//Of for j
+    }//Of for i
+    return resultValue;
+}//Of sumUp
+
+/**
  * Code unit test.
  */
 void MfDoubleMatrix::unitTest()
@@ -901,8 +991,8 @@ void MfDoubleMatrix::unitTest()
     MfDoubleMatrix* tempConvolutionValid = new MfDoubleMatrix(2, 3);
     MfDoubleMatrix* tempKernel = new MfDoubleMatrix(2, 3);
 
-    //tempMfDoubleMatrix->fill(1);
-    //tempKernel->fill(1);
+    tempMfDoubleMatrix->fill(1);
+    tempKernel->fill(1);
 
     tempConvolutionValid->convolutionValidToMe(tempMfDoubleMatrix, tempKernel);
     printf("Data\r\n");

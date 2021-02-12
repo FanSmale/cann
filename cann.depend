@@ -924,7 +924,7 @@
 
 1610589568 e:\c\eigen\eigen\src\eigenvalues\selfadjointeigensolver_lapacke.h
 
-1612681942 source:d:\c\cann\main.cpp
+1613054310 source:d:\c\cann\main.cpp
 	<iostream>
 	<stdio.h>
 	"AnnLayer.h"
@@ -939,6 +939,7 @@
 	"MfFullAnn.h"
 	"MfSize.h"
 	"Mf4DTensor.h"
+	"MfFullCnn.h"
 
 1612308694 d:\c\cann\include\annlayer.h
 	<string>
@@ -1879,7 +1880,7 @@
 	<fstream>
 	<iostream>
 
-1612665910 d:\c\cann\include\mfdoublematrix.h
+1613059871 d:\c\cann\include\mfdoublematrix.h
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
@@ -1889,10 +1890,10 @@
 	"Activator.h"
 	"MfSize.h"
 
-1612665901 source:d:\c\cann\src\mfdoublematrix.cpp
+1613059678 source:d:\c\cann\src\mfdoublematrix.cpp
 	<MfDoubleMatrix.h>
 
-1612680805 d:\c\cann\include\mfdatareader.h
+1612964467 d:\c\cann\include\mfdatareader.h
 	<random>
 	<stdlib.h>
 	<string>
@@ -1903,7 +1904,7 @@
 	"MfIntArray.h"
 	"MfDoubleMatrix.h"
 
-1612682002 source:d:\c\cann\src\mfdatareader.cpp
+1613003169 source:d:\c\cann\src\mfdatareader.cpp
 	"MfDataReader.h"
 	<iostream>
 
@@ -1911,7 +1912,7 @@
 	"MfAnnLayer.h"
 	"Activator.h"
 
-1612514176 d:\c\cann\include\mfannlayer.h
+1613013069 d:\c\cann\include\mfannlayer.h
 	<random>
 	<string>
 	<Malloc.h>
@@ -1929,7 +1930,7 @@
 1612680210 source:d:\c\cann\src\mffullann.cpp
 	"MfFullAnn.h"
 
-1612680188 d:\c\cann\include\mffullann.h
+1613057564 d:\c\cann\include\mffullann.h
 	<iostream>
 	"MfIntArray.h"
 	"MfDoubleMatrix.h"
@@ -1942,19 +1943,26 @@
 1612680176 source:d:\c\cann\src\mfsize.cpp
 	"MfSize.h"
 
-1612618062 source:d:\c\cann\src\mf4dtensor.cpp
+1613059826 source:d:\c\cann\src\mf4dtensor.cpp
 	"Mf4DTensor.h"
 
-1612617819 d:\c\cann\include\mf4dtensor.h
+1613058796 d:\c\cann\include\mf4dtensor.h
 	<Malloc.h>
 	"MfDoubleMatrix.h"
 
-1612680091 source:d:\c\cann\src\mfcnnlayer.cpp
+1613138238 source:d:\c\cann\src\mfcnnlayer.cpp
 	"MfCnnLayer.h"
 
-1612666317 d:\c\cann\include\mfcnnlayer.h
+1613140598 d:\c\cann\include\mfcnnlayer.h
 	<Malloc.h>
 	"MfDoubleMatrix.h"
 	"MfSize.h"
 	"Mf4DTensor.h"
+
+1613138942 source:d:\c\cann\src\mffullcnn.cpp
+	"MfFullCnn.h"
+
+1613095560 d:\c\cann\include\mffullcnn.h
+	"MfCnnLayer.h"
+	"MfDataReader.h"
 

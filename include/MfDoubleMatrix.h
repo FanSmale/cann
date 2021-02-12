@@ -76,6 +76,15 @@ class MfDoubleMatrix
         //Add another one with the same size to me, no space allocation
         MfDoubleMatrix* addToMe(MfDoubleMatrix* paraFirstMatrix, MfDoubleMatrix* paraSecondMatrix);
 
+        //Each element adds the same value.
+        MfDoubleMatrix* addValueToMe(double paraValue);
+
+        //Each element times the same value.
+        MfDoubleMatrix* timesValueToMe(double paraValue);
+
+        //1 - each element.
+        MfDoubleMatrix* oneValueToMe();
+
         //Minus another one with the same size
         MfDoubleMatrix* subtract(MfDoubleMatrix* paraMfDoubleMatrix);
 
@@ -123,6 +132,12 @@ class MfDoubleMatrix
 
         //Kronecker: copy many times.
         MfDoubleMatrix* kroneckerToMe(MfDoubleMatrix* paraMatrix, MfSize* paraSize);
+
+        //Sigmoid derivation each element.
+        MfDoubleMatrix* sigmoidDerivationToMe(MfDoubleMatrix* paraMatrix);
+
+        //Sum up to a value.
+        double sumUp();
 
         //Code unit test
         void unitTest();

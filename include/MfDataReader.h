@@ -58,6 +58,12 @@ class MfDataReader
         //The getter
         MfIntArray* getTestingY();
 
+        //The getter
+        MfDoubleMatrix* getWholeX();
+
+        //The getter
+        MfIntArray* getWholeY();
+
         //The random array is stored in the object
         void randomize();
 

@@ -20,8 +20,10 @@
 #include "MfDataReader.h"
 #include "MfAnnLayer.h"
 #include "MfFullAnn.h"
+
 #include "MfSize.h"
 #include "Mf4DTensor.h"
+#include "MfFullCnn.h"
 
 using namespace std;
 
@@ -71,9 +73,9 @@ int main()
     //MfAnnLayer tempLayer;
     //tempLayer.unitTest();
 
-    MfFullAnn tempMfFullAnn;
+    //MfFullAnn tempMfFullAnn;
     //tempMfFullAnn.trainingTestingTest();
-    tempMfFullAnn.crossValidationTest();
+    //tempMfFullAnn.crossValidationTest();
 
     /**
      *For Cnn
@@ -83,6 +85,10 @@ int main()
 
     //Mf4DTensor* tempTensor = new Mf4DTensor();
     //tempTensor->unitTest();
+
+    MfFullCnn tempCnn;
+    tempCnn.trainingTestingTest();
+    //tempMfFullAnn.crossValidationTest();
 
     printf("end.\r\n");
     getchar();
