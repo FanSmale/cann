@@ -16,6 +16,9 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <string>
+
+using namespace std;
 
 class Activator
 {
@@ -29,6 +32,9 @@ class Activator
         //The destructor
         virtual ~Activator();
 
+        //Convert to string for display.
+        string toString();
+
         //Set activation function
         void setActivationFunction(char paraFunction);
 
@@ -40,6 +46,9 @@ class Activator
 
         //The sigmoid activation function
         double sigmoid(double paraValue);
+
+        //The sigmoid derive function
+        double sigmoidDerive(double paraValue);
 
         //The tanh activation function
         double tanh(double paraValue);
@@ -73,6 +82,9 @@ class Activator
 
         //Activate
         double activate(double paraValue);
+
+        //Derive
+        double derive(double paraValue);
 
         void unitTest();
 

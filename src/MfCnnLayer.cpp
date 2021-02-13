@@ -528,7 +528,6 @@ void MfCnnLayer::setup()
 void MfCnnLayer::setInputLayerOutput(MfDoubleMatrix* paraData)
 {
     //printf("MfCnnLayer::setInputLayerOutput, recordInBatch = %d\r\n", recordInBatch);
-    double tempValue;
     if (paraData->getColumns() != mapSize->width * mapSize->height)
     {
         printf("input record does not match the map size.\r\n");
@@ -685,7 +684,18 @@ void MfCnnLayer::setConvolutionLayerErrors()
     for (int i = 0; i < numOutMaps; i ++)
     {
         currentOutMap = getOutMapAt(i);
-        currentOutMap->sigmoidDerivationToMe(currentOutMap);
+        currentOutMap->setActivator(layerActivator);
+        currentOutMap->deriveToMe(currentOutMap);
+
+        /*
+        if (!currentOutMap->rangeCheck(-5, 5))
+        {
+            printf("MfCnnLayer::setConvolutionLayerErrors, a value of currentOutMap exceeds [-5, 5].\r\n");
+            cout << layerActivator->toString() << endl;
+            cout << currentOutMap->toString() << endl;
+            throw "MfCnnLayer::setConvolutionLayerErrors";
+        }//Of if
+        */
 
         //The space of singleOutMap is reused here, in fact here is the error.
         singleOutMap->kroneckerToMe(nextLayer->getErrorsAt(i), nextLayer->getScaleSize());

@@ -2,6 +2,10 @@
  * The C++ Artificial Neural network project.
  * This class manages double matrices.
  * Parallel computing using GPU will be enabled soon.
+ * Methods with name xxToMe are encouraged because they do not require new space allocation.
+ * 请尽量使用xxToMe方法, 它们不涉及新的空间分配, 也就不存在内存释放的问题.
+ * Methods with space allocation are currently commented.
+ * 当前把某些需要空间分配的方法注释, 需要的时候可以去掉注释.
  * Code available at: github.com/fansmale/cann.
  * Author: Fan Min
  *   Lab of Machine Learning, School of Computer Science, Southwest Petroleum University, Chengdu, China
@@ -118,21 +122,6 @@ double** MfDoubleMatrix::getData()
 }//Of getData
 
 /**
- * Getter. Get a value at the given position.
- * paraRow: the row.
- * paraColumn: the column.
- */
-double MfDoubleMatrix::getValue(int paraRow, int paraColumn)
-{
-    if ((paraRow >= rows) || (paraColumn >= columns))
-    {
-        printf("MfDoubleMatrix.getValue() out of range.");
-        throw "MfDoubleMatrix.getValue() out of range.";
-    }//Of if
-    return data[paraRow][paraColumn];
-}//Of getValue
-
-/**
  * Setter. Set a value at the given position.
  * paraRow: the row.
  * paraColumn: the column.
@@ -140,7 +129,7 @@ double MfDoubleMatrix::getValue(int paraRow, int paraColumn)
  */
 double MfDoubleMatrix::setValue(int paraRow, int paraColumn, double paraValue)
 {
-    if ((paraRow >= rows) || (paraColumn >= columns))
+    if((paraRow >= rows) || (paraColumn >= columns))
     {
         printf("MfDoubleMatrix.setValue() out of range.");
         throw "MfDoubleMatrix.setValue() out of range.";
@@ -151,6 +140,40 @@ double MfDoubleMatrix::setValue(int paraRow, int paraColumn, double paraValue)
 }//Of setValue
 
 /**
+ * Getter. Get a value at the given position.
+ * paraRow: the row.
+ * paraColumn: the column.
+ */
+double MfDoubleMatrix::getValue(int paraRow, int paraColumn)
+{
+    if((paraRow >= rows) || (paraColumn >= columns))
+    {
+        printf("MfDoubleMatrix.getValue() out of range.");
+        throw "MfDoubleMatrix.getValue() out of range.";
+    }//Of if
+    return data[paraRow][paraColumn];
+}//Of getValue
+
+/**
+ * Range check.
+ * paraLowerBound: the lower bound.
+ * paraUpperBound: the upper bound.
+ * Return: true if pass the check.
+ */
+bool MfDoubleMatrix::rangeCheck(double paraLowerBound, double paraUpperBound)
+{
+    for (int i = 0; i < rows; i ++)
+    {
+        for (int j = 0; j < columns; j ++)
+        {
+            if((data[i][j] < paraLowerBound) || (data[i][j] > paraUpperBound))
+                return false;
+        }//Of for j
+    }//Of for i
+    return true;
+}//Of rangeCheck
+
+/**
  * Setter. Set the activator, no new space is allocated.
  * paraActivator: the activator.
  */
@@ -158,6 +181,14 @@ void MfDoubleMatrix::setActivator(Activator* paraActivator)
 {
     activator = paraActivator;
 }//Of setActivator
+
+/**
+ * Getter.
+ */
+Activator* MfDoubleMatrix::getActivator()
+{
+    return activator;
+}//Of getActivator
 
 
 /**
@@ -180,7 +211,6 @@ MfDoubleMatrix* MfDoubleMatrix::activate()
 /**
  * Copy a matrix.
  * Return: a new matrix.
- */
 MfDoubleMatrix* MfDoubleMatrix::clone()
 {
     MfDoubleMatrix* resultMfDoubleMatrix = new MfDoubleMatrix(rows, columns);
@@ -197,6 +227,7 @@ MfDoubleMatrix* MfDoubleMatrix::clone()
 
     return resultMfDoubleMatrix;
 }//Of clone
+ */
 
 /**
  * Copy from a matrix. Change my values.
@@ -234,7 +265,6 @@ MfDoubleMatrix* MfDoubleMatrix::cloneToMe(MfDoubleMatrix* paraMatrix)
  * Add another one with the same size.
  * paraMatrix: the other matrix.
  * Return: a new matrix.
- */
 MfDoubleMatrix* MfDoubleMatrix::add(MfDoubleMatrix* paraMatrix)
 {
     MfDoubleMatrix* resultMfDoubleMatrix = clone();
@@ -265,6 +295,7 @@ MfDoubleMatrix* MfDoubleMatrix::add(MfDoubleMatrix* paraMatrix)
 
     return resultMfDoubleMatrix;
 }//Of add
+ */
 
 /**
  * The first matrix adds the second one gets me.
@@ -356,7 +387,6 @@ MfDoubleMatrix* MfDoubleMatrix::oneValueToMe()
  * Minus another one with the same size.
  * paraMatrix: the other matrix.
  * Return: a new matrix.
- */
 MfDoubleMatrix* MfDoubleMatrix::subtract(MfDoubleMatrix* paraMatrix)
 {
     MfDoubleMatrix* resultMfDoubleMatrix = clone();
@@ -385,6 +415,7 @@ MfDoubleMatrix* MfDoubleMatrix::subtract(MfDoubleMatrix* paraMatrix)
 
     return resultMfDoubleMatrix;
 }//Of subtract
+ */
 
 /**
  * The first matrix subtracts the second one gets me.
@@ -423,7 +454,6 @@ MfDoubleMatrix* MfDoubleMatrix::subtractToMe(MfDoubleMatrix* paraFirstMatrix, Mf
  * Multiply another one with the same size.
  * paraMatrix: the other matrix.
  * Return: a new matrix.
- */
 MfDoubleMatrix* MfDoubleMatrix::cwiseProduct(MfDoubleMatrix* paraMatrix)
 {
     MfDoubleMatrix* resultMfDoubleMatrix = clone();
@@ -452,6 +482,7 @@ MfDoubleMatrix* MfDoubleMatrix::cwiseProduct(MfDoubleMatrix* paraMatrix)
 
     return resultMfDoubleMatrix;
 }//Of cwiseProduct
+ */
 
 /**
  * The first matrix point-to-point products the second one gets me.
@@ -491,7 +522,6 @@ MfDoubleMatrix* MfDoubleMatrix::cwiseProductToMe(MfDoubleMatrix* paraFirstMatrix
  * Times another one.
  * paraMatrix: the other matrix with size n*k.
  * Return: a new matrix with size m*k.
- */
 MfDoubleMatrix* MfDoubleMatrix::times(MfDoubleMatrix *paraMatrix)
 {
     int tempColumns = paraMatrix->getColumns();
@@ -527,6 +557,7 @@ MfDoubleMatrix* MfDoubleMatrix::times(MfDoubleMatrix *paraMatrix)
 
     return newMfDoubleMatrixPtr;
 }//Of times
+ */
 
 /**
  * Two matrices times to fill me.
@@ -572,7 +603,6 @@ MfDoubleMatrix* MfDoubleMatrix::timesToMe(MfDoubleMatrix *paraFirstMatrix, MfDou
 /**
  * Transpose the matrix to another.
  * Return: the transposed matrix.
- */
 MfDoubleMatrix* MfDoubleMatrix::transpose()
 {
     MfDoubleMatrix* newMfDoubleMatrixPtr = new MfDoubleMatrix(columns, rows);
@@ -588,6 +618,32 @@ MfDoubleMatrix* MfDoubleMatrix::transpose()
 
     return newMfDoubleMatrixPtr;
 }//Of transpose
+ */
+
+/**
+ * Transpose the matrix to me.
+ * paraMatrix: the given matrix.
+ * Return: myself.
+ */
+MfDoubleMatrix* MfDoubleMatrix::transposeToMe(MfDoubleMatrix* paraMatrix)
+{
+    if (paraMatrix->columns != rows || paraMatrix->rows != columns)
+    {
+        printf("MfDoubleMatrix::transposeToMe, size not match.");
+        throw "MfDoubleMatrix::transposeToMe, size not match.";
+    }//Of if
+
+    double** tempData = paraMatrix->data;
+    for (int i = 0; i < rows; i ++)
+    {
+        for (int j = 0; j < columns; j ++)
+        {
+            data[i][j] = tempData[j][i];
+        }//Of for j
+    }//Of for i
+
+    return this;
+}//Of transposeToMe
 
 /**
  * Fill the matrix with the same value.
@@ -709,7 +765,6 @@ MfDoubleMatrix* MfDoubleMatrix::convolutionFullToMe(MfDoubleMatrix *paraData, Mf
 /**
  * Rotate myself by 180 degrees.
  * Return: myself.
- */
 MfDoubleMatrix* MfDoubleMatrix::rotate180()
 {
     double tempValue;
@@ -737,6 +792,7 @@ MfDoubleMatrix* MfDoubleMatrix::rotate180()
 
     return this;
 }//Of rotate180
+ */
 
 /**
  * Rotate 180 degrees to me.
@@ -778,7 +834,6 @@ MfDoubleMatrix* MfDoubleMatrix::rotate180ToMe(MfDoubleMatrix* paraMatrix)
  * paraMatrix: the given matrix.
  * paraSize: the given size.
  * Return: a new matrix.
- */
 MfDoubleMatrix* MfDoubleMatrix::scale(MfSize* paraSize)
 {
     int tempWidth = paraSize->width;
@@ -811,6 +866,7 @@ MfDoubleMatrix* MfDoubleMatrix::scale(MfSize* paraSize)
     }//Of for i
     return resultMatrix;
 }//Of scale
+ */
 
 /**
  * Scale the given matrix with the given size to me. No new space is allocated here.
@@ -864,7 +920,6 @@ MfDoubleMatrix* MfDoubleMatrix::scaleToMe(MfDoubleMatrix* paraMatrix, MfSize* pa
  * paraMatrix: the given matrix.
  * paraSize: the given size.
  * Return: the bigger matrix.
- */
 MfDoubleMatrix* MfDoubleMatrix::kronecker(MfSize* paraSize)
 {
     int tempWidth = paraSize->width;
@@ -885,6 +940,7 @@ MfDoubleMatrix* MfDoubleMatrix::kronecker(MfSize* paraSize)
 
     return resultMatrix;
 }//Of kronecker
+ */
 
 /**
  * Kronecker to a bigger matrix.
@@ -921,27 +977,29 @@ MfDoubleMatrix* MfDoubleMatrix::kroneckerToMe(MfDoubleMatrix* paraMatrix, MfSize
 }//Of kroneckerToMe
 
 /**
- * Sigmoid derivation.
+ * Derive to me.
  * paraMatrix: the given matrix.
  * Return: myself.
  */
-MfDoubleMatrix* MfDoubleMatrix::sigmoidDerivationToMe(MfDoubleMatrix* paraMatrix)
+MfDoubleMatrix* MfDoubleMatrix::deriveToMe(MfDoubleMatrix* paraMatrix)
 {
     double** paraData = paraMatrix->data;
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < columns; j++) {
-            data[i][j] = paraData[i][j] * (1 - paraData[i][j]);
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < columns; j++)
+        {
+            data[i][j] = activator->derive(paraData[i][j]);
         }//Of for j
     }//Of for i
 
     return this;
-}//Of sigmoidDerivationToMe
+}//Of derive
 
 /**
  * Sum up to a value.
  * Return: the summed value.
  */
-double MfDoubleMatrix::MfDoubleMatrix::sumUp()
+double MfDoubleMatrix::sumUp()
 {
     double resultValue = 0;
     for(int i = 0; i < rows; i ++)
@@ -964,29 +1022,29 @@ void MfDoubleMatrix::unitTest()
 
     printf(tempMfDoubleMatrix->toString().data());
 
-    MfDoubleMatrix* tempMfDoubleMatrix2 = tempMfDoubleMatrix->clone();
-    printf("Copy\r\n");
-    printf(tempMfDoubleMatrix2->toString().data());
+    //MfDoubleMatrix* tempMfDoubleMatrix2 = tempMfDoubleMatrix->clone();
+    //printf("Copy\r\n");
+    //printf(tempMfDoubleMatrix2->toString().data());
 
-    MfDoubleMatrix* tempTransposed = tempMfDoubleMatrix->transpose();
-    printf("Transpose\r\n");
-    printf(tempTransposed->toString().data());
+    //MfDoubleMatrix* tempTransposed = tempMfDoubleMatrix->transpose();
+    //printf("Transpose\r\n");
+    //printf(tempTransposed->toString().data());
 
-    MfDoubleMatrix* tempDot = tempMfDoubleMatrix->times(tempTransposed);
-    printf("Dot\r\n");
-    printf(tempDot->toString().data());
+    //MfDoubleMatrix* tempDot = tempMfDoubleMatrix->times(tempTransposed);
+    //printf("Dot\r\n");
+    //printf(tempDot->toString().data());
 
-    MfDoubleMatrix* tempAdded = tempMfDoubleMatrix->add(tempMfDoubleMatrix2);
-    printf("Add\r\n");
-    printf(tempAdded->toString().data());
+    //MfDoubleMatrix* tempAdded = tempMfDoubleMatrix->add(tempMfDoubleMatrix2);
+    //printf("Add\r\n");
+    //printf(tempAdded->toString().data());
 
-    MfDoubleMatrix* tempMultiply = tempMfDoubleMatrix->cwiseProduct(tempMfDoubleMatrix2);
-    printf("Multiply\r\n");
-    printf(tempMultiply->toString().data());
+    //MfDoubleMatrix* tempMultiply = tempMfDoubleMatrix->cwiseProduct(tempMfDoubleMatrix2);
+    //printf("Multiply\r\n");
+    //printf(tempMultiply->toString().data());
 
-    MfDoubleMatrix* tempMinus = tempMultiply ->subtract(tempMfDoubleMatrix);
-    printf("Minus\r\n");
-    printf(tempMinus->toString().data());
+    //MfDoubleMatrix* tempMinus = tempMultiply ->subtract(tempMfDoubleMatrix);
+    //printf("Minus\r\n");
+    //printf(tempMinus->toString().data());
 
     MfDoubleMatrix* tempConvolutionValid = new MfDoubleMatrix(2, 3);
     MfDoubleMatrix* tempKernel = new MfDoubleMatrix(2, 3);
@@ -1007,9 +1065,9 @@ void MfDoubleMatrix::unitTest()
     printf("Convolution full\r\n");
     printf(tempConvolutionFull->toString().data());
 
-    tempConvolutionFull->rotate180();
-    printf("Rotate 180\r\n");
-    printf(tempConvolutionFull->toString().data());
+    //tempConvolutionFull->rotate180();
+    //printf("Rotate 180\r\n");
+    //printf(tempConvolutionFull->toString().data());
 
     MfDoubleMatrix* tempRotate = new MfDoubleMatrix(4, 7);
     tempRotate->rotate180ToMe(tempConvolutionFull);
@@ -1026,9 +1084,9 @@ void MfDoubleMatrix::unitTest()
     printf("Scale (2, 3)\r\n");
     printf(tempScaledMatrix->toString().data());
 
-    MfDoubleMatrix* tempKronecker = tempScaledMatrix->kronecker(tempSize);
-    printf("Kronecker (2, 3)\r\n");
-    printf(tempKronecker->toString().data());
+    //MfDoubleMatrix* tempKronecker = tempScaledMatrix->kronecker(tempSize);
+    //printf("Kronecker (2, 3)\r\n");
+    //printf(tempKronecker->toString().data());
 
     printf("Kronecker (2, 3) to me\r\n");
     MfDoubleMatrix* tempKronecker2 = new MfDoubleMatrix(4, 12);
@@ -1037,4 +1095,6 @@ void MfDoubleMatrix::unitTest()
 
     Activator* tempActivator = new Activator('s');
     tempKronecker2 -> setActivator(tempActivator);
+
+    //Test derive here.
 }//Of unitTest

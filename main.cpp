@@ -10,11 +10,11 @@
 
 #include <iostream>
 #include <stdio.h>
-#include "AnnLayer.h"
-#include "FullAnn.h"
-#include "EigenSupport.h"
-#include "DataReader.h"
-#include "CnnLayer.h"
+//#include "AnnLayer.h"
+//#include "FullAnn.h"
+//#include "EigenSupport.h"
+//#include "DataReader.h"
+//#include "CnnLayer.h"
 #include "MfIntArray.h"
 #include "MfDoubleMatrix.h"
 #include "MfDataReader.h"
@@ -34,33 +34,6 @@ int main()
     /**
      *For Ann
      */
-
-    //Matrix tempMatrix(2, 3);
-    //tempMatrix.selfTest();
-
-    //AnnLayer tempLayer(1, 1, 'r', 0.01, 0.1);
-    //tempLayer.selfTest();
-
-    //IntArray tempArray(3);
-    //tempArray.selfTest();
-    //Matrix<double, 3, 3> A;
-
-    //DataReader tempReader;
-    //tempReader.selfTest();
-
-    //DataReader tempReader;
-    //tempReader.selfTest();
-
-    //Activator tempActivator;
-    //tempActivator.selfTest();
-
-    //FullAnn tempFullAnn;
-    //tempFullAnn.trainingTestingTest();
-    //tempFullAnn.crossValidationTest();
-
-    //CnnLayer tempCnnLayer;
-    //tempCnnLayer.unitTest();
-
     //MfIntArray tempArray;
     //tempArray.unitTest();
 

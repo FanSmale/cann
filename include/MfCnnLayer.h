@@ -18,7 +18,7 @@
 #define OUTPUT_LAYER 3
 
 #define ALPHA 0.05
-#define LAMBDA 0.00
+#define LAMBDA 0.01
 
 #include <Malloc.h>
 

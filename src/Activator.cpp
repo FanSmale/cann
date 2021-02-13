@@ -40,6 +40,19 @@ Activator::~Activator()
 }//Of the destructor
 
 /**
+ * Convert to string for display.
+ * Returns: The string showing myself.
+ */
+string Activator::toString()
+{
+    string resultString = "Activation function: ";
+    resultString.append(1, activationFunction);
+    resultString +=  "\r\n";
+
+    return resultString;
+}//Of toString
+
+/**
  * Setter.
  */
 void Activator::setActivationFunction(char paraFunction)
@@ -71,6 +84,21 @@ double Activator::sigmoid(double paraValue)
 {
     return 1 / (1 + exp(-paraValue));
 }//Of sigmoid
+
+/**
+ * The derivation of sigmoid function.
+ * Return: the derived value.
+ */
+double Activator::sigmoidDerive(double paraValue)
+{
+    double resultValue = paraValue * (1 - paraValue);
+    if ((resultValue < -5) || (resultValue > 5))
+    {
+        printf("paraValue = %lf, resultValue = %lf\r\n",
+               paraValue, resultValue);
+    }
+    return paraValue * (1 - paraValue);
+}//Of sigmoidDerive
 
 /**
  * The tanh activation function.
@@ -233,6 +261,56 @@ double Activator::activate(double paraValue)
     {
     case 's':
         resultValue = sigmoid(paraValue);
+        break;
+    case 't':
+        resultValue = tanh(paraValue);
+        break;
+    case 'h':
+        resultValue = hardLogistic(paraValue);
+        break;
+    case 'H':
+        resultValue = hardTanh(paraValue);
+        break;
+    case 'r':
+        resultValue = relu(paraValue);
+        break;
+    case 'l':
+        resultValue = leakyRelu(paraValue, activationGamma);
+        break;
+    case 'e':
+        resultValue = elu(paraValue, activationGamma);
+        break;
+    case 'S':
+        resultValue = softplus(paraValue);
+        break;
+    case 'o':
+        resultValue = softsign(paraValue);
+        break;
+    case 'w':
+        resultValue = swish(paraValue, activationBeta);
+        break;
+    case 'g':
+        resultValue = gelu(paraValue);
+        break;
+    default:
+        break;
+    }//Of switch
+
+    //printf("paraValue = %lf, resultValue = %lf\n", paraValue, resultValue);
+    return resultValue;
+}//Of activate
+
+/**
+ * Derive according to the current function.
+ * Return: the derived value.
+ */
+double Activator::derive(double paraValue)
+{
+    double resultValue = 0;
+    switch (activationFunction)
+    {
+    case 's':
+        resultValue = sigmoidDerive(paraValue);
         break;
     case 't':
         resultValue = tanh(paraValue);
