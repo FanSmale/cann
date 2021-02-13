@@ -49,7 +49,7 @@ public:
     int getLength();
 
     //Get a copy
-    MfIntArray* copy();
+    //MfIntArray* copy();
 
     //Copy from another array
     void copyFrom(MfIntArray* paraArray);

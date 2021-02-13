@@ -117,7 +117,6 @@ int MfIntArray::getLength()
 /**
  * Getter.
  * Return: a copy of this array.
- */
 MfIntArray* MfIntArray::copy()
 {
     MfIntArray* resultArray = new MfIntArray(length);
@@ -130,6 +129,7 @@ MfIntArray* MfIntArray::copy()
 
     return resultArray;
 }//Of copy
+ */
 
 /**
  * Copy from another array.

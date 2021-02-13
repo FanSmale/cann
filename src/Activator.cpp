@@ -16,8 +16,8 @@
 Activator::Activator()
 {
     activationFunction = 's';
-    activationGamma = DEFAULT_ACTIVATOR_GAMMA;
-    activationBeta = DEFAULT_ACTIVATOR_BETA;
+    gamma = DEFAULT_ACTIVATOR_GAMMA;
+    beta = DEFAULT_ACTIVATOR_BETA;
 }//Of the constructor
 
 /**
@@ -27,8 +27,8 @@ Activator::Activator()
 Activator::Activator(char paraActivationFunction)
 {
     activationFunction = paraActivationFunction;
-    activationGamma = DEFAULT_ACTIVATOR_GAMMA;
-    activationBeta = DEFAULT_ACTIVATOR_BETA;
+    gamma = DEFAULT_ACTIVATOR_GAMMA;
+    beta = DEFAULT_ACTIVATOR_BETA;
 }//Of the second constructor
 
 /**
@@ -65,7 +65,7 @@ void Activator::setActivationFunction(char paraFunction)
  */
 void Activator::setGamma(double paraGamma)
 {
-    activationGamma = paraGamma;
+    gamma = paraGamma;
 }//Of setGamma
 
 /**
@@ -73,7 +73,7 @@ void Activator::setGamma(double paraGamma)
  */
 void Activator::setBeta(double paraBeta)
 {
-    activationBeta = paraBeta;
+    beta = paraBeta;
 }//Of setBeta
 
 /**
@@ -176,7 +176,7 @@ double Activator::relu(double paraValue)
  * The LeakyReLU activation function.
  * Return: the activated value.
  */
-double Activator::leakyRelu(double paraValue, double paraGamma)
+double Activator::leakyRelu(double paraValue)
 {
     if(paraValue >= 0)
     {
@@ -184,7 +184,7 @@ double Activator::leakyRelu(double paraValue, double paraGamma)
     }
     else
     {
-        return paraGamma *  paraValue;
+        return gamma *  paraValue;
     }//of if
 }//Of leakyRelu
 
@@ -192,14 +192,14 @@ double Activator::leakyRelu(double paraValue, double paraGamma)
  * The ELU activation function.
  * Return: the activated value.
  */
-double Activator::elu(double paraValue, double paraGamma)
+double Activator::elu(double paraValue)
 {
     if(paraValue >= 0)
     {
         return paraValue;
     }
 
-    return paraGamma *  (exp(paraValue) - 1);
+    return gamma *  (exp(paraValue) - 1);
 }//Of elu
 
 /**
@@ -236,9 +236,9 @@ double Activator::softsign(double paraValue)
  * The Swish activation function.
  * Return: the activated value.
  */
-double Activator::swish(double paraValue, double paraBeta)
+double Activator::swish(double paraValue)
 {
-    return paraValue / (1 + exp(-paraBeta * paraValue));
+    return paraValue / (1 + exp(-beta* paraValue));
 }//Of swish
 
 /**
@@ -275,10 +275,10 @@ double Activator::activate(double paraValue)
         resultValue = relu(paraValue);
         break;
     case 'l':
-        resultValue = leakyRelu(paraValue, activationGamma);
+        resultValue = leakyRelu(paraValue);
         break;
     case 'e':
-        resultValue = elu(paraValue, activationGamma);
+        resultValue = elu(paraValue);
         break;
     case 'S':
         resultValue = softplus(paraValue);
@@ -287,7 +287,7 @@ double Activator::activate(double paraValue)
         resultValue = softsign(paraValue);
         break;
     case 'w':
-        resultValue = swish(paraValue, activationBeta);
+        resultValue = swish(paraValue);
         break;
     case 'g':
         resultValue = gelu(paraValue);
@@ -302,6 +302,7 @@ double Activator::activate(double paraValue)
 
 /**
  * Derive according to the current function.
+ * Attention: should be revised!
  * Return: the derived value.
  */
 double Activator::derive(double paraValue)
@@ -325,10 +326,10 @@ double Activator::derive(double paraValue)
         resultValue = relu(paraValue);
         break;
     case 'l':
-        resultValue = leakyRelu(paraValue, activationGamma);
+        resultValue = leakyRelu(paraValue);
         break;
     case 'e':
-        resultValue = elu(paraValue, activationGamma);
+        resultValue = elu(paraValue);
         break;
     case 'S':
         resultValue = softplus(paraValue);
@@ -337,7 +338,7 @@ double Activator::derive(double paraValue)
         resultValue = softsign(paraValue);
         break;
     case 'w':
-        resultValue = swish(paraValue, activationBeta);
+        resultValue = swish(paraValue);
         break;
     case 'g':
         resultValue = gelu(paraValue);

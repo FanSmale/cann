@@ -44,6 +44,30 @@ class Activator
         //Set beta
         void setBeta(double paraBeta);
 
+
+
+        //Activate
+        double activate(double paraValue);
+
+        //Derive
+        double derive(double paraValue);
+
+        //Unit test.
+        void unitTest();
+
+    protected:
+
+        //The activation function
+        char activationFunction;
+
+        //The gamma value
+        double gamma;
+
+        //The beta value
+        double beta;
+
+    private:
+
         //The sigmoid activation function
         double sigmoid(double paraValue);
 
@@ -63,10 +87,10 @@ class Activator
         double relu(double paraValue);
 
         //The LeakyReLU activation function
-        double leakyRelu(double paraValue, double paraGamma);
+        double leakyRelu(double paraValue);
 
         //The ELU activation function
-        double elu(double paraValue, double paraGamma);
+        double elu(double paraValue);
 
         //The Softplus activation function
         double softplus(double paraValue);
@@ -75,29 +99,10 @@ class Activator
         double softsign(double paraValue);
 
         //The Swish activation function
-        double swish(double paraValue, double paraBeta);
+        double swish(double paraValue);
 
         //The GELU activation function
         double gelu(double paraValue);
-
-        //Activate
-        double activate(double paraValue);
-
-        //Derive
-        double derive(double paraValue);
-
-        void unitTest();
-
-    protected:
-        //The activation function
-        char activationFunction;
-
-        //The gamma value
-        double activationGamma;
-
-        //The beta value
-        double activationBeta;
-    private:
 };
 
 #endif // ACTIVATOR_H

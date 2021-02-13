@@ -3,10 +3,12 @@
  minfan@swpu.edu.cn
  minfanphd@163.com
 
-Eigen is required.
+NO additional package is required.
 
-Revise the folder of 
-  the data file;
-  the Eigen package;
+Revise the folder of the data file;
 
+Most classes have their unitTest() function.
 Revise main() for different tests.
+
+Traditional ANN has been tested on the iris dataset with success.
+CNN is implemented, however with some hidden bugs.

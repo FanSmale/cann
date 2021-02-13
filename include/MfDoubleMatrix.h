@@ -110,7 +110,7 @@ class MfDoubleMatrix
         MfDoubleMatrix* timesToMe(MfDoubleMatrix *paraFirstMatrix, MfDoubleMatrix *paraSecondMatrix);
 
         //Transpose, return a new matrix.
-        MfDoubleMatrix* transpose();
+        //MfDoubleMatrix* transpose();
 
         //Transpose to me.
         MfDoubleMatrix* transposeToMe(MfDoubleMatrix* paraMatrix);
@@ -121,7 +121,7 @@ class MfDoubleMatrix
         //Convolution valid, the size is smaller, return myself.
         MfDoubleMatrix* convolutionValidToMe(MfDoubleMatrix *paraData, MfDoubleMatrix *paraKernel);
 
-        //Convolution full, the size is unchanged, return myself.
+        //Convolution full, the size is bigger, return myself.
         MfDoubleMatrix* convolutionFullToMe(MfDoubleMatrix *paraData, MfDoubleMatrix *paraKernel);
 
         //Rotate 180 degrees.
