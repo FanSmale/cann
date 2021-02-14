@@ -118,6 +118,9 @@ class MfDoubleMatrix
         //Fill the matrix with the same value.
         void fill(double paraValue);
 
+        //Fill the matrix with a random value between the bounds.
+        void fill(double paraLowerBound, double paraUpperBound);
+
         //Convolution valid, the size is smaller, return myself.
         MfDoubleMatrix* convolutionValidToMe(MfDoubleMatrix *paraData, MfDoubleMatrix *paraKernel);
 

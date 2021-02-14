@@ -258,6 +258,8 @@ MfDoubleMatrix* MfDoubleMatrix::cloneToMe(MfDoubleMatrix* paraMatrix)
         }//Of for j
     }//Of for i
 
+    activator = paraMatrix->activator;
+
     return this;
 }//Of cloneToMe
 
@@ -425,13 +427,13 @@ MfDoubleMatrix* MfDoubleMatrix::subtract(MfDoubleMatrix* paraMatrix)
  */
 MfDoubleMatrix* MfDoubleMatrix::subtractToMe(MfDoubleMatrix* paraFirstMatrix, MfDoubleMatrix* paraSecondMatrix)
 {
-     if (paraFirstMatrix->rows != paraSecondMatrix->rows)
+     if ((rows != paraFirstMatrix->rows) || (rows != paraSecondMatrix->rows))
     {
         printf("MfDoubleMatrix.subtractToMe(), rows do not match.");
         throw "Rows do not match.";
     }//Of if
 
-    if (paraFirstMatrix->columns != paraSecondMatrix->columns)
+    if ((columns != paraFirstMatrix->columns) || (columns != paraSecondMatrix->columns))
     {
         printf("MfDoubleMatrix.subtractToMe(), columns do not match.");
         throw "Columns do not match.";
@@ -656,6 +658,22 @@ void MfDoubleMatrix::fill(double paraValue)
         for (int j = 0; j < columns; j ++)
         {
             data[i][j] = paraValue;
+        }//Of for j
+    }//Of for i
+}//Of fill
+
+/**
+ * Fill the matrix with random values.
+ * paraLowerBound: the lower bound.
+ * paraUpperBound: the upper bound
+ */
+void MfDoubleMatrix::fill(double paraLowerBound, double paraUpperBound)
+{
+    for (int i = 0; i < rows; i ++)
+    {
+        for (int j = 0; j < columns; j ++)
+        {
+            data[i][j] = rand() * (paraUpperBound - paraLowerBound) /RAND_MAX + paraLowerBound;
         }//Of for j
     }//Of for i
 }//Of fill
@@ -1049,14 +1067,16 @@ void MfDoubleMatrix::unitTest()
     MfDoubleMatrix* tempConvolutionValid = new MfDoubleMatrix(2, 3);
     MfDoubleMatrix* tempKernel = new MfDoubleMatrix(2, 3);
 
+    tempKernel->fill(-2, 2);
+    printf("Kernel\r\n");
+    printf(tempKernel->toString().data());
+
     tempMfDoubleMatrix->fill(1);
     tempKernel->fill(1);
 
     tempConvolutionValid->convolutionValidToMe(tempMfDoubleMatrix, tempKernel);
     printf("Data\r\n");
     printf(tempMfDoubleMatrix->toString().data());
-    printf("Kernel\r\n");
-    printf(tempKernel->toString().data());
     printf("Convolution valid\r\n");
     printf(tempConvolutionValid->toString().data());
 

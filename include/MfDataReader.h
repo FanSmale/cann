@@ -37,14 +37,14 @@ class MfDataReader
         //Read the data from the given file
         MfDataReader(char* paraFilename);
 
+        //Destructor
+        virtual ~MfDataReader();
+
         //Split the data into the training and testing parts according to the given fraction
         void splitInTwo(double paraTrainingFraction);
 
         //Split the data according to cross-validation
         void crossValidationSplit(int paraNumFolds, int paraFoldIndex);
-
-        //Destructor
-        virtual ~MfDataReader();
 
         //The getter
         MfDoubleMatrix* getTrainingX();
@@ -101,9 +101,6 @@ class MfDataReader
 
         //The labels of the testing data
         MfIntArray* testingY;
-
-        //To generate random numbers
-        default_random_engine randomEngine;
 
     private:
 };

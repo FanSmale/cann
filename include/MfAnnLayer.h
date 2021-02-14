@@ -39,8 +39,14 @@ class MfAnnLayer
         //Convert to string for display
         string toString();
 
+        //Show weights
+        void showWeight();
+
         //Set the activation function
         void setActivationFunction(char paraActivation);
+
+        //Getter.
+        Activator* getActivator();
 
         //Reset weight and other variables.
         void reset();
@@ -60,9 +66,6 @@ class MfAnnLayer
         //Code unit test
         void unitTest();
 
-        //Show weights
-        void showWeight();
-
     protected:
 
         //The size of the input
@@ -79,9 +82,6 @@ class MfAnnLayer
 
         //The activator
         Activator* activator;
-
-        //Weighted error sum
-        double errorSum;
 
         //The input data, only one row
         MfDoubleMatrix* inputData;

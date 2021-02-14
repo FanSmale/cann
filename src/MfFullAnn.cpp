@@ -51,7 +51,6 @@ MfFullAnn::MfFullAnn(MfIntArray* paraSizes, char paraActivation, double paraRate
     currentInstance = new MfDoubleMatrix(1, tempInputSize);
     currentDecision = new MfDoubleMatrix(1, tempOutputSize);
     currentOutput = new MfDoubleMatrix(1, tempOutputSize);
-    outputOnesArray = new MfDoubleMatrix(1, tempOutputSize);
 }//Of the second constructor
 
 /**
@@ -68,7 +67,6 @@ MfFullAnn::~MfFullAnn()
     free(currentInstance);
     free(currentDecision);
     free(currentOutput);
-    free(outputOnesArray);
 }//Of the destructor
 
 /**
@@ -150,19 +148,16 @@ MfDoubleMatrix* MfFullAnn::forward(MfDoubleMatrix* paraInput)
  */
 void MfFullAnn::backPropagation(MfDoubleMatrix* paraTarget)
 {
-    outputOnesArray->fill(1);
-
-    //MfDoubleMatrix* layerErrors = currentOutput->cwiseProductToMe(outputOnesArray->subtractToMe(currentOutput)
-    //   ->cwiseProductToMe(paraTarget->subtractToMe(currentOutput)));
     paraTarget->subtractToMe(paraTarget, currentOutput);
-    outputOnesArray->subtractToMe(outputOnesArray, currentOutput);
-    outputOnesArray->cwiseProductToMe(outputOnesArray, paraTarget);
-    currentOutput->cwiseProductToMe(currentOutput, outputOnesArray);
-    MfDoubleMatrix* layerErrors = currentOutput;
+
+    currentOutput->deriveToMe(currentOutput);
+    currentOutput->cwiseProductToMe(currentOutput, paraTarget);
+
+    MfDoubleMatrix* tempLayerErrors = currentOutput;
 
     for (int i = numLayers - 1; i >= 0; i --)
     {
-        layerErrors = layers[i]->backPropagation(layerErrors);
+        tempLayerErrors = layers[i]->backPropagation(tempLayerErrors);
     }//Of for i
 }//Of backPropagation
 

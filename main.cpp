@@ -46,8 +46,8 @@ int main()
     //MfAnnLayer tempLayer;
     //tempLayer.unitTest();
 
-    //MfFullAnn tempMfFullAnn;
-    //tempMfFullAnn.trainingTestingTest();
+    MfFullAnn tempMfFullAnn;
+    tempMfFullAnn.trainingTestingTest();
     //tempMfFullAnn.crossValidationTest();
 
     /**
@@ -59,8 +59,8 @@ int main()
     //Mf4DTensor* tempTensor = new Mf4DTensor();
     //tempTensor->unitTest();
 
-    MfFullCnn tempCnn;
-    tempCnn.trainingTestingTest();
+    //MfFullCnn tempCnn;
+    //tempCnn.trainingTestingTest();
     //tempMfFullAnn.crossValidationTest();
 
     printf("end.\r\n");

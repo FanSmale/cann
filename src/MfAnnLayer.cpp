@@ -90,6 +90,14 @@ string MfAnnLayer::toString()
 }//Of toString
 
 /**
+ * Show weights for display.
+ */
+void MfAnnLayer::showWeight()
+{
+    cout << weightMatrix->toString() << endl;
+}//Of showWeight
+
+/**
  * Set the activation function.
  * paraFunction: the activation function in char.
  */
@@ -97,6 +105,14 @@ void MfAnnLayer::setActivationFunction(char paraFunction)
 {
     activator->setActivationFunction(paraFunction);
 }//Of setActivationFunction
+
+/**
+ * Getter.
+ */
+Activator* MfAnnLayer::getActivator()
+{
+    return activator;
+}//Of getActivator
 
 /**
  * Reset weights and other variables.
@@ -147,7 +163,7 @@ MfDoubleMatrix* MfAnnLayer::forward(MfDoubleMatrix* paraData)
 
     inputData->cloneToMe(paraData);
 
-    outputData->timesToMe(paraData, weightMatrix);
+    outputData->timesToMe(inputData, weightMatrix);
     outputData->addToMe(outputData, offsetMatrix);
 
     outputData->activate();
@@ -165,15 +181,16 @@ MfDoubleMatrix* MfAnnLayer::backPropagation(MfDoubleMatrix* paraErrors)
 {
     //printf("MfAnnLayer::backPropagation test 1\r\n");
     double tempValue1, tempValue2, tempValue3, tempValue4;
+    double tempErrorSum;
     for(int i = 0; i < inputSize; i ++)
     {
-        double errorSum = 0;
+        tempErrorSum = 0;
 
         //Weights adjusting
         for(int j = 0; j < outputSize; j ++)
         {
             //printf("MfAnnLayer::backPropagation test 2.1.1, j = %d\r\n", j);
-            errorSum += paraErrors->getValue(0, j) * weightMatrix->getValue(i, j);
+            tempErrorSum += paraErrors->getValue(0, j) * weightMatrix->getValue(i, j);
             tempValue1 = mobp * weightDeltaMatrix->getValue(i, j)
                 + rate * paraErrors->getValue(0, j) * inputData->getValue(0, i);
             weightDeltaMatrix->setValue(i, j, tempValue1);
@@ -196,19 +213,12 @@ MfDoubleMatrix* MfAnnLayer::backPropagation(MfDoubleMatrix* paraErrors)
 
         //For the activation function.
         tempValue1 = inputData->getValue(0, i);
-        errorMatrix->setValue(0, i, tempValue1 * (1 - tempValue1) * errorSum);
+        //errorMatrix->setValue(0, i, tempValue1 * (1 - tempValue1) * tempErrorSum);
+        errorMatrix->setValue(0, i, activator->derive(tempValue1) * tempErrorSum);
     }//Of for i
 
     return errorMatrix;
 }//Of backPropagation
-
-/**
- * Show weights for display.
- */
-void MfAnnLayer::showWeight()
-{
-    cout << weightMatrix->toString() << endl;
-}//Of showWeight
 
 /**
  * Code unit test.

@@ -50,9 +50,6 @@ class MfFullAnn
         //Back propagation
         void backPropagation(MfDoubleMatrix* paraTarget);
 
-        //Update parameters.
-        void updateParameters();
-
         //Train the network with only one instance
         void train(MfDoubleMatrix* paraX, int paraY);
 
@@ -108,9 +105,6 @@ class MfFullAnn
 
         //The decision of the current instance
         MfDoubleMatrix* currentDecision;
-
-        //Ones at the output end
-        MfDoubleMatrix* outputOnesArray;
 
         //Number of correctly classified instances in the current round
         //It is used for statistics especially on cross-validation

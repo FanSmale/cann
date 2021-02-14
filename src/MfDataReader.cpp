@@ -8,10 +8,11 @@
  *   minfanphd@163.com, minfan@swpu.edu.cn
  */
 
-#include "MfDataReader.h"
 #include <iostream>
+
+#include "MfDataReader.h"
+
 using namespace std;
-using std::default_random_engine;
 
 /**
  * Empty constructor.
@@ -344,7 +345,7 @@ void MfDataReader::unitTest()
     //free(tempFilename);
 
     /*
-    //printf("Before ranomize \r\n");
+    //printf("Before randomize \r\n");
     tempReader.randomize();
     //printf("After ranomize \r\n");
     tempReader.splitInTwo(0.6);
