@@ -31,6 +31,9 @@ class Mf4DTensor
         //Fill with one value.
         void fill(double);
 
+        //Fill with random values.
+        void fill(double paraLowerBound, double paraUpperBound);
+
         //Getter.
         double**** getData();
 
@@ -39,6 +42,30 @@ class Mf4DTensor
 
         //Set one value.
         void setValue(int, int, int, int, double);
+
+        //Getter.
+        int getFirstLength()
+        {
+            return firstLength;
+        }
+
+        //Getter.
+        int getSecondLength()
+        {
+            return secondLength;
+        }
+
+        //Getter.
+        int getThirdLength()
+        {
+            return thirdLength;
+        }
+
+        //Getter.
+        int getFourthLength()
+        {
+            return fourthLength;
+        }
 
         //Sum to a matrix.
         void sumToMatrix(int paraIndex, MfDoubleMatrix* paraMatrix);

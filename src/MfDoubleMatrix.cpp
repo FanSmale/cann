@@ -98,30 +98,6 @@ string MfDoubleMatrix::toString()
 }//Of toString
 
 /**
- * Getter.
- */
-int MfDoubleMatrix::getRows()
-{
-    return rows;
-}//Of getRows
-
-/**
- * Getter.
- */
-int MfDoubleMatrix::getColumns()
-{
-    return columns;
-}//Of getColumns
-
-/**
- * Getter. Please use with caution because it is a pointer.
- */
-double** MfDoubleMatrix::getData()
-{
-    return data;
-}//Of getData
-
-/**
  * Setter. Set a value at the given position.
  * paraRow: the row.
  * paraColumn: the column.
@@ -155,6 +131,40 @@ double MfDoubleMatrix::getValue(int paraRow, int paraColumn)
 }//Of getValue
 
 /**
+ * Get the maximal value.
+ */
+double MfDoubleMatrix::getMaxValue()
+{
+    double resultMax = -10000000;
+    for (int i = 0; i < rows; i ++)
+        for (int j = 0; j < columns; j ++)
+            if (resultMax < data[i][j])
+                resultMax = data[i][j];
+    return resultMax;
+}//Of getMaxValue
+
+/**
+ * Get the minimal value.
+ */
+double MfDoubleMatrix::getMinValue()
+{
+    double resultMin = 100000000;
+    for (int i = 0; i < rows; i ++)
+    {
+        for (int j = 0; j < columns; j ++)
+        {
+
+            if (resultMin > data[i][j])
+            {
+
+                resultMin = data[i][j];
+            }
+        }
+    }
+    return resultMin;
+}//Of getMinValue
+
+/**
  * Range check.
  * paraLowerBound: the lower bound.
  * paraUpperBound: the upper bound.
@@ -167,29 +177,15 @@ bool MfDoubleMatrix::rangeCheck(double paraLowerBound, double paraUpperBound)
         for (int j = 0; j < columns; j ++)
         {
             if((data[i][j] < paraLowerBound) || (data[i][j] > paraUpperBound))
+            {
+
+                printf("out of range value: %lf\r\n", data[i][j]);
                 return false;
+            }//Of if
         }//Of for j
     }//Of for i
     return true;
 }//Of rangeCheck
-
-/**
- * Setter. Set the activator, no new space is allocated.
- * paraActivator: the activator.
- */
-void MfDoubleMatrix::setActivator(Activator* paraActivator)
-{
-    activator = paraActivator;
-}//Of setActivator
-
-/**
- * Getter.
- */
-Activator* MfDoubleMatrix::getActivator()
-{
-    return activator;
-}//Of getActivator
-
 
 /**
  * Activate each element. Hopefully, the speed will be faster with this embedded operation.

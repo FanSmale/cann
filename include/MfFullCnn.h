@@ -59,17 +59,20 @@ class MfFullCnn
         //Prepare for a new record.
         void prepareForNewRecord();
 
+        //Output kernels for debugging.
+        void outputKernelsToFile();
+
         //Train.
-        void train(MfDoubleMatrix* paraX, MfIntArray* paraY);
+        double train(MfDoubleMatrix* paraX, MfIntArray* paraY);
 
         //Test.
         double test(MfDoubleMatrix* paraX, MfIntArray* paraY);
 
         //Training/testing.
-        void trainingTestingTest();
+        void mnistTest();
 
         //Unit test, essentially integrated test.
-        void unitTest();
+        void integratedTest();
 
     protected:
 

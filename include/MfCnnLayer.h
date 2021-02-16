@@ -17,9 +17,6 @@
 #define SAMPLING_LAYER 2
 #define OUTPUT_LAYER 3
 
-#define ALPHA 0.05
-#define LAMBDA 0.01
-
 #include <Malloc.h>
 
 #include "MfDoubleMatrix.h"
@@ -42,7 +39,7 @@ class MfCnnLayer
         void initKernel(int);
 
         //Initialize the output kernel. The essential difference from initKernel is unknown.
-        void initOutKernel(int, MfSize*);
+        //void initOutKernel(int, MfSize*);
 
         //Initialize the bias.
         void initBias();
@@ -54,43 +51,115 @@ class MfCnnLayer
         void initOutMaps();
 
         //Prepare for new batch.
-        void prepareForNewBatch();
+        void prepareForNewBatch()
+        {
+            recordInBatch = 0;
+        }
 
         //Prepare for new record.
-        void prepareForNewRecord();
+        void prepareForNewRecord()
+        {
+            recordInBatch ++;
+        }
 
         //Getter.
-        int getNumClasses();
+        int getNumClasses()
+        {
+            return numClasses;
+        }
 
         //Getter.
-        int getLayerType();
+        int getLayerType()
+        {
+            return layerType;
+        }
 
         //Getter.
-        int getNumOutMaps();
+        int getNumOutMaps()
+        {
+            return numOutMaps;
+        }
 
         //Setter.
-        void setNumOutMaps(int);
+        void setNumOutMaps(int paraNum)
+        {
+            numOutMaps = paraNum;
+        }
 
         //Getter.
-        MfSize* getMapSize();
+        MfSize* getMapSize()
+        {
+            return mapSize;
+        }
 
         //Setter.
-        void setMapSize(MfSize* paraSize);
+        void setMapSize(MfSize* paraSize)
+        {
+            mapSize->cloneToMe(paraSize);
+        }
 
         //Getter.
-        MfSize* getKernelSize();
+        MfSize* getKernelSize()
+        {
+            return kernelSize;
+        }
 
         //Setter.
-        void setKernelSize(MfSize* paraSize);
+        void setKernelSize(MfSize* paraSize)
+        {
+            kernelSize->cloneToMe(paraSize);
+        }
 
         //Getter.
-        MfSize* getScaleSize();
+        MfSize* getScaleSize()
+        {
+            return scaleSize;
+        }
 
         //Setter.
-        void setScaleSize(MfSize* paraSize);
+        void setScaleSize(MfSize* paraSize)
+        {
+            scaleSize->cloneToMe(paraSize);
+        }
+
+        //Getter.
+        double getAlpha()
+        {
+            return alpha;
+        }
+
+        //Setter.
+        void setAlpha(double paraAlpha)
+        {
+            alpha = paraAlpha;
+        }
+
+        //Getter.
+        double getLambda()
+        {
+            return lambda;
+        }
+
+        //Setter.
+        void setLambda(double paraLambda)
+        {
+            lambda = paraLambda;
+        }
+
+        //Update alpha, the mechanism is unknown.
+        void updateAlpha()
+        {
+            alpha = alpha * 0.9 + 0.001;
+        }
 
         //Getter.
         MfDoubleMatrix* getKernelAt(int paraFrontMap, int paraOutMap);
+
+        //Getter.
+        Mf4DTensor* getKernel()
+        {
+            return kernel;
+        }
 
         //Setter.
         void setKernelAt(int paraFrontMap, int paraOutMap, MfDoubleMatrix* paraKernel);
@@ -99,13 +168,22 @@ class MfCnnLayer
         MfDoubleMatrix* getRot180KernelAt(int paraFrontMap, int paraOutMap);
 
         //Getter.
-        double getBiasAt(int paraMapNo);
+        double getBiasAt(int paraMapNo)
+        {
+            return bias->getValue(0, paraMapNo);
+        }
 
         //Setter.
-        void setBiasAt(int paraMapNo, double paraValue);
+        void setBiasAt(int paraMapNo, double paraValue)
+        {
+            bias->setValue(0, paraMapNo, paraValue);
+        }
 
         //Getter.
-        Mf4DTensor* getOutMaps();
+        Mf4DTensor* getOutMaps()
+        {
+            return outMaps;
+        }
 
         //Set the out map value.
         void setOutMapValue(int paraMapNo, int paraX, int paraY, double paraValue);
@@ -120,7 +198,10 @@ class MfCnnLayer
         MfDoubleMatrix* getOutMapAt(int paraRecordId, int paraOutMapNo);
 
         //Getter.
-        Mf4DTensor* getErrors();
+        Mf4DTensor* getErrors()
+        {
+            return errors;
+        }
 
         //Getter.
         MfDoubleMatrix* getErrorsAt(int paraMapNo);
@@ -138,10 +219,16 @@ class MfCnnLayer
         void setup();
 
         //Setter.
-        void setLastLayer(MfCnnLayer* paraLayer);
+        void setLastLayer(MfCnnLayer* paraLayer)
+        {
+            lastLayer = paraLayer;
+        }
 
         //Setter.
-        void setNextLayer(MfCnnLayer* paraLayer);
+        void setNextLayer(MfCnnLayer* paraLayer)
+        {
+            nextLayer = paraLayer;
+        }
 
         //Handle the input layer.
         void setInputLayerOutput(MfDoubleMatrix* paraData);
@@ -154,6 +241,9 @@ class MfCnnLayer
 
         //Get the prediction for the current instance.
         int getCurrentPrediction();
+
+        //Get the prediction distribution for the current instance.
+        MfDoubleMatrix* getCurrentPredictionDistribution();
 
         //Forward an instance, the parameters may not be useful.
         void forward(MfDoubleMatrix* paraData);
@@ -179,13 +269,19 @@ class MfCnnLayer
         //Set the layer activator.
         void setLayerActivator(char);
 
+        //Getter.
+        MfDoubleMatrix* getCurrentOutMap()
+        {
+            return currentOutMap;
+        }
+
         //Unit test.
         void unitTest();
 
-        //Getter.
-        MfDoubleMatrix* getCurrentOutMap();
-
     protected:
+
+        //Layer type, 4 types.
+        int layerType;
 
         //The number of classes, not the index of the class (label) attribute.
         int numClasses = -1;
@@ -195,9 +291,6 @@ class MfCnnLayer
 
         //For batch processing.
         int recordInBatch = 0;
-
-        //Layer type, 4 types.
-        int layerType;
 
         //The number of output maps.
         int numOutMaps;
@@ -233,6 +326,15 @@ class MfCnnLayer
         //The first dimension is due to the parallel computing and parameter updating.
         Mf4DTensor* outMaps;
 
+        //Current out map.
+        MfDoubleMatrix* currentOutMap;
+
+        //A single output, space allocated once and used many times to avoid allocating for temporary variables.
+        MfDoubleMatrix* singleOutMap;
+
+        //The prediction distribution. For debugging.
+        MfDoubleMatrix* predictionDistribution;
+
         //Errors. Dimensions: [batchSize][numOutMaps][mapSize.width][mapSize.height].
         Mf4DTensor* errors;
 
@@ -253,12 +355,11 @@ class MfCnnLayer
         //The activator of this layer.
         Activator* layerActivator;
 
-        //Current out map.
-        MfDoubleMatrix* currentOutMap;
+        //For parameter updating, however not learning rate.
+        double alpha;
 
-        //A single output, space allocated once and used many times to avoid allocating for temporary variables.
-        MfDoubleMatrix* singleOutMap;
-
+        //Also for parameter updating.
+        double lambda;
 };
 
 #endif // MFCNNLAYER_H

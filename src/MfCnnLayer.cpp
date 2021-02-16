@@ -33,6 +33,9 @@ MfCnnLayer::MfCnnLayer(int paraLayerType, int paraBatchSize, int paraNum, MfSize
     lastLayer = nullptr;
     nextLayer = nullptr;
 
+    alpha = 0.85;
+    lambda = 0;
+
     switch (layerType)
     {
     case INPUT_LAYER:
@@ -50,6 +53,7 @@ MfCnnLayer::MfCnnLayer(int paraLayerType, int paraBatchSize, int paraNum, MfSize
         numClasses = paraNum;
         mapSize->setValues(1, 1);
         numOutMaps = numClasses;
+        predictionDistribution = new MfDoubleMatrix(1, numClasses);
         break;
     default:
         printf("Internal error occurred in MfCnnLayer.cpp constructor.\r\n");
@@ -71,6 +75,7 @@ MfCnnLayer::~MfCnnLayer()
     free(outMaps);
     free(singleOutMap);
     free(currentOutMap);
+    free(predictionDistribution);
     free(errors);
     free(currentErrors);
     free(currentSingleErrors);
@@ -83,6 +88,10 @@ MfCnnLayer::~MfCnnLayer()
 void MfCnnLayer::initKernel(int paraNumFrontMaps)
 {
     kernel = new Mf4DTensor(paraNumFrontMaps, numOutMaps, kernelSize->width, kernelSize->height);
+    //Attention: I do not know why these thresholds work.
+    kernel->fill(-0.05, 0.095);
+    //kernel->fill(-0.5, 0.5);
+
     currentKernel = new MfDoubleMatrix(kernelSize->width, kernelSize->height);
     singleDeltaKernel = new MfDoubleMatrix(kernelSize->width, kernelSize->height);
     deltaKernel = new MfDoubleMatrix(kernelSize->width, kernelSize->height);
@@ -90,22 +99,12 @@ void MfCnnLayer::initKernel(int paraNumFrontMaps)
 }//Of initKernel
 
 /**
- * Initialize the output kernel. The essential difference from initKernel is unknown.
- * paraNumFrontMaps: the number of front maps.
- * paraSize: the new size of the kernel (the last two dimensions).
- */
-void MfCnnLayer::initOutKernel(int paraNumFrontMaps, MfSize* paraSize)
-{
-    kernelSize->cloneToMe(paraSize);
-    initKernel(paraNumFrontMaps);
-}//Of initOutKernel
-
-/**
  * Initialize the bias.
  */
 void MfCnnLayer::initBias()
 {
     bias = new MfDoubleMatrix(1, numOutMaps);
+    bias->fill(0);
 }//Of initBias
 
 /**
@@ -131,102 +130,6 @@ void MfCnnLayer::initOutMaps()
 }//Of initOutMaps
 
 /**
- * Prepare for a new batch.
- */
-void MfCnnLayer::prepareForNewBatch()
-{
-    recordInBatch = 0;
-}//Of prepareForNewBatch
-
-/**
- * Prepare for a new record.
- */
-void MfCnnLayer::prepareForNewRecord()
-{
-    recordInBatch ++;
-}//Of prepareForNewRecord
-
-/**
- * Getter.
- */
-int MfCnnLayer::getNumClasses()
-{
-    return numClasses;
-}//Of getNumClasses
-
-/**
- * Getter.
- */
-int MfCnnLayer::getLayerType()
-{
-    return layerType;
-}//Of getLayerType
-
-/**
- * Getter.
- */
-int MfCnnLayer::getNumOutMaps()
-{
-    return numOutMaps;
-}//Of getNumOutMaps
-
-/**
- * Setter.
- */
-void MfCnnLayer::setNumOutMaps(int paraNumOutMaps)
-{
-    numOutMaps = paraNumOutMaps;
-}//Of setNumOutMaps
-
-/**
- * Getter.
- */
-MfSize* MfCnnLayer::getMapSize()
-{
-    return mapSize;
-}//Of getMapSize
-
-/**
- * Setter.
- */
-void MfCnnLayer::setMapSize(MfSize* paraSize)
-{
-    mapSize->cloneToMe(paraSize);
-}//Of getMapSize
-
-/**
- * Getter.
- */
-MfSize* MfCnnLayer::getKernelSize()
-{
-    return kernelSize;
-}//Of getKernelSize
-
-/**
- * Setter.
- */
-void MfCnnLayer::setKernelSize(MfSize* paraSize)
-{
-    kernelSize->cloneToMe(paraSize);
-}//Of setKernelSize
-
-/**
- * Getter.
- */
-MfSize* MfCnnLayer::getScaleSize()
-{
-    return scaleSize;
-}//Of getScaleSize
-
-/**
- * Setter.
- */
-void MfCnnLayer::setScaleSize(MfSize* paraSize)
-{
-    scaleSize->cloneToMe(paraSize);
-}//Of setScaleSize
-
-/**
  * Get the kernel at the given position.
  * paraFrontMap: the front map number.
  * paraOutMap: the out map number.
@@ -235,9 +138,9 @@ MfDoubleMatrix* MfCnnLayer::getKernelAt(int paraFrontMap, int paraOutMap)
 {
     double** tempMatrix = kernel->getData()[paraFrontMap][paraOutMap];
     double** tempNewMatrix = currentKernel->getData();
-    for(int i = 0; i < currentKernel->getRows(); i++)
+    for (int i = 0; i < currentKernel->getRows(); i++)
     {
-        for(int j = 0; j < currentKernel->getColumns(); j++)
+        for (int j = 0; j < currentKernel->getColumns(); j++)
         {
             tempNewMatrix[i][j] = tempMatrix[i][j];
         }//Of for j
@@ -255,9 +158,9 @@ MfDoubleMatrix* MfCnnLayer::getRot180KernelAt(int paraFrontMap, int paraOutMap)
 {
     double** tempMatrix = kernel->getData()[paraFrontMap][paraOutMap];
     double** tempNewMatrix = currentKernel->getData();
-    for(int i = 0; i < currentKernel->getRows(); i++)
+    for (int i = 0; i < currentKernel->getRows(); i++)
     {
-        for(int j = 0; j < currentKernel->getColumns(); j++)
+        for (int j = 0; j < currentKernel->getColumns(); j++)
         {
             tempNewMatrix[i][j] = tempMatrix[i][j];
         }//Of for j
@@ -277,41 +180,14 @@ void MfCnnLayer::setKernelAt(int paraFrontMap, int paraOutMap, MfDoubleMatrix* p
 {
     double** tempMatrix = paraKernel->getData();
     double** tempNewMatrix = kernel->getData()[paraFrontMap][paraOutMap];
-    for(int i = 0; i < paraKernel->getRows(); i++)
+    for (int i = 0; i < paraKernel->getRows(); i++)
     {
-        for(int j = 0; j < paraKernel->getColumns(); j++)
+        for (int j = 0; j < paraKernel->getColumns(); j++)
         {
             tempNewMatrix[i][j] = tempMatrix[i][j];
         }//Of for j
     }//Of for i
 }//Of setKernelAt
-
-/**
- * Get the bias at the given position.
- * paraMapNo: the map number.
- */
-double MfCnnLayer::getBiasAt(int paraMapNo)
-{
-    return bias->getValue(0, paraMapNo);
-}//Of getBiasAt
-
-/**
- * Set the bias at the given position.
- * paraMapNo: the map number.
- * paraValue: the given value.
- */
-void MfCnnLayer::setBiasAt(int paraMapNo, double paraValue)
-{
-    bias->setValue(0, paraMapNo, paraValue);
-}//Of setBiasAt
-
-/**
- * Get whole outMaps.
- */
-Mf4DTensor* MfCnnLayer::getOutMaps()
-{
-    return outMaps;
-}//Of getOutMaps
 
 /**
  * Get the map at the given position.
@@ -320,9 +196,9 @@ MfDoubleMatrix* MfCnnLayer::getOutMapAt(int paraOutMapNo)
 {
     double** tempMatrix = outMaps->getData()[recordInBatch][paraOutMapNo];
     double** tempNewMatrix = currentOutMap->getData();
-    for(int i = 0; i < currentOutMap->getRows(); i++)
+    for (int i = 0; i < currentOutMap->getRows(); i++)
     {
-        for(int j = 0; j < currentOutMap->getColumns(); j++)
+        for (int j = 0; j < currentOutMap->getColumns(); j++)
         {
             tempNewMatrix[i][j] = tempMatrix[i][j];
         }//Of for j
@@ -337,19 +213,16 @@ MfDoubleMatrix* MfCnnLayer::getOutMapAt(int paraOutMapNo)
  */
 MfDoubleMatrix* MfCnnLayer::getOutMapAt(int paraRecordInBatch, int paraOutMapNo)
 {
-    //printf("Begin of getOutMapAt().\r\n");
     double** tempMatrix = outMaps->getData()[paraRecordInBatch][paraOutMapNo];
     double** tempNewMatrix = currentOutMap->getData();
-    for(int i = 0; i < currentOutMap->getRows(); i++)
+    for (int i = 0; i < currentOutMap->getRows(); i++)
     {
-        for(int j = 0; j < currentOutMap->getColumns(); j++)
+        for (int j = 0; j < currentOutMap->getColumns(); j++)
         {
             tempNewMatrix[i][j] = tempMatrix[i][j];
         }//Of for j
     }//Of for i
 
-    //printf("End of getOutMapAt(). currentOutMap %d * %d: \r\n",
-    //       currentOutMap->getRows(), currentOutMap->getColumns());
     return currentOutMap;
 }//Of getOutMapAt
 
@@ -377,25 +250,14 @@ void MfCnnLayer::setOutMapValue(int paraMapNo, MfDoubleMatrix* paraMatrix)
     int tempY = paraMatrix->getColumns();
     double** newMatrix = outMaps->getData()[recordInBatch][paraMapNo];
 
-    for(int i = 0; i < tempX; i ++)
+    for (int i = 0; i < tempX; i ++)
     {
-        for(int j = 0; j < tempY; j ++)
+        for (int j = 0; j < tempY; j ++)
         {
             newMatrix[i][j] = tempMatrix[i][j];
         }//Of for j
     }//Of for i
-
-    //printf("The out maps is:\r\n");
-    //cout << outMaps->toString() <<endl;
 }//Of setOutMapValue
-
-/**
- * Get whole errors.
- */
-Mf4DTensor* MfCnnLayer::getErrors()
-{
-    return errors;
-}//Of getErrors
 
 /**
  * Get errors at the given position.
@@ -404,9 +266,9 @@ MfDoubleMatrix* MfCnnLayer::getErrorsAt(int paraMapNo)
 {
     double** tempMatrix = errors->getData()[recordInBatch][paraMapNo];
     double** tempNewMatrix = currentErrors->getData();
-    for(int i = 0; i < currentErrors->getRows(); i++)
+    for (int i = 0; i < currentErrors->getRows(); i++)
     {
-        for(int j = 0; j < currentErrors->getColumns(); j++)
+        for (int j = 0; j < currentErrors->getColumns(); j++)
         {
             tempNewMatrix[i][j] = tempMatrix[i][j];
         }//Of for j
@@ -422,9 +284,9 @@ void MfCnnLayer::setErrorsAt(int paraMapNo, MfDoubleMatrix* paraMatrix)
 {
     double** tempMatrix = paraMatrix->getData();
     double** tempNewMatrix = errors->getData()[recordInBatch][paraMapNo];
-    for(int i = 0; i < paraMatrix->getRows(); i++)
+    for (int i = 0; i < paraMatrix->getRows(); i++)
     {
-        for(int j = 0; j < paraMatrix->getColumns(); j++)
+        for (int j = 0; j < paraMatrix->getColumns(); j++)
         {
             tempNewMatrix[i][j] = tempMatrix[i][j];
         }//Of for j
@@ -438,9 +300,9 @@ MfDoubleMatrix* MfCnnLayer::getErrorsAt(int paraRecordInBatch, int paraMapNo)
 {
     double** tempMatrix = errors->getData()[paraRecordInBatch][paraMapNo];
     double** tempNewMatrix = currentErrors->getData();
-    for(int i = 0; i < currentErrors->getRows(); i++)
+    for (int i = 0; i < currentErrors->getRows(); i++)
     {
-        for(int j = 0; j < currentErrors->getColumns(); j++)
+        for (int j = 0; j < currentErrors->getColumns(); j++)
         {
             tempNewMatrix[i][j] = tempMatrix[i][j];
         }//Of for j
@@ -458,22 +320,6 @@ void MfCnnLayer::setErrorAt(int paraMapNo, int paraMapX, int paraMapY, double pa
 }//Of getErrorAt
 
 /**
- * Setter.
- */
-void MfCnnLayer::setLastLayer(MfCnnLayer* paraLayer)
-{
-    lastLayer = paraLayer;
-}//Of setLastLayer
-
-/**
- * Setter.
- */
-void MfCnnLayer::setNextLayer(MfCnnLayer* paraLayer)
-{
-    nextLayer = paraLayer;
-}//Of setLastLayer
-
-/**
  * Setup.
  */
 void MfCnnLayer::setup()
@@ -486,14 +332,12 @@ void MfCnnLayer::setup()
     switch (layerType)
     {
     case INPUT_LAYER:
-        printf("initOutMaps ...");
+        printf("For INPUT_LAYER ...");
         initOutMaps();
         printf("done.\r\n");
         break;
     case CONVOLUTION_LAYER:
         printf("For CONVOLUTION_LAYER ...");
-        //layers[i].setMapSize(layers[i - 1].getMapSize().subtract(layers[i].getKernelSize(), 1));
-        //Output map size is determined by the map size of this layer and the kernel size.
         getMapSize()->subtractToMe(lastLayer->getMapSize(), kernelSize, 1);
         initKernel(tempNumFrontMaps);
         initBias();
@@ -504,7 +348,6 @@ void MfCnnLayer::setup()
     case SAMPLING_LAYER:
         printf("For SAMPLING_LAYER ...");
         setNumOutMaps(tempNumFrontMaps);
-        //layers[i].setMapSize(layers[i - 1].getMapSize().divide(layers[i].getScaleSize()));
         getMapSize()->divideToMe(lastLayer->getMapSize(), getScaleSize());
         initErrors();
         initOutMaps();
@@ -512,7 +355,8 @@ void MfCnnLayer::setup()
         break;
     case OUTPUT_LAYER:
         printf("For OUTPUT_LAYER ...");
-        initOutKernel(tempNumFrontMaps, lastLayer->getMapSize());
+        kernelSize->cloneToMe(lastLayer->getMapSize());
+        initKernel(tempNumFrontMaps);
         initBias();
         initErrors();
         initOutMaps();
@@ -527,7 +371,6 @@ void MfCnnLayer::setup()
  */
 void MfCnnLayer::setInputLayerOutput(MfDoubleMatrix* paraData)
 {
-    //printf("MfCnnLayer::setInputLayerOutput, recordInBatch = %d\r\n", recordInBatch);
     if (paraData->getColumns() != mapSize->width * mapSize->height)
     {
         printf("input record does not match the map size.\r\n");
@@ -539,11 +382,9 @@ void MfCnnLayer::setInputLayerOutput(MfDoubleMatrix* paraData)
         for (int j = 0; j < mapSize->height; j++)
         {
             //The input layer has only 1 out map.
-            //inputLayer.setMapValue(0, i, j, attr[mapSize.y * i + j]);
             setOutMapValue(0, i, j, paraData->getValue(0, mapSize->height * i + j));
         }//Of for j
     }//Of for i
-    //printf("MfCnnLayer::setInputLayerOutput end\r\n");
 }//Of setInputLayerOutput
 
 /**
@@ -553,26 +394,11 @@ void MfCnnLayer::setInputLayerOutput(MfDoubleMatrix* paraData)
  */
 void MfCnnLayer::setConvolutionOutput()
 {
-    //printf("MfCnnLayer::setConvolutionOutput()\r\n");
     int tempLastNumMaps = lastLayer->getNumOutMaps();
     MfDoubleMatrix* tempMap;
     MfDoubleMatrix* tempKernel;
     double tempBias;
     bool tempEmpty = true;
-
-    /////////////////For test output begins
-    //tempMap = lastLayer->getOutMapAt(0);
-    //printf("last layer map is %d * %d: \r\n", tempMap->getRows(), tempMap->getColumns());
-    //cout << tempMap->toString() << endl;
-    //tempKernel = getKernelAt(0, 0);
-    //printf("last layer kernel is %d * %d: \r\n", tempKernel->getRows(), tempKernel->getColumns());
-    //cout << tempKernel->toString() << endl;
-
-    //printf("singleOutMap %d * %d: \r\n", singleOutMap->getRows(), singleOutMap->getColumns());
-    //cout << singleOutMap->toString() << endl;
-    //printf("currentOutMap %d * %d: \r\n", currentOutMap->getRows(), currentOutMap->getColumns());
-    //cout << currentOutMap->toString() << endl;
-    /////////////////For test output ends
 
     for (int j = 0; j < numOutMaps; j++)
     {
@@ -585,11 +411,13 @@ void MfCnnLayer::setConvolutionOutput()
             {
                 //Only convolution on one map.
                 currentOutMap->convolutionValidToMe(tempMap, tempKernel);
+                tempEmpty = false;
             }
             else
             {
                 //Sum up convolution maps
-                currentOutMap->addToMe(currentOutMap, singleOutMap->convolutionValidToMe(tempMap, tempKernel));
+                singleOutMap->convolutionValidToMe(tempMap, tempKernel);
+                currentOutMap->addToMe(currentOutMap, singleOutMap);
             }//Of if
         }//Of for i
 
@@ -600,13 +428,9 @@ void MfCnnLayer::setConvolutionOutput()
         //Activation.
         currentOutMap->setActivator(layerActivator);
         currentOutMap->activate();
-        //printf("currentOutMap is: \r\n");
-        //cout << currentOutMap->toString() << endl;
 
         setOutMapValue(j, currentOutMap);
     }//Of for j
-    //printf("End of setConvolutionOutput(). currentOutMap %d * %d: \r\n",
-    //       currentOutMap->getRows(), currentOutMap->getColumns());
 }//Of setConvolutionOutput
 
 /**
@@ -629,23 +453,32 @@ void MfCnnLayer::setSamplingOutput()
  */
 int MfCnnLayer::getCurrentPrediction()
 {
-    double tempOutmaps[numOutMaps];
+    double tempValue;
     int resultPrediction = -1;
     double tempMaxValue = -1000;
 
-    for (int i = 0; i < numOutMaps; i++)
+    for (int i = 0; i < numClasses; i++)
     {
         //outmaps->setValue(0, i, getMapAt(i)->getValue(0, 0));
-        tempOutmaps[i] = getOutMapAt(i)->getValue(0, 0);
-        if (tempMaxValue < tempOutmaps[i])
+        tempValue = getOutMapAt(i)->getValue(0, 0);
+        predictionDistribution->setValue(0, i, tempValue);
+        if (tempMaxValue < tempValue)
         {
-            tempMaxValue = tempOutmaps[i];
+            tempMaxValue = tempValue;
             resultPrediction = i;
         }//Of if
     }//Of for i
 
     return resultPrediction;
 }//Of getCurrentPrediction
+
+/**
+ * Getter.
+ */
+MfDoubleMatrix* MfCnnLayer::getCurrentPredictionDistribution()
+{
+    return predictionDistribution;
+}//Of getCurrentPredictionDistribution
 
 /**
  * Forward according to the layer type.
@@ -671,9 +504,6 @@ void MfCnnLayer::forward(MfDoubleMatrix* paraData)
         throw "Unsupported layer type.\r\n";
         break;
     }//Of switch
-
-    //printf("End of MfCnnLayer::forward(), currentOutMap %d * %d: \r\n",
-    //       currentOutMap->getRows(), currentOutMap->getColumns());
 }//Of forward
 
 /**
@@ -681,26 +511,25 @@ void MfCnnLayer::forward(MfDoubleMatrix* paraData)
  */
 void MfCnnLayer::setConvolutionLayerErrors()
 {
+    //printf("setConvolutionLayerErrors()\r\n");
+    MfDoubleMatrix* tempNextLayerErrors;
     for (int i = 0; i < numOutMaps; i ++)
     {
         currentOutMap = getOutMapAt(i);
         currentOutMap->setActivator(layerActivator);
         currentOutMap->deriveToMe(currentOutMap);
-
-        /*
-        if (!currentOutMap->rangeCheck(-5, 5))
-        {
-            printf("MfCnnLayer::setConvolutionLayerErrors, a value of currentOutMap exceeds [-5, 5].\r\n");
-            cout << layerActivator->toString() << endl;
-            cout << currentOutMap->toString() << endl;
-            throw "MfCnnLayer::setConvolutionLayerErrors";
-        }//Of if
-        */
-
         //The space of singleOutMap is reused here, in fact here is the error.
+        tempNextLayerErrors = nextLayer->getErrorsAt(i);
+
         singleOutMap->kroneckerToMe(nextLayer->getErrorsAt(i), nextLayer->getScaleSize());
         currentOutMap->cwiseProductToMe(currentOutMap, singleOutMap);
         setErrorsAt(i, currentOutMap);
+
+        if (!currentOutMap->rangeCheck(-1.2, 1.2))
+        {
+            printf("MfCnnLayer::setConvolutionLayerErrors, a value of currentOutMap exceeds [-1.2, 1.2].\r\n");
+            throw "MfCnnLayer::setConvolutionLayerErrors";
+        }//Of if
     }//Of for i
 }//Of setConvolutionLayerErrors
 
@@ -717,6 +546,9 @@ void MfCnnLayer::setSamplingLayerErrors()
     bool tempFirst;
     MfDoubleMatrix* tempNextErrors;
     MfDoubleMatrix* tempRot180Kernel;
+
+    //printf("setSamplingLayerErrors()\r\n");
+
     for (int i = 0; i < numOutMaps; i++)
     {
         tempFirst = true;
@@ -734,6 +566,13 @@ void MfCnnLayer::setSamplingLayerErrors()
                 currentErrors->addToMe(currentErrors, currentSingleErrors);
             }//Of if
         }//Of for j
+
+        if (!currentErrors->rangeCheck(-12, 12))
+        {
+            printf("MfCnnLayer::setSamplingLayerErrors, a value of currentErrors exceeds [-1.2, 1.2].\r\n");
+            throw "MfCnnLayer::setSamplingLayerErrors";
+        }//Of if
+
         setErrorsAt(i, currentErrors);
     }//Of for i
 }//Of setSamplingLayerErrors
@@ -748,22 +587,20 @@ void MfCnnLayer::setOutputLayerErrors(int paraLabel)
 {
     double tempTarget[numOutMaps];
     double tempOutmaps[numOutMaps];
+    double tempValue;
 
-    //MfDoubleMatrix* target = new MfDoubleMatrix(1, numOutMaps);
-    //target->fill(0);
-    //MfDoubleMatrix* outmaps = new MfDoubleMatrix(1, numOutMaps);
     for (int i = 0; i < numOutMaps; i++)
     {
         tempTarget[i] = 0;
         tempOutmaps[i] = getOutMapAt(i)->getValue(0, 0);
     }//Of for i
 
-    //target->setValue(0, paraLabel, 1);
     tempTarget[paraLabel] = 1;
 
     for (int i = 0; i < numOutMaps; i ++)
     {
-        setErrorAt(i, 0, 0, tempOutmaps[i] * (1 - tempOutmaps[i]) * (tempTarget[i] - tempOutmaps[i]));
+        tempValue = layerActivator->derive(tempOutmaps[i]) * (tempTarget[i] - tempOutmaps[i]);
+        setErrorAt(i, 0, 0, tempValue);
     }//Of for i
 }//Of setOutputLayerErrors
 
@@ -792,8 +629,6 @@ void MfCnnLayer::backPropagation(int paraLabel)
         throw "Unsupported layer type.\r\n";
         break;
     }//Of switch
-
-    //printf("End of MfCnnLayer::backPropagation()");
 }//Of backPropagation
 
 /**
@@ -801,21 +636,17 @@ void MfCnnLayer::backPropagation(int paraLabel)
  */
 void MfCnnLayer::updateKernels()
 {
-    //printf("updateKernels\r\n");
     int tempNumLastMap = lastLayer->getNumOutMaps();
     bool tempFirst = true;
 
     for (int j = 0; j < numOutMaps; j++)
     {
-        //printf("j = %d\r\n", j);
         for (int i = 0; i < tempNumLastMap; i++)
         {
-            //printf("i = %d\r\n", i);
             tempFirst = true;
             for (int r = 0; r < batchSize; r++)
             {
                 currentErrors = getErrorsAt(r, j);
-                //printf("errors got\r\n");
                 if (tempFirst)
                 {
                     tempFirst = false;
@@ -828,51 +659,13 @@ void MfCnnLayer::updateKernels()
                 }//Of if
             }//Of for r
 
-            double tempValue;
-            //printf("deltaKernel\r\n");
-            deltaKernel->timesValueToMe(ALPHA/batchSize);
-            for(int ki = 0; ki < deltaKernel->getRows(); ki ++)
-            {
-                for(int kj = 0; kj < deltaKernel->getColumns(); kj ++)
-                {
-                    tempValue = deltaKernel->getValue(ki, kj);
-                    if (tempValue < -2 || tempValue > 2)
-                    {
-                        printf("A strange delta kernel value: %lf\r\n", tempValue);
-                        exit(1);
-                    }
-                }
-            }
-
             currentKernel = getKernelAt(i, j);
-            //currentKernel->timesValueToMe(1 - LAMBDA * ALPHA);
-            currentKernel->timesValueToMe(1 - ALPHA);
+            currentKernel->timesValueToMe(1 - lambda * alpha);
             currentKernel->addToMe(currentKernel, deltaKernel);
 
-            /*
-            for(int ki = 0; ki < currentKernel->getRows(); ki ++)
-            {
-                for(int kj = 0; kj < currentKernel->getColumns(); kj ++)
-                {
-                    tempValue = currentKernel->getValue(ki, kj);
-                    if (tempValue < -5 || tempValue > 5)
-                    {
-                        printf("A strange kernel value: %lf\r\n", tempValue);
-
-                        printf("kernel = %s\r\n", currentKernel->toString().c_str());
-
-                        printf("deltaKernel = %s\r\n", deltaKernel->toString().c_str());
-                        exit(1);
-                    }
-                }
-            }
-            */
             setKernelAt(i, j, currentKernel);
         }//Of for i
     }//Of for j
-
-    //printf("The new kernel is: \r\n");
-    //cout<< kernel->toString() << endl;
 }//Of updateKernels
 
 /**
@@ -892,7 +685,6 @@ void MfCnnLayer::updateBias() {
         tempDeltaBias = currentErrors->sumUp() / batchSize / tempArea;
         if (tempDeltaBias < -5 || tempDeltaBias > 5)
         {
-            printf("tempDeltaBias = %lf\r\n", tempDeltaBias);
             FILE *tempFile;
             if ((tempFile = fopen("D:\\C\\cann\\data\\tempoutput.txt", "w")) == NULL)
             {
@@ -907,12 +699,9 @@ void MfCnnLayer::updateBias() {
             fclose(tempFile);
             throw "deltaBias too big.";
         }
-        tempBias = getBiasAt(j) + ALPHA * tempDeltaBias;
+        tempBias = getBiasAt(j) + alpha * tempDeltaBias;
         setBiasAt(j, tempBias);
     }//Of for i
-
-    //printf("The new bias is: \r\n");
-    //cout<< bias->toString() << endl;
 }//Of updateBias
 
 /**
@@ -929,14 +718,6 @@ void MfCnnLayer::setLayerActivator(char paraFunction)
         layerActivator = new Activator(paraFunction);
     }//Of if
 }//Of setLayerActivator
-
-/**
- * Getter.
- */
-MfDoubleMatrix* MfCnnLayer::getCurrentOutMap()
-{
-    return currentOutMap;
-}//Of getCurrentOutMap
 
 /**
  * Code unit test.

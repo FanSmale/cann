@@ -42,8 +42,16 @@ public:
     //Set one value
     void setValue(int paraPosition, int paraValue);
 
-    //Get the value at the given position
+    //Get the value at the given position.
     int getValue(int paraPosition);
+
+    //Fill with the same value.
+    void fill(int paraValue)
+    {
+        for(int i = 0; i < length; i ++) {
+            data[i] = paraValue;
+        }//Of for i
+    }//Of fill
 
     //Get length. No setLength enabled
     int getLength();

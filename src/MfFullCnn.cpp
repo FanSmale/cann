@@ -79,7 +79,6 @@ void MfFullCnn::setup()
 {
     for(int i = 0; i < numLayers; i ++)
     {
-        printf("Layer[%d] setup\r\n", i);
         layers[i]->setup();
     }//Of for i
 }//Of setup
@@ -90,6 +89,8 @@ void MfFullCnn::setup()
  * paraLabel: the label of the instance.
  */
 int MfFullCnn::forward(MfDoubleMatrix* paraData) {
+    //printf("forward:\r\n");
+    //cout << paraData->toString() << endl;
     for (int i = 0; i < numLayers; i++)
     {
         //printf("Layer[%d] forward\r\n", i);
@@ -97,7 +98,7 @@ int MfFullCnn::forward(MfDoubleMatrix* paraData) {
     }//Of for i
 
     int tempPrediction = layers[numLayers - 1]->getCurrentPrediction();
-    printf("%d ", tempPrediction);
+
     return tempPrediction;
 }//Of forward
 
@@ -179,8 +180,9 @@ void MfFullCnn::prepareForNewRecord()
  * Train the network.
  * paraData: the given training instances.
  * paraLabel: the labels of the instances.
+ * Return: the prediction accuracy.
  */
-void MfFullCnn::train(MfDoubleMatrix* paraX, MfIntArray* paraY)
+double MfFullCnn::train(MfDoubleMatrix* paraX, MfIntArray* paraY)
 {
     int tempRows = paraX->getRows();
     int tempColumns = paraX->getColumns();
@@ -188,25 +190,30 @@ void MfFullCnn::train(MfDoubleMatrix* paraX, MfIntArray* paraY)
 
     int tempInstance;
     int tempLabel;
+    int tempPrediction;
+
+    double tempCorrect = 0.0;
+
     MfDoubleMatrix* tempData = new MfDoubleMatrix(1, tempColumns);
-    //printf("Start to train CNN\r\n");
 
     randomize();
     for(int e = 0; e < tempEpocs; e ++)
     {
-        //printf("e = %d\r\n", e);
         //A new batch
         prepareForNewBatch();
         for(int i = 0; i < batchSize; i ++)
         {
-            //printf("i = %d\r\n", i);
             tempInstance = randomArray->getValue(e * batchSize + i);
             for(int j = 0; j < tempColumns; j ++)
             {
                 tempData->setValue(0, j, paraX->getValue(tempInstance, j));
             }//Of for j
             tempLabel = paraY->getValue(tempInstance);
-            forward(tempData);
+            tempPrediction = forward(tempData);
+            if (tempPrediction == tempLabel)
+            {
+                tempCorrect ++;
+            }//Of if
             backPropagation(tempLabel);
 
             //A new record
@@ -217,6 +224,8 @@ void MfFullCnn::train(MfDoubleMatrix* paraX, MfIntArray* paraY)
         //printf("\r\n updateParameters\r\n");
         updateParameters();
     }//Of for e
+
+    return tempCorrect/tempRows;
 }//Of train
 
 /**
@@ -236,7 +245,7 @@ double MfFullCnn::test(MfDoubleMatrix* paraX, MfIntArray* paraY)
     printf("Start to test CNN\r\n");
 
     prepareForNewBatch();
-    for(int i = 0; i < 10; i ++)
+    for(int i = 0; i < tempRows; i ++)
     {
         //printf("i = %d\r\n", i);
         for(int j = 0; j < tempColumns; j ++)
@@ -246,28 +255,55 @@ double MfFullCnn::test(MfDoubleMatrix* paraX, MfIntArray* paraY)
         tempLabel = paraY->getValue(i);
 
         tempPrediction = forward(tempData);
+        MfDoubleMatrix* tempMatrix = layers[numLayers - 1]->getCurrentPredictionDistribution();
+
         if (tempPrediction == tempLabel)
         {
             tempNumCorrect++;
-            printf("Correct\r\n");
-        }  else
-        {
-            printf("Incorrect: %d vs. %d.\r\n", tempPrediction, tempLabel);
         }//Of if
     }//Of for i
+
+    outputKernelsToFile();
 
     return tempNumCorrect/tempRows;
 }//Of test
 
 /**
- * Training/testing test.
- * The digit recognition data.
+ * Output kernels for debugging.
  */
-void MfFullCnn::trainingTestingTest()
+void MfFullCnn::outputKernelsToFile()
+{
+    FILE *tempFile;
+    if((tempFile = fopen("D:\\C\\cann\\data\\kernels.txt", "w")) == NULL)
+    {
+        printf("Could not open file for writing.\r\n");
+        exit(1);
+    }//Of if
+    fprintf(tempFile, "These are kernels for a total of %d layers:\r\n", numLayers);
+    for(int i = 0; i < numLayers; i ++)
+    {
+        if((layers[i]->getLayerType() == INPUT_LAYER) ||
+           (layers[i]->getLayerType() == SAMPLING_LAYER))
+        {
+            continue;
+        }//Of if
+
+        fprintf(tempFile, "\r\nLayer %d\r\n", i);
+
+        fprintf(tempFile, "%s", layers[i]->getKernel()->toString().c_str());
+    }//Of for i
+    fprintf(tempFile, "\r\nEnd of file\r\n");
+    fclose(tempFile);
+}//Of outputKernelsToFile
+
+/**
+ * Training/testing test using the digit recognition data.
+ */
+void MfFullCnn::mnistTest()
 {
     //Step 1. Build the CNN
     printf("Building CNN\r\n");
-    MfFullCnn* tempCnn = new MfFullCnn(10);
+    MfFullCnn* tempCnn = new MfFullCnn(5);
     MfSize* tempImageSize = new MfSize(28, 28);
     MfSize* tempConvolutionSize = new MfSize(5, 5);
     MfSize* tempSampleSize = new MfSize(2, 2);
@@ -294,67 +330,76 @@ void MfFullCnn::trainingTestingTest()
     MfDataReader* tempReader = new MfDataReader(tempFilename);
     printf("Done.\r\n");
     tempReader->randomize();
-    tempReader->splitInTwo(0.2);
+    tempReader->splitInTwo(0.8);
 
     MfDoubleMatrix* tempTrainingX = tempReader->getTrainingX();
     MfIntArray* tempTrainingY = tempReader->getTrainingY();
     MfDoubleMatrix* tempTestingX = tempReader->getTestingX();
     MfIntArray* tempTestingY = tempReader->getTestingY();
 
-    //printf("Read testing data\r\n");
-    //tempString = "D:\\C\\cann\\data\\mnist\\test.format";
-    //tempFilename = (char *)tempString.c_str();
-
-    //MfDataReader* tempReader2 = new MfDataReader(tempFilename);
-    //tempReader->randomize();
-    //tempReader->splitInTwo(0.6);
-
-    //MfDoubleMatrix* tempTestingX = tempReader2->getWholeX();
-    //MfIntArray* tempTestingY = tempReader2->getWholeY();
-    //printf("Done.\r\n");
-
     tempCnn->initializeRandomArray(tempTrainingX->getRows());
     printf("Start training rounds:\r\n");
+    double tempAccuracy;
     for(int i = 0; i < 5; i ++)
     {
-        printf("Round: %d:\r\n", i);
-        tempCnn->train(tempTrainingX, tempTrainingY);
+        tempAccuracy = tempCnn->train(tempTrainingX, tempTrainingY);
+        printf("Round: %d, accuracy = %lf:\r\n", i, tempAccuracy);
     }//Of for i
 
-    printf("After training:\r\n\r\n\r\n\r\n");
-    double tempAccuracy = tempCnn->test(tempTestingX, tempTestingY);
+    printf("After training:\r\n\r\n\r\n");
+    tempCnn->outputKernelsToFile();
 
-    //free(tempMfIntArray);
+    printf("Before testing:\r\n");
+    tempAccuracy = tempCnn->test(tempTestingX, tempTestingY);
 
     free(tempCnn);
 
     printf("The accuracy is: %lf. Finish. \r\n", tempAccuracy);
-}//Of trainingTestingTest
+}//Of mnistTest
 
 /**
- * Code unit test.
+ * Code integrated test.
  */
-void MfFullCnn::unitTest()
+void MfFullCnn::integratedTest()
 {
     //Test the digit recognition data.
-    MfFullCnn* tempCnn = new MfFullCnn(10);
-    MfSize* tempImageSize = new MfSize(28, 28);
-    MfSize* tempConvolutionSize = new MfSize(5, 5);
+    MfFullCnn* tempCnn = new MfFullCnn(1);
+    MfSize* tempImageSize = new MfSize(6, 6);
+    MfSize* tempConvolutionSize = new MfSize(3, 3);
     MfSize* tempSampleSize = new MfSize(2, 2);
-    int tempNumClasses = 10;
+    int tempNumClasses = 2;
 
     //Four layers
     tempCnn->addLayer(INPUT_LAYER, -1, tempImageSize);
-    tempCnn->addLayer(CONVOLUTION_LAYER, 6, tempConvolutionSize);
-    tempCnn->addLayer(SAMPLING_LAYER, -1, tempSampleSize);
-    tempCnn->addLayer(CONVOLUTION_LAYER, 12, tempConvolutionSize);
+    tempCnn->addLayer(CONVOLUTION_LAYER, 2, tempConvolutionSize);
     tempCnn->addLayer(SAMPLING_LAYER, -1, tempSampleSize);
     tempCnn->addLayer(OUTPUT_LAYER, tempNumClasses, nullptr);
 
     //Setup.
     tempCnn->setup();
 
-    //Now load the data for training/testing.
+    printf("After setup\r\n");
 
-}//Of unitTest
+    //Now load the data for training/testing.
+    MfDoubleMatrix* tempTrainingX = new MfDoubleMatrix(1, 36);
+    for(int i = 0; i < 18; i ++) {
+        tempTrainingX->setValue(0, i, 0);
+    }
+    for(int i = 18; i < 36; i ++) {
+        tempTrainingX->setValue(0, i, 1);
+    }
+    MfIntArray* tempTrainingY = new MfIntArray(1);
+    tempTrainingY->fill(1);
+    tempCnn->initializeRandomArray(tempTrainingX->getRows());
+
+    printf("before training\r\n");
+    tempCnn->train(tempTrainingX, tempTrainingY);
+
+    printf("After training:\r\n\r\n");
+    tempCnn->outputKernelsToFile();
+
+    //double tempAccuracy = tempCnn->test(tempTestingX, tempTestingY);
+
+    free(tempCnn);
+}//Of integratedTest
 

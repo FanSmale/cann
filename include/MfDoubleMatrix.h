@@ -15,6 +15,8 @@
 
 #define random0To1() rand()/(double)(RAND_MAX)
 
+#define DEBUG false
+
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,10 +46,16 @@ class MfDoubleMatrix
         string toString();
 
         //Getter.
-        int getRows();
+        int getRows()
+        {
+            return rows;
+        }
 
         //Getter.
-        int getColumns();
+        int getColumns()
+        {
+            return columns;
+        }
 
         //Set a value at the given position.
         double setValue(int paraRow, int paraColumn, double paraValue);
@@ -55,17 +63,32 @@ class MfDoubleMatrix
         //Get a value at the given position.
         double getValue(int paraRow, int paraColumn);
 
+        //Get the maximal value.
+        double getMaxValue();
+
+        //Get the minimal value.
+        double getMinValue();
+
+        //Getter. Please use with caution because it is a pointer.
+        double** getData()
+        {
+            return data;
+        }
+
         //Range check.
         bool rangeCheck(double paraLowerBound, double paraUpperBound);
 
-        //Getter..
-        double** getData();
-
         //Setter.
-        void setActivator(Activator* paraActivator);
+        void setActivator(Activator* paraActivator)
+        {
+            activator = paraActivator;
+        }
 
         //Getter.
-        Activator* getActivator();
+        Activator* getActivator()
+        {
+            return activator;
+        }
 
         //Activate, return myself.
         MfDoubleMatrix* activate();

@@ -95,6 +95,28 @@ void Mf4DTensor::fill(double paraValue)
 
 
 /**
+ * Fill with random values.
+ * paraLowerBound: the lower bound.
+ * paraUpperBound: the upper bound
+ */
+void Mf4DTensor::fill(double paraLowerBound, double paraUpperBound)
+{
+    for(int i = 0; i < firstLength; i ++)
+    {
+        for(int j = 0; j < secondLength; j ++)
+        {
+            for(int k = 0; k < thirdLength; k ++)
+            {
+                for(int i1 = 0; i1< fourthLength; i1 ++)
+                {
+                    data[i][j][k][i1] = rand() * (paraUpperBound - paraLowerBound) /RAND_MAX + paraLowerBound;
+                }//Of for i1
+            }//Of for k
+        }//Of for j
+    }//Of for i
+}//Of fill
+
+/**
  * Getter. Please use with caution.
  */
 double**** Mf4DTensor::getData()
