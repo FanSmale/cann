@@ -1949,7 +1949,7 @@
 1613475938 source:d:\c\cann\src\mfcnnlayer.cpp
 	"MfCnnLayer.h"
 
-1613476891 d:\c\cann\include\mfcnnlayer.h
+1613524280 d:\c\cann\include\mfcnnlayer.h
 	<Malloc.h>
 	"MfDoubleMatrix.h"
 	"MfSize.h"
@@ -1958,7 +1958,7 @@
 1613476001 source:d:\c\cann\src\mffullcnn.cpp
 	"MfFullCnn.h"
 
-1613473575 d:\c\cann\include\mffullcnn.h
+1613529196 d:\c\cann\include\mffullcnn.h
 	"MfCnnLayer.h"
 	"MfDataReader.h"
 

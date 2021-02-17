@@ -243,7 +243,10 @@ class MfCnnLayer
         int getCurrentPrediction();
 
         //Get the prediction distribution for the current instance.
-        MfDoubleMatrix* getCurrentPredictionDistribution();
+        MfDoubleMatrix* getCurrentPredictionDistribution()
+        {
+            return predictionDistribution;
+        }
 
         //Forward an instance, the parameters may not be useful.
         void forward(MfDoubleMatrix* paraData);

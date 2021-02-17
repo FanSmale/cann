@@ -89,7 +89,7 @@ void MfCnnLayer::initKernel(int paraNumFrontMaps)
 {
     kernel = new Mf4DTensor(paraNumFrontMaps, numOutMaps, kernelSize->width, kernelSize->height);
     //Attention: I do not know why these thresholds work.
-    kernel->fill(-0.05, 0.095);
+    kernel->fill(-0.005, 0.095);
     //kernel->fill(-0.5, 0.5);
 
     currentKernel = new MfDoubleMatrix(kernelSize->width, kernelSize->height);
@@ -194,18 +194,7 @@ void MfCnnLayer::setKernelAt(int paraFrontMap, int paraOutMap, MfDoubleMatrix* p
  */
 MfDoubleMatrix* MfCnnLayer::getOutMapAt(int paraOutMapNo)
 {
-    double** tempMatrix = outMaps->getData()[recordInBatch][paraOutMapNo];
-    double** tempNewMatrix = currentOutMap->getData();
-    for (int i = 0; i < currentOutMap->getRows(); i++)
-    {
-        for (int j = 0; j < currentOutMap->getColumns(); j++)
-        {
-            tempNewMatrix[i][j] = tempMatrix[i][j];
-        }//Of for j
-    }//Of for i
-    //printf("End of getOutMapAt(). currentOutMap %d * %d: \r\n",
-    //       currentOutMap->getRows(), currentOutMap->getColumns());
-    return currentOutMap;
+    return getOutMapAt(recordInBatch, paraOutMapNo);
 }//Of getOutMapAt
 
 /**
@@ -459,7 +448,6 @@ int MfCnnLayer::getCurrentPrediction()
 
     for (int i = 0; i < numClasses; i++)
     {
-        //outmaps->setValue(0, i, getMapAt(i)->getValue(0, 0));
         tempValue = getOutMapAt(i)->getValue(0, 0);
         predictionDistribution->setValue(0, i, tempValue);
         if (tempMaxValue < tempValue)
@@ -471,14 +459,6 @@ int MfCnnLayer::getCurrentPrediction()
 
     return resultPrediction;
 }//Of getCurrentPrediction
-
-/**
- * Getter.
- */
-MfDoubleMatrix* MfCnnLayer::getCurrentPredictionDistribution()
-{
-    return predictionDistribution;
-}//Of getCurrentPredictionDistribution
 
 /**
  * Forward according to the layer type.
@@ -511,7 +491,6 @@ void MfCnnLayer::forward(MfDoubleMatrix* paraData)
  */
 void MfCnnLayer::setConvolutionLayerErrors()
 {
-    //printf("setConvolutionLayerErrors()\r\n");
     MfDoubleMatrix* tempNextLayerErrors;
     for (int i = 0; i < numOutMaps; i ++)
     {
@@ -524,12 +503,6 @@ void MfCnnLayer::setConvolutionLayerErrors()
         singleOutMap->kroneckerToMe(nextLayer->getErrorsAt(i), nextLayer->getScaleSize());
         currentOutMap->cwiseProductToMe(currentOutMap, singleOutMap);
         setErrorsAt(i, currentOutMap);
-
-        if (!currentOutMap->rangeCheck(-1.2, 1.2))
-        {
-            printf("MfCnnLayer::setConvolutionLayerErrors, a value of currentOutMap exceeds [-1.2, 1.2].\r\n");
-            throw "MfCnnLayer::setConvolutionLayerErrors";
-        }//Of if
     }//Of for i
 }//Of setConvolutionLayerErrors
 
@@ -546,8 +519,6 @@ void MfCnnLayer::setSamplingLayerErrors()
     bool tempFirst;
     MfDoubleMatrix* tempNextErrors;
     MfDoubleMatrix* tempRot180Kernel;
-
-    //printf("setSamplingLayerErrors()\r\n");
 
     for (int i = 0; i < numOutMaps; i++)
     {
@@ -567,12 +538,6 @@ void MfCnnLayer::setSamplingLayerErrors()
             }//Of if
         }//Of for j
 
-        if (!currentErrors->rangeCheck(-12, 12))
-        {
-            printf("MfCnnLayer::setSamplingLayerErrors, a value of currentErrors exceeds [-1.2, 1.2].\r\n");
-            throw "MfCnnLayer::setSamplingLayerErrors";
-        }//Of if
-
         setErrorsAt(i, currentErrors);
     }//Of for i
 }//Of setSamplingLayerErrors
@@ -581,7 +546,6 @@ void MfCnnLayer::setSamplingLayerErrors()
  * Set the output layer errors.
  * paraData: the instance.
  * paraLabel: the actual label of the instance.
- * Return: whether or not the current prediction is correct.
  */
 void MfCnnLayer::setOutputLayerErrors(int paraLabel)
 {
@@ -674,31 +638,12 @@ void MfCnnLayer::updateKernels()
 void MfCnnLayer::updateBias() {
     double tempBias;
     double tempDeltaBias;
-    double tempArea = currentErrors->getRows() * currentErrors->getColumns();
-
-    //printf("The old bias is: \r\n");
-    //cout<< bias->toString() << endl;
 
     for (int j = 0; j < numOutMaps; j ++)
     {
         errors->sumToMatrix(j, currentErrors);
-        tempDeltaBias = currentErrors->sumUp() / batchSize / tempArea;
-        if (tempDeltaBias < -5 || tempDeltaBias > 5)
-        {
-            FILE *tempFile;
-            if ((tempFile = fopen("D:\\C\\cann\\data\\tempoutput.txt", "w")) == NULL)
-            {
-                printf("Could not open file for writing.\r\n");
-                exit(1);
-            }//Of if
-            fprintf(tempFile, "The deltaBias is too big\r\n");
-            fprintf(tempFile, "%s", errors->toString().c_str());
-            fprintf(tempFile, "\r\nCurrent errors\r\n");
-            fprintf(tempFile, "%s", currentErrors->toString().c_str());
-            fprintf(tempFile, "End of file\r\n");
-            fclose(tempFile);
-            throw "deltaBias too big.";
-        }
+        tempDeltaBias = currentErrors->sumUp() / batchSize;
+
         tempBias = getBiasAt(j) + alpha * tempDeltaBias;
         setBiasAt(j, tempBias);
     }//Of for i

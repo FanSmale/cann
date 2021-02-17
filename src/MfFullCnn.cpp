@@ -44,6 +44,14 @@ MfFullCnn::MfFullCnn(int paraBatchSize)
 }//Of the second constructor
 
 /**
+ * The destructor.
+ */
+MfFullCnn::~MfFullCnn()
+{
+    //dtor
+}//Of the destructor
+
+/**
  * Add a layer. Layers are added one by one because it is complex.
  * paraLayerTypes: layer types in integer.
  * paraNum: differs for different type.
@@ -63,14 +71,6 @@ void MfFullCnn::addLayer(int paraLayerType, int paraNum, MfSize* paraSize)
     }//Of if
     numLayers ++;
 }//Of addLayer
-
-/**
- * The destructor.
- */
-MfFullCnn::~MfFullCnn()
-{
-    //dtor
-}//Of the destructor
 
 /**
  * Setup.
@@ -186,7 +186,7 @@ double MfFullCnn::train(MfDoubleMatrix* paraX, MfIntArray* paraY)
 {
     int tempRows = paraX->getRows();
     int tempColumns = paraX->getColumns();
-    int tempEpocs = tempRows / batchSize;
+    int tempEpochs = tempRows / batchSize;
 
     int tempInstance;
     int tempLabel;
@@ -197,7 +197,7 @@ double MfFullCnn::train(MfDoubleMatrix* paraX, MfIntArray* paraY)
     MfDoubleMatrix* tempData = new MfDoubleMatrix(1, tempColumns);
 
     randomize();
-    for(int e = 0; e < tempEpocs; e ++)
+    for(int e = 0; e < tempEpochs; e ++)
     {
         //A new batch
         prepareForNewBatch();
