@@ -30,7 +30,7 @@ MfAnnLayer::MfAnnLayer(int paraInputSize, int paraOutputSize, char paraActivatio
     //printf("MfAnnLayer constructor\r\n");
     inputSize = paraInputSize;
     outputSize = paraOutputSize;
-    rate = paraRate;
+    learningRate = paraRate;
     mobp = paraMobp;
 
     weightMatrix = new MfDoubleMatrix(paraInputSize, paraOutputSize);
@@ -192,7 +192,7 @@ MfDoubleMatrix* MfAnnLayer::backPropagation(MfDoubleMatrix* paraErrors)
             //printf("MfAnnLayer::backPropagation test 2.1.1, j = %d\r\n", j);
             tempErrorSum += paraErrors->getValue(0, j) * weightMatrix->getValue(i, j);
             tempValue1 = mobp * weightDeltaMatrix->getValue(i, j)
-                + rate * paraErrors->getValue(0, j) * inputData->getValue(0, i);
+                + learningRate * paraErrors->getValue(0, j) * inputData->getValue(0, i);
             weightDeltaMatrix->setValue(i, j, tempValue1);
 
             tempValue2 = weightMatrix->getValue(i, j);
@@ -203,7 +203,7 @@ MfDoubleMatrix* MfAnnLayer::backPropagation(MfDoubleMatrix* paraErrors)
                 // Offset adjusting
                 tempValue1 = offsetDeltaMatrix->getValue(0, j);
                 tempValue2 = paraErrors->getValue(0, j);
-                tempValue3 = mobp * tempValue1 + rate * tempValue2;
+                tempValue3 = mobp * tempValue1 + learningRate * tempValue2;
                 offsetDeltaMatrix->setValue(0, j, tempValue3);
                 tempValue4 = offsetMatrix->getValue(0, j);
                 //offsetMatrix(0, j) += offsetDeltaMatrix(0, j);

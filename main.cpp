@@ -10,20 +10,22 @@
 
 #include <iostream>
 #include <stdio.h>
-//#include "AnnLayer.h"
-//#include "FullAnn.h"
-//#include "EigenSupport.h"
-//#include "DataReader.h"
-//#include "CnnLayer.h"
+
+//For ANN
 #include "MfIntArray.h"
 #include "MfDoubleMatrix.h"
 #include "MfDataReader.h"
 #include "MfAnnLayer.h"
 #include "MfFullAnn.h"
 
+//For CNN
 #include "MfSize.h"
 #include "Mf4DTensor.h"
 #include "MfFullCnn.h"
+
+//For RNN
+#include "MfDoubleMatrixArray.h"
+#include "MfRnnLayer.h"
 
 using namespace std;
 
@@ -59,10 +61,16 @@ int main()
     //Mf4DTensor* tempTensor = new Mf4DTensor();
     //tempTensor->unitTest();
 
-    MfFullCnn tempCnn;
+    //MfFullCnn tempCnn;
     //tempCnn.integratedTest();
-    tempCnn.mnistTest();
+    //tempCnn.mnistTest();
     //tempMfFullAnn.crossValidationTest();
+
+   /**
+    * For Rnn
+    */
+    MfDoubleMatrixArray* tempArray = new MfDoubleMatrixArray();
+    tempArray->unitTest();
 
     printf("end.\r\n");
     getchar();

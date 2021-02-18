@@ -17,8 +17,6 @@
 #define SAMPLING_LAYER 2
 #define OUTPUT_LAYER 3
 
-#include <Malloc.h>
-
 #include "MfDoubleMatrix.h"
 #include "MfSize.h"
 #include "Mf4DTensor.h"

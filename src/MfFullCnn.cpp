@@ -255,7 +255,6 @@ double MfFullCnn::test(MfDoubleMatrix* paraX, MfIntArray* paraY)
         tempLabel = paraY->getValue(i);
 
         tempPrediction = forward(tempData);
-        MfDoubleMatrix* tempMatrix = layers[numLayers - 1]->getCurrentPredictionDistribution();
 
         if (tempPrediction == tempLabel)
         {

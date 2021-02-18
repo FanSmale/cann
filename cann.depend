@@ -924,7 +924,7 @@
 
 1610589568 e:\c\eigen\eigen\src\eigenvalues\selfadjointeigensolver_lapacke.h
 
-1613472527 source:d:\c\cann\main.cpp
+1613619495 source:d:\c\cann\main.cpp
 	<iostream>
 	<stdio.h>
 	"MfIntArray.h"
@@ -935,6 +935,8 @@
 	"MfSize.h"
 	"Mf4DTensor.h"
 	"MfFullCnn.h"
+	"MfDoubleMatrixArray.h"
+	"MfRnnLayer.h"
 
 1612308694 d:\c\cann\include\annlayer.h
 	<string>
@@ -1876,7 +1878,7 @@
 	<fstream>
 	<iostream>
 
-1613469194 d:\c\cann\include\mfdoublematrix.h
+1613651054 d:\c\cann\include\mfdoublematrix.h
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
@@ -1886,7 +1888,7 @@
 	"Activator.h"
 	"MfSize.h"
 
-1613457699 source:d:\c\cann\src\mfdoublematrix.cpp
+1613651791 source:d:\c\cann\src\mfdoublematrix.cpp
 	<MfDoubleMatrix.h>
 
 1613267127 d:\c\cann\include\mfdatareader.h
@@ -1904,11 +1906,11 @@
 	<iostream>
 	"MfDataReader.h"
 
-1613273634 source:d:\c\cann\src\mfannlayer.cpp
+1613614380 source:d:\c\cann\src\mfannlayer.cpp
 	"MfAnnLayer.h"
 	"Activator.h"
 
-1613274042 d:\c\cann\include\mfannlayer.h
+1613614463 d:\c\cann\include\mfannlayer.h
 	<random>
 	<string>
 	<Malloc.h>
@@ -1946,19 +1948,32 @@
 	<Malloc.h>
 	"MfDoubleMatrix.h"
 
-1613475938 source:d:\c\cann\src\mfcnnlayer.cpp
+1613612533 source:d:\c\cann\src\mfcnnlayer.cpp
 	"MfCnnLayer.h"
 
-1613524280 d:\c\cann\include\mfcnnlayer.h
-	<Malloc.h>
+1613612593 d:\c\cann\include\mfcnnlayer.h
 	"MfDoubleMatrix.h"
 	"MfSize.h"
 	"Mf4DTensor.h"
 
-1613476001 source:d:\c\cann\src\mffullcnn.cpp
+1613612637 source:d:\c\cann\src\mffullcnn.cpp
 	"MfFullCnn.h"
 
 1613529196 d:\c\cann\include\mffullcnn.h
 	"MfCnnLayer.h"
 	"MfDataReader.h"
+
+1613651841 source:d:\c\cann\src\mfrnnlayer.cpp
+	"MfRnnLayer.h"
+
+1613656391 d:\c\cann\include\mfrnnlayer.h
+	"MfDoubleMatrix.h"
+	"MfDoubleMatrixArray.h"
+
+1613648022 source:d:\c\cann\src\mfdoublematrixarray.cpp
+	"MfDoubleMatrixArray.h"
+
+1613645261 d:\c\cann\include\mfdoublematrixarray.h
+	"MfDoubleMatrix.h"
+	"MfIntArray.h"
 

@@ -174,6 +174,12 @@ class MfDoubleMatrix
         //Sum up to a value.
         double sumUp();
 
+        //One hot coding. This matrix should be a vector.
+        MfDoubleMatrix* oneHotToMe(int paraIndex);
+
+        //Soft max. Only valid for row vectors.
+        MfDoubleMatrix* softmaxToMe(MfDoubleMatrix* paraVector);
+
         //Code unit test
         void unitTest();
 

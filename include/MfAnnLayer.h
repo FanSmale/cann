@@ -31,7 +31,7 @@ class MfAnnLayer
 
         //Constructor for input/output size
         MfAnnLayer(int paraInputSize, int paraOutputSize, char paraActivation,
-                 double paraRate, double paraMobp);
+            double paraRate, double paraMobp);
 
         //Destructor
         virtual ~MfAnnLayer();
@@ -74,8 +74,8 @@ class MfAnnLayer
         //The size of the output
         int outputSize;
 
-        //Learning rate
-        double rate;
+        //Learning rate.
+        double learningRate;
 
         //Mobp
         double mobp;

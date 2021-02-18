@@ -40,15 +40,15 @@ MfDoubleMatrix::MfDoubleMatrix(int paraRows, int paraColumns)
 
     //Allocate space
     data = new double *[rows];
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
         data[i] = new double[columns];
     }//Of for i
 
     //Some initial values
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             data[i][j] = random0To1();
         }//Of for j
@@ -62,7 +62,7 @@ MfDoubleMatrix::MfDoubleMatrix(int paraRows, int paraColumns)
  */
 MfDoubleMatrix::~MfDoubleMatrix()
 {
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
         free(data[i]);
         data[i] = nullptr;
@@ -83,9 +83,9 @@ string MfDoubleMatrix::toString()
     //string resultString = "I am a matrix with size " + to_string(rows)
     //    + "*" + to_string(columns) + "\r\n";
     string resultString = "";
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             resultString += to_string(data[i][j]) +  ", ";
         }//Of for j
@@ -136,9 +136,9 @@ double MfDoubleMatrix::getValue(int paraRow, int paraColumn)
 double MfDoubleMatrix::getMaxValue()
 {
     double resultMax = -10000000;
-    for (int i = 0; i < rows; i ++)
-        for (int j = 0; j < columns; j ++)
-            if (resultMax < data[i][j])
+    for(int i = 0; i < rows; i ++)
+        for(int j = 0; j < columns; j ++)
+            if(resultMax < data[i][j])
                 resultMax = data[i][j];
     return resultMax;
 }//Of getMaxValue
@@ -149,12 +149,12 @@ double MfDoubleMatrix::getMaxValue()
 double MfDoubleMatrix::getMinValue()
 {
     double resultMin = 100000000;
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
 
-            if (resultMin > data[i][j])
+            if(resultMin > data[i][j])
             {
 
                 resultMin = data[i][j];
@@ -172,9 +172,9 @@ double MfDoubleMatrix::getMinValue()
  */
 bool MfDoubleMatrix::rangeCheck(double paraLowerBound, double paraUpperBound)
 {
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             if((data[i][j] < paraLowerBound) || (data[i][j] > paraUpperBound))
             {
@@ -213,9 +213,9 @@ MfDoubleMatrix* MfDoubleMatrix::clone()
     double** tempData = resultMfDoubleMatrix->data;
 
     //Copy
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             tempData[i][j] = data[i][j];
         }//Of for j
@@ -232,13 +232,13 @@ MfDoubleMatrix* MfDoubleMatrix::clone()
  */
 MfDoubleMatrix* MfDoubleMatrix::cloneToMe(MfDoubleMatrix* paraMatrix)
 {
-    if (rows != paraMatrix->rows)
+    if(rows != paraMatrix->rows)
     {
         printf("Rows do not match.");
         throw "Rows do not match.";
     }//Of if
 
-    if (columns != paraMatrix->columns)
+    if(columns != paraMatrix->columns)
     {
         printf("Columns do not match.");
         throw "Columns do not match.";
@@ -246,9 +246,9 @@ MfDoubleMatrix* MfDoubleMatrix::cloneToMe(MfDoubleMatrix* paraMatrix)
 
     //Copy
     double** tempData = paraMatrix->data;
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             data[i][j] = tempData[i][j];
         }//Of for j
@@ -267,13 +267,13 @@ MfDoubleMatrix* MfDoubleMatrix::add(MfDoubleMatrix* paraMatrix)
 {
     MfDoubleMatrix* resultMfDoubleMatrix = clone();
 
-    if (rows != paraMatrix->rows)
+    if(rows != paraMatrix->rows)
     {
         printf("Rows do not match.");
         throw "Rows do not match.";
     }//Of if
 
-    if (columns != paraMatrix->columns)
+    if(columns != paraMatrix->columns)
     {
         printf("Columns do not match.");
         throw "Columns do not match.";
@@ -283,9 +283,9 @@ MfDoubleMatrix* MfDoubleMatrix::add(MfDoubleMatrix* paraMatrix)
     double** tempData = resultMfDoubleMatrix->data;
     double** tempData2 = paraMatrix->data;
 
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             tempData[i][j] += tempData2[i][j];
         }//Of for j
@@ -303,13 +303,13 @@ MfDoubleMatrix* MfDoubleMatrix::add(MfDoubleMatrix* paraMatrix)
  */
 MfDoubleMatrix* MfDoubleMatrix::addToMe(MfDoubleMatrix* paraFirstMatrix, MfDoubleMatrix* paraSecondMatrix)
 {
-    if (paraFirstMatrix->rows != paraSecondMatrix->rows)
+    if(paraFirstMatrix->rows != paraSecondMatrix->rows)
     {
         printf("MfDoubleMatrix.addToMe(), rows do not match.");
         throw "Rows do not match.";
     }//Of if
 
-    if (paraFirstMatrix->columns != paraSecondMatrix->columns)
+    if(paraFirstMatrix->columns != paraSecondMatrix->columns)
     {
         printf("MfDoubleMatrix.addToMe(), columns do not match.");
         throw "Columns do not match.";
@@ -317,9 +317,9 @@ MfDoubleMatrix* MfDoubleMatrix::addToMe(MfDoubleMatrix* paraFirstMatrix, MfDoubl
 
     double** tempFirstData = paraFirstMatrix->data;
     double** tempSecondData = paraSecondMatrix->data;
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             data[i][j] = tempFirstData[i][j] + tempSecondData[i][j];
         }//Of for j
@@ -335,9 +335,9 @@ MfDoubleMatrix* MfDoubleMatrix::addToMe(MfDoubleMatrix* paraFirstMatrix, MfDoubl
  */
 MfDoubleMatrix* MfDoubleMatrix::addValueToMe(double paraValue)
 {
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             data[i][j] += paraValue;
         }//Of for j
@@ -353,9 +353,9 @@ MfDoubleMatrix* MfDoubleMatrix::addValueToMe(double paraValue)
  */
 MfDoubleMatrix* MfDoubleMatrix::timesValueToMe(double paraValue)
 {
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             data[i][j] *= paraValue;
         }//Of for j
@@ -370,9 +370,9 @@ MfDoubleMatrix* MfDoubleMatrix::timesValueToMe(double paraValue)
  */
 MfDoubleMatrix* MfDoubleMatrix::oneValueToMe()
 {
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             data[i][j] = 1 - data[i][j];
         }//Of for j
@@ -389,13 +389,13 @@ MfDoubleMatrix* MfDoubleMatrix::subtract(MfDoubleMatrix* paraMatrix)
 {
     MfDoubleMatrix* resultMfDoubleMatrix = clone();
 
-    if (rows != paraMatrix->rows)
+    if(rows != paraMatrix->rows)
     {
         printf("MfDoubleMatrix.subtract(), rows do not match.");
         throw "Rows do not match";
     }//Of if
 
-    if (columns != paraMatrix->columns)
+    if(columns != paraMatrix->columns)
     {
         printf("MfDoubleMatrix.subtract(), columns do not match.");
         throw "Columns do not match";
@@ -403,9 +403,9 @@ MfDoubleMatrix* MfDoubleMatrix::subtract(MfDoubleMatrix* paraMatrix)
 
     double** tempData = resultMfDoubleMatrix->data;
     double** tempData2 = paraMatrix->data;
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             tempData[i][j] -= tempData2[i][j];
         }//Of for j
@@ -423,13 +423,13 @@ MfDoubleMatrix* MfDoubleMatrix::subtract(MfDoubleMatrix* paraMatrix)
  */
 MfDoubleMatrix* MfDoubleMatrix::subtractToMe(MfDoubleMatrix* paraFirstMatrix, MfDoubleMatrix* paraSecondMatrix)
 {
-     if ((rows != paraFirstMatrix->rows) || (rows != paraSecondMatrix->rows))
+     if((rows != paraFirstMatrix->rows) || (rows != paraSecondMatrix->rows))
     {
         printf("MfDoubleMatrix.subtractToMe(), rows do not match.");
         throw "Rows do not match.";
     }//Of if
 
-    if ((columns != paraFirstMatrix->columns) || (columns != paraSecondMatrix->columns))
+    if((columns != paraFirstMatrix->columns) || (columns != paraSecondMatrix->columns))
     {
         printf("MfDoubleMatrix.subtractToMe(), columns do not match.");
         throw "Columns do not match.";
@@ -437,9 +437,9 @@ MfDoubleMatrix* MfDoubleMatrix::subtractToMe(MfDoubleMatrix* paraFirstMatrix, Mf
 
     double** tempFirstData = paraFirstMatrix->data;
     double** tempSecondData = paraSecondMatrix->data;
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             data[i][j] = tempFirstData[i][j] - tempSecondData[i][j];
         }//Of for j
@@ -456,13 +456,13 @@ MfDoubleMatrix* MfDoubleMatrix::cwiseProduct(MfDoubleMatrix* paraMatrix)
 {
     MfDoubleMatrix* resultMfDoubleMatrix = clone();
 
-    if (rows != paraMatrix->rows)
+    if(rows != paraMatrix->rows)
     {
         printf("Rows do not match.");
         throw "Rows do not match.";
     }//Of if
 
-    if (columns != paraMatrix->columns)
+    if(columns != paraMatrix->columns)
     {
         printf("Columns do not match.");
         throw "Columns do not match.";
@@ -470,9 +470,9 @@ MfDoubleMatrix* MfDoubleMatrix::cwiseProduct(MfDoubleMatrix* paraMatrix)
 
     double** tempData = resultMfDoubleMatrix->data;
     double** tempData2 = paraMatrix->data;
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             tempData[i][j] *= tempData2[i][j];
         }//Of for j
@@ -491,13 +491,13 @@ MfDoubleMatrix* MfDoubleMatrix::cwiseProduct(MfDoubleMatrix* paraMatrix)
 MfDoubleMatrix* MfDoubleMatrix::cwiseProductToMe(MfDoubleMatrix* paraFirstMatrix, MfDoubleMatrix* paraSecondMatrix)
 {
 
-     if (paraFirstMatrix->rows != paraSecondMatrix->rows)
+     if(paraFirstMatrix->rows != paraSecondMatrix->rows)
     {
         printf("MfDoubleMatrix.cwiseProductToMe(), rows do not match.");
         throw "Rows do not match.";
     }//Of if
 
-    if (paraFirstMatrix->columns != paraSecondMatrix->columns)
+    if(paraFirstMatrix->columns != paraSecondMatrix->columns)
     {
         printf("MfDoubleMatrix.cwiseProductToMe(), columns do not match.");
         throw "Columns do not match.";
@@ -505,9 +505,9 @@ MfDoubleMatrix* MfDoubleMatrix::cwiseProductToMe(MfDoubleMatrix* paraFirstMatrix
 
     double** tempFirstData = paraFirstMatrix->data;
     double** tempSecondData = paraSecondMatrix->data;
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             data[i][j] = tempFirstData[i][j] * tempSecondData[i][j];
         }//Of for j
@@ -525,7 +525,7 @@ MfDoubleMatrix* MfDoubleMatrix::times(MfDoubleMatrix *paraMatrix)
     int tempColumns = paraMatrix->getColumns();
 
     //printf("rows = %d, columns = %d, tempColumns = %d.\r\n", rows, columns ,tempColumns);
-    if (columns != paraMatrix->rows)
+    if(columns != paraMatrix->rows)
     {
         printf("Matrices do not match.");
         throw "Matrices do not match.";
@@ -540,12 +540,12 @@ MfDoubleMatrix* MfDoubleMatrix::times(MfDoubleMatrix *paraMatrix)
 
     double** tempData1 = newMfDoubleMatrixPtr->data;
     double** tempData2 = paraMatrix->data;
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < tempColumns; j ++)
+        for(int j = 0; j < tempColumns; j ++)
         {
             tempValue = 0;
-            for (int k = 0; k < columns; k ++)
+            for(int k = 0; k < columns; k ++)
             {
                 tempValue += data[i][k] * tempData2[k][j];
             }//Of for k
@@ -574,7 +574,7 @@ MfDoubleMatrix* MfDoubleMatrix::timesToMe(MfDoubleMatrix *paraFirstMatrix, MfDou
     double** tempSecondData = paraSecondMatrix->data;
 
     //printf("rows = %d, columns = %d, tempColumns = %d.\r\n", rows, columns ,tempColumns);
-    if (tempFirstColumns != tempSecondRows)
+    if(tempFirstColumns != tempSecondRows)
     {
         printf("Matrices do not match.");
         throw "Matrices do not match.";
@@ -582,12 +582,12 @@ MfDoubleMatrix* MfDoubleMatrix::timesToMe(MfDoubleMatrix *paraFirstMatrix, MfDou
 
     double tempValue = 0;
 
-    for (int i = 0; i < tempFirstRows; i ++)
+    for(int i = 0; i < tempFirstRows; i ++)
     {
-        for (int j = 0; j < tempSecondColumns; j ++)
+        for(int j = 0; j < tempSecondColumns; j ++)
         {
             tempValue = 0;
-            for (int k = 0; k < tempFirstColumns; k ++)
+            for(int k = 0; k < tempFirstColumns; k ++)
             {
                 tempValue += tempFirstData[i][k] * tempSecondData[k][j];
             }//Of for k
@@ -606,9 +606,9 @@ MfDoubleMatrix* MfDoubleMatrix::transpose()
     MfDoubleMatrix* newMfDoubleMatrixPtr = new MfDoubleMatrix(columns, rows);
 
     double** tempData = newMfDoubleMatrixPtr->data;
-    for (int i = 0; i < columns; i ++)
+    for(int i = 0; i < columns; i ++)
     {
-        for (int j = 0; j < rows; j ++)
+        for(int j = 0; j < rows; j ++)
         {
             tempData[i][j] = data[j][i];
         }//Of for j
@@ -625,16 +625,16 @@ MfDoubleMatrix* MfDoubleMatrix::transpose()
  */
 MfDoubleMatrix* MfDoubleMatrix::transposeToMe(MfDoubleMatrix* paraMatrix)
 {
-    if (paraMatrix->columns != rows || paraMatrix->rows != columns)
+    if(paraMatrix->columns != rows || paraMatrix->rows != columns)
     {
         printf("MfDoubleMatrix::transposeToMe, size not match.");
         throw "MfDoubleMatrix::transposeToMe, size not match.";
     }//Of if
 
     double** tempData = paraMatrix->data;
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             data[i][j] = tempData[j][i];
         }//Of for j
@@ -649,9 +649,9 @@ MfDoubleMatrix* MfDoubleMatrix::transposeToMe(MfDoubleMatrix* paraMatrix)
  */
 void MfDoubleMatrix::fill(double paraValue)
 {
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             data[i][j] = paraValue;
         }//Of for j
@@ -665,9 +665,9 @@ void MfDoubleMatrix::fill(double paraValue)
  */
 void MfDoubleMatrix::fill(double paraLowerBound, double paraUpperBound)
 {
-    for (int i = 0; i < rows; i ++)
+    for(int i = 0; i < rows; i ++)
     {
-        for (int j = 0; j < columns; j ++)
+        for(int j = 0; j < columns; j ++)
         {
             data[i][j] = rand() * (paraUpperBound - paraLowerBound) /RAND_MAX + paraLowerBound;
         }//Of for j
@@ -688,13 +688,13 @@ MfDoubleMatrix* MfDoubleMatrix::convolutionValidToMe(MfDoubleMatrix *paraData, M
     int tempKernelColumns = paraKernel->getColumns();
 
     //Step 1. Size check.
-    if (rows != tempDataRows - tempKernelRows + 1)
+    if(rows != tempDataRows - tempKernelRows + 1)
     {
         printf("In convolutionValidToMe, rows not match: %d vs. %d.", rows,
                (tempDataRows - tempKernelRows + 1));
         throw "rows not match.";
     }//Of if
-    if (columns != tempDataColumns - tempKernelColumns + 1)
+    if(columns != tempDataColumns - tempKernelColumns + 1)
     {
         printf("In convolutionValidToMe, columns not match: %d vs. %d.", columns,
                (tempDataColumns - tempKernelColumns + 1));
@@ -738,13 +738,13 @@ MfDoubleMatrix* MfDoubleMatrix::convolutionFullToMe(MfDoubleMatrix *paraData, Mf
     int tempKernelColumns = paraKernel->getColumns();
 
     //Step 1. Size check.
-    if (rows != tempDataRows + tempKernelRows - 1)
+    if(rows != tempDataRows + tempKernelRows - 1)
     {
         printf("In convolutionFullToMe, rows not match: %d vs. %d.\r\n", rows,
                (tempDataRows + tempKernelRows - 1));
         throw "rows not match.";
     }//Of if
-    if (columns != tempDataColumns + tempKernelColumns - 1)
+    if(columns != tempDataColumns + tempKernelColumns - 1)
     {
         printf("In convolutionFullToMe, columns not match: %d vs. %d.\r\n", columns,
                (tempDataColumns + tempKernelColumns - 1));
@@ -765,7 +765,7 @@ MfDoubleMatrix* MfDoubleMatrix::convolutionFullToMe(MfDoubleMatrix *paraData, Mf
             {
                 for(int i1 = 0; i1 < tempKernelColumns; i1 ++)
                 {
-                    if ((i + k - tempKernelRows + 1 >= 0)&&(i + k - tempKernelRows + 1 < tempDataRows)
+                    if((i + k - tempKernelRows + 1 >= 0)&&(i + k - tempKernelRows + 1 < tempDataRows)
                         && (j + i1 - tempKernelColumns + 1 >= 0)&&(j + i1 - tempKernelColumns + 1 < tempDataColumns))
                         data[i][j] += tempData[i + k - tempKernelRows + 1][j + i1 - tempKernelColumns + 1] * tempKernel[k][i1];
                 }//Of for i1
@@ -867,11 +867,11 @@ MfDoubleMatrix* MfDoubleMatrix::scale(MfSize* paraSize)
     MfDoubleMatrix* resultMatrix = new MfDoubleMatrix(newRows, newColumns);
     double** tempData = resultMatrix->data;
 
-    for (int i = 0; i < newRows; i++) {
-        for (int j = 0; j < newColumns; j++) {
+    for(int i = 0; i < newRows; i++) {
+        for(int j = 0; j < newColumns; j++) {
             tempSum = 0.0;
-            for (int si = i * tempWidth; si < (i + 1) * tempWidth; si++) {
-                for (int sj = j * tempHeight; sj < (j + 1) * tempHeight; sj++) {
+            for(int si = i * tempWidth; si < (i + 1) * tempWidth; si++) {
+                for(int sj = j * tempHeight; sj < (j + 1) * tempHeight; sj++) {
                     tempSum += data[si][sj];
                 }//Of for sj
             }//Of for si
@@ -915,11 +915,11 @@ MfDoubleMatrix* MfDoubleMatrix::scaleToMe(MfDoubleMatrix* paraMatrix, MfSize* pa
     }//Of if
 
     double** paraData = paraMatrix->data;
-    for (int i = 0; i < newRows; i++) {
-        for (int j = 0; j < newColumns; j++) {
+    for(int i = 0; i < newRows; i++) {
+        for(int j = 0; j < newColumns; j++) {
             tempSum = 0.0;
-            for (int si = i * tempWidth; si < (i + 1) * tempWidth; si++) {
-                for (int sj = j * tempHeight; sj < (j + 1) * tempHeight; sj++) {
+            for(int si = i * tempWidth; si < (i + 1) * tempWidth; si++) {
+                for(int sj = j * tempHeight; sj < (j + 1) * tempHeight; sj++) {
                     tempSum += paraData[si][sj];
                 }//Of for sj
             }//Of for si
@@ -942,10 +942,10 @@ MfDoubleMatrix* MfDoubleMatrix::kronecker(MfSize* paraSize)
     MfDoubleMatrix* resultMatrix = new MfDoubleMatrix(rows * tempWidth, columns * tempHeight);
     double** newData = resultMatrix->data;
 
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < columns; j++) {
-            for (int ki = i * tempWidth; ki < (i + 1) * tempWidth; ki++) {
-                for (int kj = j * tempHeight; kj < (j + 1) * tempHeight; kj++) {
+    for(int i = 0; i < rows; i++) {
+        for(int j = 0; j < columns; j++) {
+            for(int ki = i * tempWidth; ki < (i + 1) * tempWidth; ki++) {
+                for(int kj = j * tempHeight; kj < (j + 1) * tempHeight; kj++) {
                     newData[ki][kj] = data[i][j];
                 }//Of for kj
             }//Of for ki
@@ -977,10 +977,10 @@ MfDoubleMatrix* MfDoubleMatrix::kroneckerToMe(MfDoubleMatrix* paraMatrix, MfSize
 
     double** paraData = paraMatrix->data;
 
-    for (int i = 0; i < tempRows; i++) {
-        for (int j = 0; j < tempColumns; j++) {
-            for (int ki = i * tempWidth; ki < (i + 1) * tempWidth; ki++) {
-                for (int kj = j * tempHeight; kj < (j + 1) * tempHeight; kj++) {
+    for(int i = 0; i < tempRows; i++) {
+        for(int j = 0; j < tempColumns; j++) {
+            for(int ki = i * tempWidth; ki < (i + 1) * tempWidth; ki++) {
+                for(int kj = j * tempHeight; kj < (j + 1) * tempHeight; kj++) {
                     data[ki][kj] = paraData[i][j];
                 }//Of for kj
             }//Of for ki
@@ -998,9 +998,9 @@ MfDoubleMatrix* MfDoubleMatrix::kroneckerToMe(MfDoubleMatrix* paraMatrix, MfSize
 MfDoubleMatrix* MfDoubleMatrix::deriveToMe(MfDoubleMatrix* paraMatrix)
 {
     double** paraData = paraMatrix->data;
-    for (int i = 0; i < rows; i++)
+    for(int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < columns; j++)
+        for(int j = 0; j < columns; j++)
         {
             data[i][j] = activator->derive(paraData[i][j]);
         }//Of for j
@@ -1025,6 +1025,46 @@ double MfDoubleMatrix::sumUp()
     }//Of for i
     return resultValue;
 }//Of sumUp
+
+/**
+ * One hot coding. This matrix should be a vector.
+ */
+MfDoubleMatrix* MfDoubleMatrix::oneHotToMe(int paraIndex)
+{
+    if(rows != 1)
+    {
+        printf("MfDoubleMatrix::oneHotToMe, rows != 1\r\n");
+        throw "MfDoubleMatrix::oneHotToMe, rows != 1";
+    }//Of if
+    fill(0);
+    data[0][paraIndex] = 1;
+
+    return this;
+}//Of oneHotToMe
+
+/**
+ * Soft max. Only valid for row vectors.
+ */
+MfDoubleMatrix* MfDoubleMatrix::softmaxToMe(MfDoubleMatrix* paraVector)
+{
+    if(paraVector->rows != 1)
+    {
+        printf("MfDoubleMatrix::softmaxToMe, rows != 1\r\n");
+        throw "MfDoubleMatrix::softmaxToMe, rows != 1";
+    }//Of if
+
+    double tempSum = 0;
+    for(int i = 0; i < columns; i ++)
+    {
+        data[0][i] = exp(data[0][i]);
+        tempSum += data[0][i];
+    }//Of for i
+
+    for(int i = 0; i < columns; i ++)
+    {
+        data[0][i] /= tempSum;
+    }//Of for i
+}//Of softmaxToMe
 
 /**
  * Code unit test.
@@ -1113,4 +1153,12 @@ void MfDoubleMatrix::unitTest()
     tempKronecker2 -> setActivator(tempActivator);
 
     //Test derive here.
+
+    MfDoubleMatrix* tempSoftmax = new MfDoubleMatrix(1, 3);
+    tempSoftmax->setValue(0, 0, 2);
+    tempSoftmax->setValue(0, 1, 2);
+    tempSoftmax->setValue(0, 2, 2);
+    tempSoftmax->softmaxToMe(tempSoftmax);
+    printf("After softmax:\r\n");
+    printf(tempSoftmax->toString().data());
 }//Of unitTest

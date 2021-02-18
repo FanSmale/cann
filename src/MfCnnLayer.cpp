@@ -1,4 +1,14 @@
-#include "MfCnnLayer.h"
+/*
+ * The C++ Artificial Neural network project.
+ * This class handles CNN layer.
+ * Code available at: github.com/fansmale/cann.
+ * Author: Fan Min
+ *   Lab of Machine Learning, School of Computer Science, Southwest Petroleum University, Chengdu, China
+ *   www.fansmale.com
+ *   minfanphd@163.com, minfan@swpu.edu.cn
+ */
+
+ #include "MfCnnLayer.h"
 
 /**
  * The default constructor.
@@ -491,15 +501,13 @@ void MfCnnLayer::forward(MfDoubleMatrix* paraData)
  */
 void MfCnnLayer::setConvolutionLayerErrors()
 {
-    MfDoubleMatrix* tempNextLayerErrors;
     for (int i = 0; i < numOutMaps; i ++)
     {
         currentOutMap = getOutMapAt(i);
         currentOutMap->setActivator(layerActivator);
         currentOutMap->deriveToMe(currentOutMap);
-        //The space of singleOutMap is reused here, in fact here is the error.
-        tempNextLayerErrors = nextLayer->getErrorsAt(i);
 
+        //The space of singleOutMap is reused here, in fact here is the error.
         singleOutMap->kroneckerToMe(nextLayer->getErrorsAt(i), nextLayer->getScaleSize());
         currentOutMap->cwiseProductToMe(currentOutMap, singleOutMap);
         setErrorsAt(i, currentOutMap);
