@@ -36,10 +36,16 @@ class MfFullAnn
         void setActivationFunction(int paraLayer, char paraFunction);
 
         //Setter
-        void setRate(double paraRate);
+        void setRate(double paraRate)
+        {
+            learningRate = paraRate;
+        }
 
         //Setter
-        void setMobp(double paraMobp);
+        void setMobp(double paraMobp)
+        {
+            mobp = paraMobp;
+        }
 
         //Reset weights and other variables.
         void reset();
@@ -62,8 +68,11 @@ class MfFullAnn
         //Test with a dataset
         double test(MfDoubleMatrix* paraX, MfIntArray* paraY);
 
-        //Get the number of correctly classified instances in the current round
-        int getNumCorrect();
+        //Get the number of correctly classified instances in the current round.
+        int getNumCorrect()
+        {
+            return numCorrect;
+        }
 
         //Show weight of the network, not including the offset
         void showWeight();
@@ -83,7 +92,7 @@ class MfFullAnn
         int numLayers;
 
         //Learning rate
-        double rate;
+        double learningRate;
 
         //Mobp
         double mobp;
@@ -94,7 +103,7 @@ class MfFullAnn
         //The sizes of layers
         MfIntArray* layerSizes;
 
-        //All layers
+        //All layers. An array of pointers instead of a 2D matrix.
         MfAnnLayer** layers;
 
         //The output for current instance

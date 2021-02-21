@@ -98,23 +98,6 @@ void MfAnnLayer::showWeight()
 }//Of showWeight
 
 /**
- * Set the activation function.
- * paraFunction: the activation function in char.
- */
-void MfAnnLayer::setActivationFunction(char paraFunction)
-{
-    activator->setActivationFunction(paraFunction);
-}//Of setActivationFunction
-
-/**
- * Getter.
- */
-Activator* MfAnnLayer::getActivator()
-{
-    return activator;
-}//Of getActivator
-
-/**
  * Reset weights and other variables.
  */
  void MfAnnLayer::reset()
@@ -132,22 +115,6 @@ Activator* MfAnnLayer::getActivator()
         offsetMatrix->setValue(0, i, (double)rand()/RAND_MAX);
     }//Of for i
  }//Of reset
-
-/**
- * Getter.
- */
-int MfAnnLayer::getInputSize()
-{
-    return inputSize;
-}//Of getInputSize
-
-/**
- * Getter.
- */
-int MfAnnLayer::getOutputSize()
-{
-    return outputSize;
-}//Of getOutputSize
 
 /**
  * Forward computing. No new space is allocated in this process.

@@ -273,54 +273,6 @@ void MfDataReader::crossValidationSplit(int paraNumFolds, int paraFoldIndex)
 }//Of crossValidationSplit
 
 /**
- * Getter.
- */
-MfDoubleMatrix* MfDataReader::getTrainingX()
-{
-    return trainingX;
-}//Of getTrainingX
-
-/**
- * Getter.
- */
-MfIntArray* MfDataReader::getTrainingY()
-{
-    return trainingY;
-}//Of getTrainingY
-
-/**
- * Getter.
- */
-MfDoubleMatrix* MfDataReader::getTestingX()
-{
-    return testingX;
-}//Of getTestingX
-
-/**
- * Getter.
- */
-MfIntArray* MfDataReader::getTestingY()
-{
-    return testingY;
-}//Of getTestingY
-
-/**
- * Getter.
- */
-MfDoubleMatrix* MfDataReader::getWholeX()
-{
-    return wholeX;
-}//Of getWholeX
-
-/**
- * Getter.
- */
-MfIntArray* MfDataReader::getWholeY()
-{
-    return wholeY;
-}//Of getWholeY
-
-/**
  * Randomize the data through generating a random int array.
  *   Data are accessed through indirect addressing.
  */

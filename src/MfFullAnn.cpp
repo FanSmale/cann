@@ -34,16 +34,15 @@ MfFullAnn::MfFullAnn(MfIntArray* paraSizes, char paraActivation, double paraRate
 {
     layerSizes = paraSizes;
     activation = paraActivation;
-    rate = paraRate;
+    learningRate = paraRate;
     mobp = paraMobp;
 
     //Allocate space
     numLayers = layerSizes->getLength() - 1;
     layers = new MfAnnLayer* [numLayers];
-
     for (int i = 0; i < numLayers; i ++)
     {
-        layers[i] = new MfAnnLayer(layerSizes->getValue(i), layerSizes->getValue(i + 1), activation, rate, mobp);
+        layers[i] = new MfAnnLayer(layerSizes->getValue(i), layerSizes->getValue(i + 1), activation, learningRate, mobp);
     }//Of for i
 
     int tempInputSize = layerSizes->getValue(0);
@@ -94,22 +93,6 @@ void MfFullAnn::setActivationFunction(int paraLayer, char paraActivation)
     }//Of if
     layers[paraLayer]->setActivationFunction(paraActivation);
 }//Of setActivationFunction
-
-/**
- * Setter.
- */
-void MfFullAnn::setRate(double paraRate)
-{
-    rate = paraRate;
-}//Of setRate
-
-/**
- * Setter.
- */
-void MfFullAnn::setMobp(double paraMobp)
-{
-    mobp = paraMobp;
-}//Of setMobp
 
 /**
  * Reset all layers.
@@ -282,14 +265,6 @@ double MfFullAnn::test(MfDoubleMatrix* paraX, MfIntArray* paraY)
     }//Of for i
     return (numCorrect + 0.0) / tempNumInstances;
 }//Of test
-
-/**
- * Getter.
- */
-int MfFullAnn::getNumCorrect()
-{
-    return numCorrect;
-}//Of getNumCorrect
 
 /**
  * Show weight. For debug only.

@@ -79,7 +79,7 @@ class MfFullCnn
         //The number of layers.
         int numLayers;
 
-        //The layers.
+        //The layers. An array of pointers instead of a 2D matrix.
         MfCnnLayer** layers;
 
         //The batch size

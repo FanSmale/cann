@@ -53,30 +53,6 @@ string Activator::toString()
 }//Of toString
 
 /**
- * Setter.
- */
-void Activator::setActivationFunction(char paraFunction)
-{
-    activationFunction = paraFunction;
-}//Of setActivationFunction
-
-/**
- * Setter.
- */
-void Activator::setGamma(double paraGamma)
-{
-    gamma = paraGamma;
-}//Of setGamma
-
-/**
- * Setter.
- */
-void Activator::setBeta(double paraBeta)
-{
-    beta = paraBeta;
-}//Of setBeta
-
-/**
  * The sigmoid activation function.
  * Return: the activated value.
  */
@@ -91,14 +67,6 @@ double Activator::sigmoid(double paraValue)
  */
 double Activator::sigmoidDerive(double paraValue)
 {
-    double resultValue = paraValue * (1 - paraValue);
-    /*
-    if ((resultValue < -5) || (resultValue > 5))
-    {
-        printf("paraValue = %lf, resultValue = %lf\r\n",
-               paraValue, resultValue);
-    }
-    */
     return paraValue * (1 - paraValue);
 }//Of sigmoidDerive
 

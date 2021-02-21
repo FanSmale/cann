@@ -34,10 +34,10 @@ int main()
     printf("Hello world!\r\n");
 
     /**
-     *For Ann
+     *For basis
      */
-    //MfIntArray tempArray;
-    //tempArray.unitTest();
+    MfIntArray tempArray;
+    tempArray.unitTest();
 
     //MfDoubleMatrix tempMatrix;
     //tempMatrix.unitTest();
@@ -45,6 +45,9 @@ int main()
     //MfDataReader tempReader;
     //tempReader.unitTest();
 
+    /**
+     *For Ann
+     */
     //MfAnnLayer tempLayer;
     //tempLayer.unitTest();
 
@@ -64,13 +67,12 @@ int main()
     //MfFullCnn tempCnn;
     //tempCnn.integratedTest();
     //tempCnn.mnistTest();
-    //tempMfFullAnn.crossValidationTest();
 
    /**
     * For Rnn
     */
-    MfDoubleMatrixArray* tempArray = new MfDoubleMatrixArray();
-    tempArray->unitTest();
+    //MfDoubleMatrixArray* tempArray = new MfDoubleMatrixArray();
+    //tempArray->unitTest();
 
     printf("end.\r\n");
     getchar();

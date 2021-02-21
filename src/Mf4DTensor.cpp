@@ -117,14 +117,6 @@ void Mf4DTensor::fill(double paraLowerBound, double paraUpperBound)
 }//Of fill
 
 /**
- * Getter. Please use with caution.
- */
-double**** Mf4DTensor::getData()
-{
-    return data;
-}//Of getData
-
-/**
  * Convert to string for display.
  * Returns: The string showing myself.
  */

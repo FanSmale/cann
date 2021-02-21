@@ -43,19 +43,31 @@ class MfAnnLayer
         void showWeight();
 
         //Set the activation function
-        void setActivationFunction(char paraActivation);
+        void setActivationFunction(char paraActivation)
+        {
+            activator->setActivationFunction(paraActivation);
+        }
 
         //Getter.
-        Activator* getActivator();
+        Activator* getActivator()
+        {
+            return activator;
+        }
 
         //Reset weight and other variables.
         void reset();
 
         //Getter
-        int getInputSize();
+        int getInputSize()
+        {
+            return inputSize;
+        }
 
         //Getter
-        int getOutputSize();
+        int getOutputSize()
+        {
+            return outputSize;
+        }
 
         //Forward calculation
         MfDoubleMatrix* forward(MfDoubleMatrix* paraData);

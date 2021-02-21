@@ -54,7 +54,10 @@ public:
     }//Of fill
 
     //Get length. No setLength enabled
-    int getLength();
+    int getLength()
+    {
+        return length;
+    }
 
     //Get a copy
     //MfIntArray* copy();

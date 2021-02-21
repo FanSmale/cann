@@ -34,8 +34,11 @@ class Mf4DTensor
         //Fill with random values.
         void fill(double paraLowerBound, double paraUpperBound);
 
-        //Getter.
-        double**** getData();
+        //Getter. Please use with caution.
+        double**** getData()
+        {
+            return data;
+        }
 
         //Convert to string for display.
         string toString();

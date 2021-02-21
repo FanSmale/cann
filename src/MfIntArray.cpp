@@ -107,15 +107,6 @@ int MfIntArray::getValue(int paraPosition)
 
 /**
  * Getter.
- * Return: the length.
- */
-int MfIntArray::getLength()
-{
-    return length;
-}//Of getLength
-
-/**
- * Getter.
  * Return: a copy of this array.
 MfIntArray* MfIntArray::copy()
 {

@@ -47,22 +47,40 @@ class MfDataReader
         void crossValidationSplit(int paraNumFolds, int paraFoldIndex);
 
         //The getter
-        MfDoubleMatrix* getTrainingX();
+        MfDoubleMatrix* getTrainingX()
+        {
+            return trainingX;
+        }
 
         //The getter
-        MfIntArray* getTrainingY();
+        MfIntArray* getTrainingY()
+        {
+            return trainingY;
+        }
 
         //The getter
-        MfDoubleMatrix* getTestingX();
+        MfDoubleMatrix* getTestingX()
+        {
+            return testingX;
+        }
 
         //The getter
-        MfIntArray* getTestingY();
+        MfIntArray* getTestingY()
+        {
+            return testingY;
+        }
 
         //The getter
-        MfDoubleMatrix* getWholeX();
+        MfDoubleMatrix* getWholeX()
+        {
+            return wholeX;
+        }
 
         //The getter
-        MfIntArray* getWholeY();
+        MfIntArray* getWholeY()
+        {
+            return wholeY;
+        }
 
         //The random array is stored in the object
         void randomize();

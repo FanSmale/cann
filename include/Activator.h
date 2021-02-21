@@ -36,15 +36,22 @@ class Activator
         string toString();
 
         //Set activation function
-        void setActivationFunction(char paraFunction);
+        void setActivationFunction(char paraFunction)
+        {
+            activationFunction = paraFunction;
+        }
 
         //Set gamma
-        void setGamma(double paraGamma);
+        void setGamma(double paraGamma)
+        {
+            gamma = paraGamma;
+        }
 
         //Set beta
-        void setBeta(double paraBeta);
-
-
+        void setBeta(double paraBeta)
+        {
+            beta = paraBeta;
+        }
 
         //Activate
         double activate(double paraValue);
