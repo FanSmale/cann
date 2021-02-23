@@ -149,14 +149,35 @@ MfDataReader::MfDataReader(char* paraFilename)
  */
 MfDataReader::~MfDataReader()
 {
-    free(wholeX);
-    free(wholeY);
+    //delete []wholeX;
+    //free(wholeX);
+    //wholeX = nullptr;
 
-    free(randomArray);
-    free(trainingX);
-    free(trainingY);
-    free(testingX);
-    free(testingY);
+    //delete []wholeY;
+    //free(wholeY);
+    //wholeY = nullptr;
+
+    //delete []randomArray;
+    //free(randomArray);
+    //randomArray = nullptr;
+
+    //delete []trainingX;
+    //free(trainingX);
+    //trainingX = nullptr;
+
+    //delete []trainingY;
+    //free(trainingY);
+    //trainingY = nullptr;
+
+    //delete []testingX;
+    //free(testingX);
+    //testingX = nullptr;
+
+    //delete []testingY;
+    //free(testingY);
+    //testingY = nullptr;
+    /*
+    */
 }//Of the destructor
 
 /**
@@ -171,6 +192,7 @@ void MfDataReader::splitInTwo(double paraTrainingFraction)
     //Free space if allocated in the past
     if (trainingX != nullptr)
     {
+        delete []trainingX;
         free(trainingX);
         trainingX = nullptr;
         free(trainingY);
@@ -296,7 +318,6 @@ void MfDataReader::unitTest()
            tempReader.numConditions, tempReader.numClasses);
     //free(tempFilename);
 
-    /*
     //printf("Before randomize \r\n");
     tempReader.randomize();
     //printf("After ranomize \r\n");
@@ -307,5 +328,4 @@ void MfDataReader::unitTest()
     //printf("The training X is: \r\n");
 
     //cout << tempArrayPtr[0] << endl;
-    */
 }//Of unitTest

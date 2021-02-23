@@ -341,7 +341,7 @@ void MfFullCnn::mnistTest()
     tempCnn->initializeRandomArray(tempTrainingX->getRows());
     printf("Start training rounds:\r\n");
     double tempAccuracy;
-    for(int i = 0; i < 5; i ++)
+    for(int i = 0; i < 10; i ++)
     {
         tempAccuracy = tempCnn->train(tempTrainingX, tempTrainingY);
         printf("Round: %d, accuracy = %lf:\r\n", i, tempAccuracy);

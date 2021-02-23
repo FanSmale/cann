@@ -557,8 +557,8 @@ void MfCnnLayer::setSamplingLayerErrors()
  */
 void MfCnnLayer::setOutputLayerErrors(int paraLabel)
 {
-    double tempTarget[numOutMaps];
-    double tempOutmaps[numOutMaps];
+    double* tempTarget = (double*)malloc(numOutMaps * sizeof(double));
+    double* tempOutmaps = (double*)malloc(numOutMaps * sizeof(double));
     double tempValue;
 
     for (int i = 0; i < numOutMaps; i++)
@@ -574,6 +574,9 @@ void MfCnnLayer::setOutputLayerErrors(int paraLabel)
         tempValue = layerActivator->derive(tempOutmaps[i]) * (tempTarget[i] - tempOutmaps[i]);
         setErrorAt(i, 0, 0, tempValue);
     }//Of for i
+
+    free(tempTarget);
+    free(tempOutmaps);
 }//Of setOutputLayerErrors
 
 /**
