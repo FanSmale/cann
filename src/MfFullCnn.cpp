@@ -20,7 +20,8 @@ MfFullCnn::MfFullCnn()
     numLayers = 0;
 
     //Just allocate some pointers.
-    layers = new MfCnnLayer*[MAX_NUM_CNN_LAYERS];
+    //layers = new MfCnnLayer*[MAX_NUM_CNN_LAYERS];
+    layers = (MfCnnLayer**)malloc(MAX_NUM_CNN_LAYERS * sizeof(MfCnnLayer*));
 
     layerActivator = new Activator('s');
 }//Of the default constructor
@@ -38,7 +39,8 @@ MfFullCnn::MfFullCnn(int paraBatchSize)
     numLayers = 0;
 
     //Just allocate some pointers.
-    layers = new MfCnnLayer*[MAX_NUM_CNN_LAYERS];
+    //layers = new MfCnnLayer*[MAX_NUM_CNN_LAYERS];
+    layers = (MfCnnLayer**)malloc(MAX_NUM_CNN_LAYERS * sizeof(MfCnnLayer*));
 
     layerActivator = new Activator('s');
 }//Of the second constructor

@@ -25,7 +25,7 @@ MfAnnLayer::MfAnnLayer()
  * Constructor for input/output size
  */
 MfAnnLayer::MfAnnLayer(int paraInputSize, int paraOutputSize, char paraActivation,
-                   double paraRate, double paraMobp)
+                       double paraRate, double paraMobp)
 {
     //printf("MfAnnLayer constructor\r\n");
     inputSize = paraInputSize;
@@ -122,17 +122,14 @@ void MfAnnLayer::showWeight()
  */
 MfDoubleMatrix* MfAnnLayer::forward(MfDoubleMatrix* paraData)
 {
-    //printf("Forwarding, the data is: \r\n");
-    //cout << paraData->toString() << endl;
-
-    //printf("The weights are: \r\n");
-    //printf(weightMatrix->toString().data());
-
+    //Step 1. Store for back propagation.
     inputData->cloneToMe(paraData);
 
+    //Step 2. y = xw + b
     outputData->timesToMe(inputData, weightMatrix);
     outputData->addToMe(outputData, offsetMatrix);
 
+    //Step 3. Activate.
     outputData->activate();
 
     return outputData;
@@ -180,7 +177,7 @@ MfDoubleMatrix* MfAnnLayer::backPropagation(MfDoubleMatrix* paraErrors)
 
         //For the activation function.
         tempValue1 = inputData->getValue(0, i);
-        //errorMatrix->setValue(0, i, tempValue1 * (1 - tempValue1) * tempErrorSum);
+        //Activate at the left side.
         errorMatrix->setValue(0, i, activator->derive(tempValue1) * tempErrorSum);
     }//Of for i
 

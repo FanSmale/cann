@@ -39,10 +39,12 @@ MfDoubleMatrix::MfDoubleMatrix(int paraRows, int paraColumns)
     columns = paraColumns;
 
     //Allocate space
-    data = new double *[rows];
+    //data = new double *[rows];
+    data = (double**)malloc(rows * sizeof(double*));
     for(int i = 0; i < rows; i ++)
     {
-        data[i] = new double[columns];
+        //data[i] = new double[columns];
+        data[i] = (double*)malloc(columns * sizeof(double));
     }//Of for i
 
     //Some initial values
@@ -423,7 +425,7 @@ MfDoubleMatrix* MfDoubleMatrix::subtract(MfDoubleMatrix* paraMatrix)
  */
 MfDoubleMatrix* MfDoubleMatrix::subtractToMe(MfDoubleMatrix* paraFirstMatrix, MfDoubleMatrix* paraSecondMatrix)
 {
-     if((rows != paraFirstMatrix->rows) || (rows != paraSecondMatrix->rows))
+    if((rows != paraFirstMatrix->rows) || (rows != paraSecondMatrix->rows))
     {
         printf("MfDoubleMatrix.subtractToMe(), rows do not match.");
         throw "Rows do not match.";
@@ -491,7 +493,7 @@ MfDoubleMatrix* MfDoubleMatrix::cwiseProduct(MfDoubleMatrix* paraMatrix)
 MfDoubleMatrix* MfDoubleMatrix::cwiseProductToMe(MfDoubleMatrix* paraFirstMatrix, MfDoubleMatrix* paraSecondMatrix)
 {
 
-     if(paraFirstMatrix->rows != paraSecondMatrix->rows)
+    if(paraFirstMatrix->rows != paraSecondMatrix->rows)
     {
         printf("MfDoubleMatrix.cwiseProductToMe(), rows do not match.");
         throw "Rows do not match.";
@@ -766,7 +768,7 @@ MfDoubleMatrix* MfDoubleMatrix::convolutionFullToMe(MfDoubleMatrix *paraData, Mf
                 for(int i1 = 0; i1 < tempKernelColumns; i1 ++)
                 {
                     if((i + k - tempKernelRows + 1 >= 0)&&(i + k - tempKernelRows + 1 < tempDataRows)
-                        && (j + i1 - tempKernelColumns + 1 >= 0)&&(j + i1 - tempKernelColumns + 1 < tempDataColumns))
+                            && (j + i1 - tempKernelColumns + 1 >= 0)&&(j + i1 - tempKernelColumns + 1 < tempDataColumns))
                         data[i][j] += tempData[i + k - tempKernelRows + 1][j + i1 - tempKernelColumns + 1] * tempKernel[k][i1];
                 }//Of for i1
             }//Of for k
@@ -817,10 +819,21 @@ MfDoubleMatrix* MfDoubleMatrix::rotate180ToMe(MfDoubleMatrix* paraMatrix)
 {
     double tempValue;
     double** tempData = paraMatrix->data;
+    int tempRows = rows / 2;
+    int tempColumns = columns / 2;
+    if(tempRows * 2 < rows)
+    {
+        tempRows ++;
+    }//Of if
+    if(tempColumns * 2 < columns)
+    {
+        tempColumns ++;
+    }//Of if
+
     //Step 1. Invert columns.
     for(int i = 0; i < rows; i ++)
     {
-        for(int j = 0; j < columns / 2; j ++)
+        for(int j = 0; j < tempColumns; j ++)
         {
             data[i][j] = tempData[i][columns - j - 1];
             data[i][columns - j - 1] = tempData[i][j];
@@ -828,7 +841,7 @@ MfDoubleMatrix* MfDoubleMatrix::rotate180ToMe(MfDoubleMatrix* paraMatrix)
     }//Of for i
 
     //Step 2. Invert rows.
-    for(int i = 0; i < rows / 2; i ++)
+    for(int i = 0; i < tempRows; i ++)
     {
         for(int j = 0; j < columns; j ++)
         {
@@ -915,11 +928,15 @@ MfDoubleMatrix* MfDoubleMatrix::scaleToMe(MfDoubleMatrix* paraMatrix, MfSize* pa
     }//Of if
 
     double** paraData = paraMatrix->data;
-    for(int i = 0; i < newRows; i++) {
-        for(int j = 0; j < newColumns; j++) {
+    for(int i = 0; i < newRows; i++)
+    {
+        for(int j = 0; j < newColumns; j++)
+        {
             tempSum = 0.0;
-            for(int si = i * tempWidth; si < (i + 1) * tempWidth; si++) {
-                for(int sj = j * tempHeight; sj < (j + 1) * tempHeight; sj++) {
+            for(int si = i * tempWidth; si < (i + 1) * tempWidth; si++)
+            {
+                for(int sj = j * tempHeight; sj < (j + 1) * tempHeight; sj++)
+                {
                     tempSum += paraData[si][sj];
                 }//Of for sj
             }//Of for si
@@ -977,10 +994,14 @@ MfDoubleMatrix* MfDoubleMatrix::kroneckerToMe(MfDoubleMatrix* paraMatrix, MfSize
 
     double** paraData = paraMatrix->data;
 
-    for(int i = 0; i < tempRows; i++) {
-        for(int j = 0; j < tempColumns; j++) {
-            for(int ki = i * tempWidth; ki < (i + 1) * tempWidth; ki++) {
-                for(int kj = j * tempHeight; kj < (j + 1) * tempHeight; kj++) {
+    for(int i = 0; i < tempRows; i++)
+    {
+        for(int j = 0; j < tempColumns; j++)
+        {
+            for(int ki = i * tempWidth; ki < (i + 1) * tempWidth; ki++)
+            {
+                for(int kj = j * tempHeight; kj < (j + 1) * tempHeight; kj++)
+                {
                     data[ki][kj] = paraData[i][j];
                 }//Of for kj
             }//Of for ki
@@ -1064,6 +1085,8 @@ MfDoubleMatrix* MfDoubleMatrix::softmaxToMe(MfDoubleMatrix* paraVector)
     {
         data[0][i] /= tempSum;
     }//Of for i
+
+    return this;
 }//Of softmaxToMe
 
 /**
@@ -1107,8 +1130,8 @@ void MfDoubleMatrix::unitTest()
     printf("Kernel\r\n");
     printf(tempKernel->toString().data());
 
-    tempMfDoubleMatrix->fill(1);
-    tempKernel->fill(1);
+    //tempMfDoubleMatrix->fill(1);
+    //tempKernel->fill(1);
 
     tempConvolutionValid->convolutionValidToMe(tempMfDoubleMatrix, tempKernel);
     printf("Data\r\n");
@@ -1150,7 +1173,10 @@ void MfDoubleMatrix::unitTest()
     printf(tempKronecker2->toString().data());
 
     Activator* tempActivator = new Activator('s');
-    tempKronecker2 -> setActivator(tempActivator);
+    tempKronecker2->setActivator(tempActivator);
+    tempKronecker2->activate();
+    printf("After activate:\r\n");
+    printf(tempKronecker2->toString().data());
 
     //Test derive here.
 

@@ -26,7 +26,8 @@ MfIntArray::MfIntArray()
 MfIntArray::MfIntArray(int paraLength)
 {
     length = paraLength;
-    data = new int[paraLength];
+    //data = new int[paraLength];
+    data = (int*)malloc(paraLength * sizeof(int));
 
     for (int i = 0; i < length; i ++)
     {
@@ -42,7 +43,8 @@ MfIntArray::MfIntArray(int paraLength)
 MfIntArray::MfIntArray(int paraLength, int* paraValues)
 {
     length = paraLength;
-    data = new int(paraLength);
+    //data = new int(paraLength);
+    data = (int*)malloc(paraLength * sizeof(int));
     for (int i = 0; i < length; i ++)
     {
         data[i] = paraValues[i];

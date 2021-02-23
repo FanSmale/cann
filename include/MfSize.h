@@ -27,7 +27,11 @@ class MfSize
         virtual ~MfSize();
 
         //Set width and height.
-        void setValues(int, int);
+        void setValues(int paraWidth, int paraHeight)
+        {
+            width = paraWidth;
+            height = paraHeight;
+        }
 
         //Clone the size to me.
         MfSize* cloneToMe(MfSize* paraFirstSize);

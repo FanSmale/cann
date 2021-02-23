@@ -37,17 +37,6 @@ MfSize::~MfSize()
 }//Of the destructor
 
 /**
- * Set values.
- * paraWidth: the given width.
- * paraHeight: the given height.
- */
-void MfSize::setValues(int paraWidth, int paraHeight)
-{
-    width = paraWidth;
-    height = paraHeight;
-}//Of setValues
-
-/**
  * Clone the size to me.
  * paraSize: the given size.
  * Return: myself.

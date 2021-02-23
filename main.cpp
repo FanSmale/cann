@@ -36,8 +36,8 @@ int main()
     /**
      *For basis
      */
-    MfIntArray tempArray;
-    tempArray.unitTest();
+    //MfIntArray tempArray;
+    //tempArray.unitTest();
 
     //MfDoubleMatrix tempMatrix;
     //tempMatrix.unitTest();
@@ -64,9 +64,9 @@ int main()
     //Mf4DTensor* tempTensor = new Mf4DTensor();
     //tempTensor->unitTest();
 
-    //MfFullCnn tempCnn;
+    MfFullCnn tempCnn;
     //tempCnn.integratedTest();
-    //tempCnn.mnistTest();
+    tempCnn.mnistTest();
 
    /**
     * For Rnn

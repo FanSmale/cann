@@ -32,16 +32,16 @@ Mf4DTensor::Mf4DTensor(int paraFirstLength, int paraSecondLength, int paraThirdL
     thirdLength = paraThirdLength;
     fourthLength = paraFourthLength;
 
-    data = new double***[firstLength];
+    data = (double****)malloc(firstLength * sizeof(double***));
     for(int i = 0; i < firstLength; i ++)
     {
-        data[i] = new double**[secondLength];
+        data[i] = (double***)malloc(secondLength * sizeof(double**));
         for(int j = 0; j < secondLength; j ++)
         {
-            data[i][j] = new double*[thirdLength];
+            data[i][j] = (double**)malloc(thirdLength * sizeof(double*));
             for(int k = 0; k < thirdLength; k ++)
             {
-                data[i][j][k] = new double[fourthLength];
+                data[i][j][k] = (double*)malloc(fourthLength * sizeof(double));
                 for(int i1 = 0; i1 < fourthLength; i1 ++)
                 {
                     data[i][j][k][i1] = random0To1();

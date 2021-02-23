@@ -39,7 +39,8 @@ MfFullAnn::MfFullAnn(MfIntArray* paraSizes, char paraActivation, double paraRate
 
     //Allocate space
     numLayers = layerSizes->getLength() - 1;
-    layers = new MfAnnLayer* [numLayers];
+    //layers = new MfAnnLayer* [numLayers];
+    layers = (MfAnnLayer**)malloc(numLayers * sizeof(MfAnnLayer*));
     for (int i = 0; i < numLayers; i ++)
     {
         layers[i] = new MfAnnLayer(layerSizes->getValue(i), layerSizes->getValue(i + 1), activation, learningRate, mobp);
@@ -119,8 +120,8 @@ MfDoubleMatrix* MfFullAnn::forward(MfDoubleMatrix* paraInput)
     {
         tempData = layers[i]->forward(tempData);
     }//Of for i
-    currentOutput->cloneToMe(tempData);
 
+    currentOutput->cloneToMe(tempData);
     return currentOutput;
 }//Of forward
 
