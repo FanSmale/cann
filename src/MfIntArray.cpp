@@ -103,7 +103,7 @@ int MfIntArray::getValue(int paraPosition)
         throw -1;
     }
     return data[paraPosition];
-}//Of setValue
+}//Of getValue
 
 /**
  * Getter.
@@ -123,10 +123,10 @@ MfIntArray* MfIntArray::copy()
  */
 
 /**
- * Copy from another array.
+ * Clone another array to me.
  * paraArray: the given array.
  */
-void MfIntArray::copyFrom(MfIntArray* paraArray)
+void MfIntArray::cloneToMe(MfIntArray* paraArray)
 {
     if (length != paraArray->length)
     {
@@ -139,7 +139,7 @@ void MfIntArray::copyFrom(MfIntArray* paraArray)
     {
         data[i] = paraArray->data[i];
     }//Of for i
-}//Of copyFrom
+}//Of cloneToMe
 
 
 /**

@@ -2,29 +2,64 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="src\Activator.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="6" zoom_2="0">
+	<File name="src\Mf4DTensor.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3222" topLine="106" />
+		</Cursor>
+	</File>
+	<File name="src\MfCnnLayer.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="16880" topLine="667" />
+		</Cursor>
+	</File>
+	<File name="include\MfDataReader.h" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2332" topLine="93" />
+		</Cursor>
+	</File>
+	<File name="src\MfFullCnn.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="9354" topLine="338" />
+		</Cursor>
+	</File>
+	<File name="src\MfSize.cpp" open="0" top="0" tabpos="20" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="386" topLine="108" />
+		</Cursor>
+	</File>
+	<File name="src\Activator.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="6" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="920" topLine="24" />
 		</Cursor>
 	</File>
-	<File name="include\MfAnnLayer.h" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
+	<File name="src\MfDoubleMatrix.cpp" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="22864" topLine="812" />
+		</Cursor>
+	</File>
+	<File name="src\MfIntArray.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2921" topLine="113" />
+		</Cursor>
+	</File>
+	<File name="include\MfCnnLayer.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4672" topLine="192" />
+		</Cursor>
+	</File>
+	<File name="src\MfDoubleMatrixArray.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="865" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\MfAnnLayer.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1058" topLine="38" />
 		</Cursor>
 	</File>
-	<File name="src\MfFullAnn.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+	<File name="include\MfIntArray.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="432" topLine="321" />
-		</Cursor>
-	</File>
-	<File name="include\Activator.h" open="1" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1016" topLine="33" />
-		</Cursor>
-	</File>
-	<File name="src\MfAnnLayer.cpp" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2695" topLine="88" />
+			<Cursor1 position="1348" topLine="42" />
 		</Cursor>
 	</File>
 	<File name="include\MfFullCnn.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
@@ -32,89 +67,19 @@
 			<Cursor1 position="2114" topLine="74" />
 		</Cursor>
 	</File>
-	<File name="src\MfIntArray.cpp" open="1" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+	<File name="include\MfDoubleMatrix.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2583" topLine="0" />
+			<Cursor1 position="991" topLine="28" />
 		</Cursor>
 	</File>
-	<File name="include\MfDataReader.h" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+	<File name="src\MfAnnLayer.cpp" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1844" topLine="21" />
+			<Cursor1 position="2695" topLine="88" />
 		</Cursor>
 	</File>
-	<File name="src\MfDataReader.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+	<File name="src\MfFullAnn.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="325" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\MfRnnLayer.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2674" topLine="118" />
-		</Cursor>
-	</File>
-	<File name="src\MfSize.cpp" open="1" top="0" tabpos="20" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="386" topLine="111" />
-		</Cursor>
-	</File>
-	<File name="include\MfDoubleMatrixArray.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="905" topLine="24" />
-		</Cursor>
-	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="816" topLine="32" />
-		</Cursor>
-	</File>
-	<File name="src\MfDoubleMatrixArray.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="865" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\Mf4DTensor.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3222" topLine="106" />
-		</Cursor>
-	</File>
-	<File name="include\MfFullAnn.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="873" topLine="29" />
-		</Cursor>
-	</File>
-	<File name="include\Mf4DTensor.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1563" topLine="59" />
-		</Cursor>
-	</File>
-	<File name="src\MfFullCnn.cpp" open="1" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="7788" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\MfCnnLayer.h" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4672" topLine="192" />
-		</Cursor>
-	</File>
-	<File name="src\MfCnnLayer.cpp" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="15196" topLine="497" />
-		</Cursor>
-	</File>
-	<File name="include\MfIntArray.h" open="1" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1296" topLine="4" />
-		</Cursor>
-	</File>
-	<File name="src\MfRnnLayer.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="325" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\MfDoubleMatrix.h" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5797" topLine="172" />
+			<Cursor1 position="9597" topLine="395" />
 		</Cursor>
 	</File>
 	<File name="include\MfSize.h" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -122,9 +87,44 @@
 			<Cursor1 position="437" topLine="13" />
 		</Cursor>
 	</File>
-	<File name="src\MfDoubleMatrix.cpp" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+	<File name="src\MfRnnLayer.cpp" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="492" topLine="0" />
+			<Cursor1 position="325" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\MfRnnLayer.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2674" topLine="118" />
+		</Cursor>
+	</File>
+	<File name="include\MfDoubleMatrixArray.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="905" topLine="24" />
+		</Cursor>
+	</File>
+	<File name="include\MfFullAnn.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="873" topLine="29" />
+		</Cursor>
+	</File>
+	<File name="src\MfDataReader.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="10660" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\Mf4DTensor.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1563" topLine="59" />
+		</Cursor>
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1417" topLine="53" />
+		</Cursor>
+	</File>
+	<File name="include\Activator.h" open="0" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1016" topLine="33" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

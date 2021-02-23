@@ -59,11 +59,8 @@ public:
         return length;
     }
 
-    //Get a copy
-    //MfIntArray* copy();
-
-    //Copy from another array
-    void copyFrom(MfIntArray* paraArray);
+    //Clone from another array
+    void cloneToMe(MfIntArray* paraArray);
 
     //Randomize the order
     void randomizeOrder();

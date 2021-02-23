@@ -817,10 +817,23 @@ MfDoubleMatrix* MfDoubleMatrix::rotate180ToMe(MfDoubleMatrix* paraMatrix)
 {
     double tempValue;
     double** tempData = paraMatrix->data;
+    int tempColumns = columns / 2;
+    int tempRows = rows / 2;
+    /*
+    if(tempColumns * 2 < columns)
+    {
+        tempColumns ++;
+    }//Of if
+    if(tempRows * 2 < rows)
+    {
+        tempRows ++;
+    }//Of if
+    */
+
     //Step 1. Invert columns.
     for(int i = 0; i < rows; i ++)
     {
-        for(int j = 0; j < columns / 2; j ++)
+        for(int j = 0; j < tempColumns; j ++)
         {
             data[i][j] = tempData[i][columns - j - 1];
             data[i][columns - j - 1] = tempData[i][j];
@@ -828,7 +841,7 @@ MfDoubleMatrix* MfDoubleMatrix::rotate180ToMe(MfDoubleMatrix* paraMatrix)
     }//Of for i
 
     //Step 2. Invert rows.
-    for(int i = 0; i < rows / 2; i ++)
+    for(int i = 0; i < tempRows; i ++)
     {
         for(int j = 0; j < columns; j ++)
         {
