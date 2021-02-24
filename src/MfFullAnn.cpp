@@ -404,7 +404,7 @@ void MfFullAnn::crossValidationTest()
     tempReader->randomize();
 
     int tempDepth = 4;
-    int tempArray[tempDepth] = {4, 8, 8, 3};
+    int tempArray[4] = {4, 8, 8, 3};
     MfIntArray* tempMfIntArray = new MfIntArray(tempDepth);
     for(int i = 0; i < tempDepth; i ++)
     {
