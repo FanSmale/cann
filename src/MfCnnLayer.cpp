@@ -397,27 +397,17 @@ void MfCnnLayer::setConvolutionOutput()
     MfDoubleMatrix* tempMap;
     MfDoubleMatrix* tempKernel;
     double tempBias;
-    bool tempEmpty = true;
 
     for (int j = 0; j < numOutMaps; j++)
     {
-        tempEmpty = true;
+        currentOutMap->fill(0);
         for (int i = 0; i < tempLastNumMaps; i++)
         {
             tempMap = lastLayer->getOutMapAt(i);
             tempKernel = getKernelAt(i, j);
-            if (tempEmpty)
-            {
-                //Only convolution on one map.
-                currentOutMap->convolutionValidToMe(tempMap, tempKernel);
-                tempEmpty = false;
-            }
-            else
-            {
-                //Sum up convolution maps
-                singleOutMap->convolutionValidToMe(tempMap, tempKernel);
-                currentOutMap->addToMe(currentOutMap, singleOutMap);
-            }//Of if
+            //Sum up convolution maps
+            singleOutMap->convolutionValidToMe(tempMap, tempKernel);
+            currentOutMap->addToMe(currentOutMap, singleOutMap);
         }//Of for i
 
         //Bias.
@@ -524,26 +514,18 @@ void MfCnnLayer::setSamplingLayerErrors()
 {
     int tempNextMapNum = nextLayer->getNumOutMaps();
 
-    bool tempFirst;
     MfDoubleMatrix* tempNextErrors;
     MfDoubleMatrix* tempRot180Kernel;
 
     for (int i = 0; i < numOutMaps; i++)
     {
-        tempFirst = true;
+        currentErrors->fill(0);
         for (int j = 0; j < tempNextMapNum; j++) {
             tempNextErrors = nextLayer->getErrorsAt(j);
             tempRot180Kernel = nextLayer->getRot180KernelAt(i, j);
-            if (tempFirst)
-            {
-                currentErrors->convolutionFullToMe(tempNextErrors, tempRot180Kernel);
-                tempFirst = false;
-            }
-            else
-            {
-                currentSingleErrors->convolutionFullToMe(tempNextErrors, tempRot180Kernel);
-                currentErrors->addToMe(currentErrors, currentSingleErrors);
-            }//Of if
+
+            currentSingleErrors->convolutionFullToMe(tempNextErrors, tempRot180Kernel);
+            currentErrors->addToMe(currentErrors, currentSingleErrors);
         }//Of for j
 
         setErrorsAt(i, currentErrors);
@@ -612,26 +594,19 @@ void MfCnnLayer::backPropagation(int paraLabel)
 void MfCnnLayer::updateKernels()
 {
     int tempNumLastMap = lastLayer->getNumOutMaps();
-    bool tempFirst = true;
 
     for (int j = 0; j < numOutMaps; j++)
     {
         for (int i = 0; i < tempNumLastMap; i++)
         {
-            tempFirst = true;
+            //tempFirst = true;
+            deltaKernel->fill(0);
             for (int r = 0; r < batchSize; r++)
             {
                 currentErrors = getErrorsAt(r, j);
-                if (tempFirst)
-                {
-                    tempFirst = false;
-                    deltaKernel->convolutionValidToMe(lastLayer->getOutMapAt(r, i), currentErrors);
-                }
-                else
-                {
-                    singleDeltaKernel->convolutionValidToMe(lastLayer->getOutMapAt(r, i), currentErrors);
-                    deltaKernel->addToMe(deltaKernel, singleDeltaKernel);
-                }//Of if
+
+                singleDeltaKernel->convolutionValidToMe(lastLayer->getOutMapAt(r, i), currentErrors);
+                deltaKernel->addToMe(deltaKernel, singleDeltaKernel);
             }//Of for r
 
             currentKernel = getKernelAt(i, j);

@@ -329,7 +329,7 @@ void MfFullCnn::mnistTest()
     char *tempFilename = (char *)tempString.c_str();
 
     MfDataReader* tempReader = new MfDataReader(tempFilename);
-    printf("Done.\r\n");
+    printf("Done!\r\n");
     tempReader->randomize();
     tempReader->splitInTwo(0.8);
 
