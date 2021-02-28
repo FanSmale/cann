@@ -13,7 +13,7 @@
  *   minfanphd@163.com, minfan@swpu.edu.cn
  */
 
-#include <MfDoubleMatrix.h>
+#include "MfDoubleMatrix.h"
 
 using namespace std;
 

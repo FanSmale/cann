@@ -611,6 +611,7 @@ void MfCnnLayer::updateKernels()
 
             currentKernel = getKernelAt(i, j);
             currentKernel->timesValueToMe(1 - lambda * alpha);
+            deltaKernel->timesValueToMe(alpha/batchSize);
             currentKernel->addToMe(currentKernel, deltaKernel);
 
             setKernelAt(i, j, currentKernel);
