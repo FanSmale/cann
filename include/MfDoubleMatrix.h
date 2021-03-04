@@ -63,6 +63,9 @@ class MfDoubleMatrix
         //Get a value at the given position.
         double getValue(int paraRow, int paraColumn);
 
+        //Judge the parameters.
+        void judgeParams(int, int, string);
+
         //Get the maximal value.
         double getMaxValue();
 
