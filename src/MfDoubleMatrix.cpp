@@ -33,13 +33,13 @@ MfDoubleMatrix::MfDoubleMatrix()
  * paraRows: the number of rows.
  * paraColumns: the number of columns.
  */
-MfDoubleMatrix::MfDoubleMatrix(int paraRows, int paraColumns): rows(paraRows), columns(paraColumns)
+MfDoubleMatrix::MfDoubleMatrix(int paraRows, int paraColumns)
 {
-//    rows = paraRows;
-//    columns = paraColumns;
+    //: rows(paraRows), columns(paraColumns)
+    rows = paraRows;
+    columns = paraColumns;
 
     //Allocate space
-    //data = new double *[rows];
     data = (double**)malloc(rows * sizeof(double*));
     for(int i = 0; i < rows; i ++)
     {
