@@ -2,9 +2,14 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="src\MfFullCnn.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+	<File name="include\CoordinateMap.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="10649" topLine="297" />
+			<Cursor1 position="646" topLine="15" />
+		</Cursor>
+	</File>
+	<File name="src\MfFullCnn.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="5" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2621" topLine="86" />
 		</Cursor>
 	</File>
 	<File name="src\MfRnnLayer.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -17,9 +22,39 @@
 			<Cursor1 position="17990" topLine="641" />
 		</Cursor>
 	</File>
+	<File name="include\MfCnnLayer.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="493" topLine="84" />
+		</Cursor>
+	</File>
+	<File name="src\MfDoubleMatrix.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1522" topLine="28" />
+		</Cursor>
+	</File>
+	<File name="src\CoordinateMap.cpp" open="1" top="1" tabpos="3" split="0" active="1" splitpos="0" zoom_1="3" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="459" topLine="35" />
+		</Cursor>
+	</File>
+	<File name="include\MfDoubleMatrix.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1205" topLine="22" />
+		</Cursor>
+	</File>
 	<File name="src\MfFullAnn.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="12791" topLine="337" />
+		</Cursor>
+	</File>
+	<File name="src\MfDataReader.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="327" topLine="156" />
+		</Cursor>
+	</File>
+	<File name="include\MfDataReader.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="751" topLine="64" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

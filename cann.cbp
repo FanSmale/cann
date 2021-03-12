@@ -35,6 +35,7 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="include/Activator.h" />
+		<Unit filename="include/CoordinateMap.h" />
 		<Unit filename="include/Mf4DTensor.h" />
 		<Unit filename="include/MfAnnLayer.h" />
 		<Unit filename="include/MfCnnLayer.h" />
@@ -48,6 +49,7 @@
 		<Unit filename="include/MfSize.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Activator.cpp" />
+		<Unit filename="src/CoordinateMap.cpp" />
 		<Unit filename="src/Mf4DTensor.cpp" />
 		<Unit filename="src/MfAnnLayer.cpp" />
 		<Unit filename="src/MfCnnLayer.cpp" />
