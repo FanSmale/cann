@@ -19,6 +19,13 @@ using namespace std;
  */
 MfDataReader::MfDataReader()
 {
+    wholeX = nullptr;
+    wholeY = nullptr;
+    trainingX = nullptr;
+    trainingY = nullptr;
+    testingX = nullptr;
+    testingY = nullptr;
+    randomArray = nullptr;
 }//Of the default constructor
 
 /**
@@ -149,35 +156,47 @@ MfDataReader::MfDataReader(char* paraFilename)
  */
 MfDataReader::~MfDataReader()
 {
-    //delete []wholeX;
-    //free(wholeX);
-    //wholeX = nullptr;
+    if (wholeX != nullptr)
+    {
+        printf("deleting wholeX\r\n");
+        delete wholeX;
+    }//Of if
 
-    //delete []wholeY;
-    //free(wholeY);
-    //wholeY = nullptr;
+    if (wholeY != nullptr)
+    {
+        printf("deleting wholeY\r\n");
+        delete wholeY;
+    }//Of if
 
-    //delete []randomArray;
-    //free(randomArray);
-    //randomArray = nullptr;
+    if (randomArray != nullptr)
+    {
+        printf("deleting randomArray\r\n");
+        delete randomArray;
+    }//Of if
 
-    //delete []trainingX;
-    //free(trainingX);
-    //trainingX = nullptr;
+    if (trainingX != nullptr)
+    {
+        printf("deleting trainingX\r\n");
+        delete trainingX;
+    }//Of if
 
-    //delete []trainingY;
-    //free(trainingY);
-    //trainingY = nullptr;
+    if (trainingY != nullptr)
+    {
+        printf("deleting trainingY\r\n");
+        delete trainingY;
+    }//Of if
 
-    //delete []testingX;
-    //free(testingX);
-    //testingX = nullptr;
+    if (testingX != nullptr)
+    {
+        printf("deleting testingX\r\n");
+        delete testingX;
+    }//Of if
 
-    //delete []testingY;
-    //free(testingY);
-    //testingY = nullptr;
-    /*
-    */
+    if (testingY != nullptr)
+    {
+        printf("deleting testingX\r\n");
+        delete testingY;
+    }//Of if
 }//Of the destructor
 
 /**
@@ -192,14 +211,13 @@ void MfDataReader::splitInTwo(double paraTrainingFraction)
     //Free space if allocated in the past
     if (trainingX != nullptr)
     {
-        delete []trainingX;
-        free(trainingX);
+        delete trainingX;
         trainingX = nullptr;
-        free(trainingY);
+        delete trainingY;
         trainingY = nullptr;
-        free(testingX);
+        delete testingX;
         testingX = nullptr;
-        free(testingY);
+        delete testingY;
         testingY = nullptr;
     }//Of if
     trainingX = new MfDoubleMatrix(tempTrainingSize, numConditions);
@@ -326,6 +344,7 @@ void MfDataReader::unitTest()
     printf("The training X is: \r\n");
     cout << tempReader.trainingX->toString() << endl;
     //printf("The training X is: \r\n");
+    printf("End of unit test. \r\n");
 
     //cout << tempArrayPtr[0] << endl;
 }//Of unitTest

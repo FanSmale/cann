@@ -18,6 +18,9 @@ MfFullAnn::MfFullAnn()
 {
     numLayers = 0;
     layers = nullptr;
+    currentInstance = nullptr;
+    currentDecision = nullptr;
+    currentOutput = nullptr;
 }//Of the default constructor
 
 /**
@@ -58,15 +61,25 @@ MfFullAnn::MfFullAnn(MfIntArray* paraSizes, char paraActivation, double paraRate
  */
 MfFullAnn::~MfFullAnn()
 {
-    for(int i = 0; i < numLayers; i ++)
+    if (layers != nullptr)
     {
-        free(layers[i]);
-    }//Of for i
-    free(layers);
+        for(int i = 0; i < numLayers; i ++)
+        {
+            delete layers[i];
+        }//Of for i
+        free(layers);
 
-    free(currentInstance);
-    free(currentDecision);
-    free(currentOutput);
+        delete currentInstance;
+        delete currentDecision;
+
+        /*
+        //currentOutput cannot be deleted since it is used elsewhere.
+        printf("deleting currentOutput\r\n");
+        cout << currentOutput->toString() << endl;
+        delete currentOutput;
+        printf("done\r\n");
+        */
+    }//Of if
 }//Of the destructor
 
 /**
@@ -386,8 +399,8 @@ void MfFullAnn::trainingTestingTest()
     double tempPrecision = tempMfFullAnn->test(tempTestingX, tempTestingY);
     printf("After testing, the precision is %lf:\r\n", tempPrecision);
 
-    free(tempMfIntArray);
-    free(tempMfFullAnn);
+    delete tempMfIntArray;
+    delete tempMfFullAnn;
 
     printf("Finish. \r\n");
 }//Of trainingTestingTest
@@ -411,7 +424,7 @@ void MfFullAnn::crossValidationTest()
         tempMfIntArray->setValue(i, tempArray[i]);
     }//Of for i
 
-    int tempNumFolds = 5;
+    int tempNumFolds = 2;
     int tempCorrectSum = 0;
 
     //Attention: 这里声明即赋值, 后面的多个网络结果才正确.
@@ -445,9 +458,10 @@ void MfFullAnn::crossValidationTest()
         printf("After testing, the precision is %lf:\r\n", tempPrecision);
         tempCorrectSum += tempMfFullAnn->getNumCorrect();
     }//Of for i
-    free(tempMfFullAnn);
-
     printf("Total correct: %d. \r\n", tempCorrectSum);
     printf("Finish. \r\n");
+    delete tempMfFullAnn;
+    tempMfFullAnn = nullptr;
+    printf("tempMfFullAnn deleted. \r\n");
 }//Of crossValidationTest
 

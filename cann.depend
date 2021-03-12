@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1614127426 source:e:\c\cann\main.cpp
+1614914462 source:e:\c\cann\main.cpp
 	<iostream>
 	<stdio.h>
 	"MfIntArray.h"
@@ -1991,7 +1991,7 @@
 	<fstream>
 	<iostream>
 
-1613953662 e:\c\cann\include\mfdoublematrix.h
+1614770437 e:\c\cann\include\mfdoublematrix.h
 	<iostream>
 	<stdio.h>
 	<stdlib.h>
@@ -2068,11 +2068,11 @@
 	"MfAnnLayer.h"
 	"Activator.h"
 
-1613965390 source:e:\c\cann\src\mfdatareader.cpp
+1614914613 source:e:\c\cann\src\mfdatareader.cpp
 	<iostream>
 	"MfDataReader.h"
 
-1614127484 source:e:\c\cann\src\mfdoublematrix.cpp
+1614913053 source:e:\c\cann\src\mfdoublematrix.cpp
 	"MfDoubleMatrix.h"
 
 1613953662 source:e:\c\cann\src\mfdoublematrixarray.cpp
@@ -2081,7 +2081,7 @@
 1614127572 source:e:\c\cann\src\mffullann.cpp
 	"MfFullAnn.h"
 
-1614127426 source:e:\c\cann\src\mffullcnn.cpp
+1614842186 source:e:\c\cann\src\mffullcnn.cpp
 	"MfFullCnn.h"
 
 1614127426 source:e:\c\cann\src\mfintarray.cpp
@@ -2093,6 +2093,6 @@
 1614127426 source:e:\c\cann\src\mfsize.cpp
 	"MfSize.h"
 
-1613955485 source:e:\c\cann\src\mfcnnlayer.cpp
+1614842186 source:e:\c\cann\src\mfcnnlayer.cpp
 	"MfCnnLayer.h"
 

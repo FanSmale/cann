@@ -35,11 +35,11 @@ MfDoubleMatrix::MfDoubleMatrix()
  */
 MfDoubleMatrix::MfDoubleMatrix(int paraRows, int paraColumns)
 {
+    //: rows(paraRows), columns(paraColumns)
     rows = paraRows;
     columns = paraColumns;
 
     //Allocate space
-    //data = new double *[rows];
     data = (double**)malloc(rows * sizeof(double*));
     for(int i = 0; i < rows; i ++)
     {
@@ -107,11 +107,7 @@ string MfDoubleMatrix::toString()
  */
 double MfDoubleMatrix::setValue(int paraRow, int paraColumn, double paraValue)
 {
-    if((paraRow >= rows) || (paraColumn >= columns))
-    {
-        printf("MfDoubleMatrix.setValue() out of range.");
-        throw "MfDoubleMatrix.setValue() out of range.";
-    }//Of if
+    judgeParams(paraRow, paraColumn, "setValue");
     data[paraRow][paraColumn] = paraValue;
 
     return paraValue;
@@ -124,13 +120,24 @@ double MfDoubleMatrix::setValue(int paraRow, int paraColumn, double paraValue)
  */
 double MfDoubleMatrix::getValue(int paraRow, int paraColumn)
 {
-    if((paraRow >= rows) || (paraColumn >= columns))
-    {
-        printf("MfDoubleMatrix.getValue() out of range.");
-        throw "MfDoubleMatrix.getValue() out of range.";
-    }//Of if
+    judgeParams(paraRow, paraColumn, "getValue");
     return data[paraRow][paraColumn];
 }//Of getValue
+
+/**
+ * Judging.
+ * paraRow: the row.
+ * paraColumn: the column.
+ */
+void MfDoubleMatrix::judgeParams(int paraRow, int paraColumn, string functionName)
+{
+    if((paraRow >= rows) || (paraColumn >= columns) || (paraRow < 0) || (paraColumn < 0))
+    {
+        string tempStr = "MfDoubleMatrix." + functionName + "() out of range.";
+        cout << tempStr;
+        throw tempStr;
+    }//Of if
+}//Of judgeParams
 
 /**
  * Get the maximal value.
@@ -160,9 +167,9 @@ double MfDoubleMatrix::getMinValue()
             {
 
                 resultMin = data[i][j];
-            }
-        }
-    }
+            }//Of if
+        }//Of for j
+    }//Of for i
     return resultMin;
 }//Of getMinValue
 
