@@ -322,6 +322,82 @@ void MfDataReader::randomize()
 }//Of randomize
 
 /**
+ * Merge the data file of the same folder.
+ * @param paraFoldername The folder name.
+ * @param paraSuffix The suffix.
+ */
+void MfDataReader::fileMerge(char* paraFoldername, char* paraSuffix)
+{
+    string tempFolderString(paraFoldername);
+    //string tempClass = to_string(paraClass);
+    long tempFile;
+    _finddata_t findFile;
+    _chdir(paraFoldername);
+    string tempFilename;
+
+    if((tempFile=_findfirst(paraSuffix, &findFile))==-1L)
+
+    {
+        printf("No file exists.\n");
+        exit(0);
+    }//Of if
+
+    FILE *tempOutFile;
+    //string tempString(paraFileFolder);
+    //tempString += "alldata.txt";
+    if((tempOutFile = fopen((tempFolderString + "merged.data").data(), "w")) == NULL)
+    {
+        printf("Could not open file for writing.\r\n");
+        exit(1);
+    }//Of if
+
+    string tempInputFileName = findFile.name;
+    ifstream tempInputStream(tempInputFileName);
+    string tempLine;
+    printf("processing %s.\r\n", tempInputFileName.data());
+    if (!tempInputStream)
+    {
+        printf("file not found\r\n");
+        throw "file not found";
+    }//Of if
+    while (getline(tempInputStream, tempLine)) // line中不包括每行的换行符
+    {
+        fprintf(tempOutFile, "%s\r\n", tempLine.c_str());
+    }//Of while
+    tempInputStream.close();
+
+    while(_findnext(tempFile, &findFile)==0)
+    {
+        tempInputFileName = findFile.name;
+        printf("processing %s\r\n", tempInputFileName.c_str());
+        tempInputStream.open(tempInputFileName);
+        if (!tempInputStream)
+        {
+            printf("file not found\r\n");
+            throw "file not found";
+        }//Of if
+        while (getline(tempInputStream, tempLine)) // line中不包括每行的换行符
+        {
+            fprintf(tempOutFile, "%s\r\n", tempLine.c_str());
+        }//Of while
+        tempInputStream.close();
+    }//Of while _findnext
+
+    fclose(tempOutFile);
+}//Of fileMerge
+
+/**
+ * File merge test.
+ */
+void MfDataReader::fileMergeTest()
+{
+    string tempFoldername = "e:\\data\\petroleum\\pump\\train\\60times60\\";
+    string tempSuffix = "*.txt";
+    fileMerge((char *)tempFoldername.c_str(),
+              (char *)tempSuffix.c_str());
+}//Of fileMergeTest
+
+/**
  * Code unit test.
  */
 void MfDataReader::unitTest()

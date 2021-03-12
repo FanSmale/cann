@@ -11,13 +11,17 @@
 #ifndef MFDATAREADER_H
 #define MFDATAREADER_H
 
+#include <io.h>
 #include <random>
 #include <stdlib.h>
 #include <string>
 #include <string.h>
-#include<fstream>
+#include <fstream>
 #include <iostream>
 #include <sstream>
+#include <dir.h>
+#include <dirent.h>
+#include <direct.h>
 
 
 #include "MfIntArray.h"
@@ -84,6 +88,12 @@ class MfDataReader
 
         //The random array is stored in the object
         void randomize();
+
+        //Merge data files
+        void fileMerge(char* paraFoldername, char* paraSuffix);
+
+        //File merge test
+        void fileMergeTest();
 
         //Code unit test
         void unitTest();

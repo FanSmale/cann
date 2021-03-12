@@ -38,6 +38,7 @@
 		<Unit filename="include/CoordinateMap.h" />
 		<Unit filename="include/Mf4DTensor.h" />
 		<Unit filename="include/MfAnnLayer.h" />
+		<Unit filename="include/MfBitMapsConverter.h" />
 		<Unit filename="include/MfCnnLayer.h" />
 		<Unit filename="include/MfDataReader.h" />
 		<Unit filename="include/MfDoubleMatrix.h" />
@@ -52,6 +53,7 @@
 		<Unit filename="src/CoordinateMap.cpp" />
 		<Unit filename="src/Mf4DTensor.cpp" />
 		<Unit filename="src/MfAnnLayer.cpp" />
+		<Unit filename="src/MfBitMapsConverter.cpp" />
 		<Unit filename="src/MfCnnLayer.cpp" />
 		<Unit filename="src/MfDataReader.cpp" />
 		<Unit filename="src/MfDoubleMatrix.cpp" />

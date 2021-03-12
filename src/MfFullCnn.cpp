@@ -358,6 +358,69 @@ void MfFullCnn::mnistTest()
     printf("The accuracy is: %lf. Finish. \r\n", tempAccuracy);
 }//Of mnistTest
 
+
+/**
+ * Training/testing test using the digit recognition data.
+ */
+void MfFullCnn::pumpDiagnosisTest()
+{
+    //Step 1. Build the CNN
+    printf("Building CNN\r\n");
+    MfFullCnn* tempCnn = new MfFullCnn(5);
+    MfSize* tempImageSize = new MfSize(28, 28);
+    MfSize* tempConvolutionSize = new MfSize(5, 5);
+    MfSize* tempSampleSize = new MfSize(2, 2);
+    int tempNumClasses = 13;
+
+    //Four layers
+    printf("Adding layers\r\n");
+    tempCnn->addLayer(INPUT_LAYER, -1, tempImageSize);
+    tempCnn->addLayer(CONVOLUTION_LAYER, 6, tempConvolutionSize);
+    tempCnn->addLayer(SAMPLING_LAYER, -1, tempSampleSize);
+    tempCnn->addLayer(CONVOLUTION_LAYER, 12, tempConvolutionSize);
+    tempCnn->addLayer(SAMPLING_LAYER, -1, tempSampleSize);
+    tempCnn->addLayer(OUTPUT_LAYER, tempNumClasses, nullptr);
+
+    //Setup.
+    printf("Setup\r\n");
+    tempCnn->setup();
+
+    //Step 2. Read data
+    printf("Read training data\r\n");
+    string tempString = "E:\\data\\petroleum\\pump\\train\\28times28\\merged.data";
+
+    char *tempFilename = (char *)tempString.c_str();
+
+    MfDataReader* tempReader = new MfDataReader(tempFilename);
+    printf("Done!\r\n");
+    tempReader->randomize();
+    tempReader->splitInTwo(0.8);
+
+    MfDoubleMatrix* tempTrainingX = tempReader->getTrainingX();
+    MfIntArray* tempTrainingY = tempReader->getTrainingY();
+    MfDoubleMatrix* tempTestingX = tempReader->getTestingX();
+    MfIntArray* tempTestingY = tempReader->getTestingY();
+
+    tempCnn->initializeRandomArray(tempTrainingX->getRows());
+    printf("Start training rounds:\r\n");
+    double tempAccuracy;
+    for(int i = 0; i < 20; i ++)
+    {
+        tempAccuracy = tempCnn->train(tempTrainingX, tempTrainingY);
+        printf("Round: %d, accuracy = %lf:\r\n", i, tempAccuracy);
+    }//Of for i
+
+    printf("After training:\r\n\r\n\r\n");
+    tempCnn->outputKernelsToFile();
+
+    printf("Before testing:\r\n");
+    tempAccuracy = tempCnn->test(tempTestingX, tempTestingY);
+
+    free(tempCnn);
+
+    printf("The accuracy is: %lf. Finish. \r\n", tempAccuracy);
+}//Of pumpDiagnosisTest
+
 /**
  * Code integrated test.
  */

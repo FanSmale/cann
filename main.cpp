@@ -22,6 +22,8 @@
 #include "MfSize.h"
 #include "Mf4DTensor.h"
 #include "MfFullCnn.h"
+#include "CoordinateMap.h"
+#include "MfBitMapsConverter.h"
 
 //For RNN
 #include "MfDoubleMatrixArray.h"
@@ -44,6 +46,7 @@ int main()
 
     //MfDataReader tempReader;
     //tempReader.unitTest();
+    //tempReader.fileMergeTest();
 
     /**
      *For Ann
@@ -51,9 +54,9 @@ int main()
     //MfAnnLayer tempLayer;
     //tempLayer.unitTest();
 
-    MfFullAnn tempMfFullAnn;
+    //MfFullAnn tempMfFullAnn;
     //tempMfFullAnn.trainingTestingTest();
-    tempMfFullAnn.crossValidationTest();
+    //tempMfFullAnn.crossValidationTest();
 
     /**
      *For Cnn
@@ -64,9 +67,16 @@ int main()
     //Mf4DTensor* tempTensor = new Mf4DTensor();
     //tempTensor->unitTest();
 
-    //MfFullCnn tempCnn;
+    MfFullCnn tempCnn;
     //tempCnn.integratedTest();
     //tempCnn.mnistTest();
+    tempCnn.pumpDiagnosisTest();
+
+    //CoordinateMap tempMap;
+    //tempMap.unitTest();
+
+    //MfBitMapsConverter tempConverter;
+    //tempConverter.unitTest();
 
    /**
     * For Rnn

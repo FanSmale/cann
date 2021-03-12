@@ -71,6 +71,9 @@ class MfFullCnn
         //Training/testing.
         void mnistTest();
 
+        //Training/testing.
+        void pumpDiagnosisTest();
+
         //Unit test, essentially integrated test.
         void integratedTest();
 

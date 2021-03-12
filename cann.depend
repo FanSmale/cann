@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1614914462 source:e:\c\cann\main.cpp
+1615541204 source:e:\c\cann\main.cpp
 	<iostream>
 	<stdio.h>
 	"MfIntArray.h"
@@ -10,6 +10,8 @@
 	"MfSize.h"
 	"Mf4DTensor.h"
 	"MfFullCnn.h"
+	"CoordinateMap.h"
+	"MfBitMapsConverter.h"
 	"MfDoubleMatrixArray.h"
 	"MfRnnLayer.h"
 
@@ -2009,7 +2011,8 @@
 1614127426 e:\c\cann\include\mfsize.h
 	<string>
 
-1613953662 e:\c\cann\include\mfdatareader.h
+1615538259 e:\c\cann\include\mfdatareader.h
+	<io.h>
 	<random>
 	<stdlib.h>
 	<string>
@@ -2017,6 +2020,9 @@
 	<fstream>
 	<iostream>
 	<sstream>
+	<dir.h>
+	<dirent.h>
+	<direct.h>
 	"MfIntArray.h"
 	"MfDoubleMatrix.h"
 
@@ -2041,7 +2047,7 @@
 	<Malloc.h>
 	"MfDoubleMatrix.h"
 
-1613953662 e:\c\cann\include\mffullcnn.h
+1615535513 e:\c\cann\include\mffullcnn.h
 	"MfCnnLayer.h"
 	"MfDataReader.h"
 
@@ -2068,7 +2074,7 @@
 	"MfAnnLayer.h"
 	"Activator.h"
 
-1614914613 source:e:\c\cann\src\mfdatareader.cpp
+1615541158 source:e:\c\cann\src\mfdatareader.cpp
 	<iostream>
 	"MfDataReader.h"
 
@@ -2078,10 +2084,10 @@
 1613953662 source:e:\c\cann\src\mfdoublematrixarray.cpp
 	"MfDoubleMatrixArray.h"
 
-1614127572 source:e:\c\cann\src\mffullann.cpp
+1614915831 source:e:\c\cann\src\mffullann.cpp
 	"MfFullAnn.h"
 
-1614842186 source:e:\c\cann\src\mffullcnn.cpp
+1615541127 source:e:\c\cann\src\mffullcnn.cpp
 	"MfFullCnn.h"
 
 1614127426 source:e:\c\cann\src\mfintarray.cpp
@@ -2095,4 +2101,30 @@
 
 1614842186 source:e:\c\cann\src\mfcnnlayer.cpp
 	"MfCnnLayer.h"
+
+1615523240 source:e:\c\cann\src\coordinatemap.cpp
+	"CoordinateMap.h"
+
+1615523087 e:\c\cann\include\coordinatemap.h
+	<string.h>
+	<Malloc.h>
+	<fstream>
+	<iostream>
+	<sstream>
+
+1615533923 e:\c\cann\include\mfbitmapsconverter.h
+	<string.h>
+	<Malloc.h>
+	<fstream>
+	<iostream>
+	<sstream>
+	<vector>
+	<io.h>
+	<dir.h>
+	<dirent.h>
+	<direct.h>
+	"CoordinateMap.h"
+
+1615540882 source:e:\c\cann\src\mfbitmapsconverter.cpp
+	"MfBitMapsConverter.h"
 
